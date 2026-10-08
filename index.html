@@ -1,0 +1,2678 @@
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAVEN OS | رافين — منصة إدارة المدارس الذكية</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        arabic: ['Cairo', 'sans-serif'],
+        english: ['Inter', 'sans-serif'],
+        grotesk: ['Space Grotesk', 'Cairo', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+<style>
+* { font-family: 'Cairo', 'Inter', sans-serif; }
+html[lang="en"] * { font-family: 'Inter', 'Cairo', sans-serif; }
+[class^="ri-"], [class*=" ri-"] { font-family: 'remixicon' !important; }
+
+:root {
+  --green: #0D4A3A;
+  --green-mid: #14614B;
+  --green-dark: #02302B;
+  --green-light: #E8F1EC;
+  --gold: #C8994B;
+  --gold-light: #D8B56A;
+  --gold-bg: #F4EAD3;
+  --bg: #FDF9F6;
+  --card: #FEFDFB;
+  --text: #252525;
+  --sec: #5A6F56;
+  --border: #DEE1DA;
+  --ok: #0E7C55;
+  --ok-bg: #E3F3EC;
+  --warn: #9A6A12;
+  --warn-bg: #F7ECD4;
+  --danger: #B3372C;
+  --danger-bg: #F9E4E1;
+  --info: #1C5D78;
+  --info-bg: #E2EEF4;
+  --purple: #6B4FA0;
+  --purple-bg: #EDE7F6;
+  --sec-bg: #EEF1EC;
+  --hover: rgba(13,74,58,.06);
+  --shadow: 0 2px 8px rgba(13,74,58,.06);
+  --shadow-lg: 0 14px 36px rgba(2,48,43,.14);
+}
+
+html[data-theme="dark"] {
+  --green: #2E8B6E;
+  --green-mid: #3AA37F;
+  --green-dark: #071F1A;
+  --green-light: #12332B;
+  --gold: #D8B56A;
+  --gold-light: #C8994B;
+  --gold-bg: #2E2410;
+  --bg: #0B1714;
+  --card: #10201B;
+  --text: #EDF3F0;
+  --sec: #9DB3A8;
+  --border: #1E352E;
+  --ok: #3FB98C;
+  --ok-bg: #12332A;
+  --warn: #D8A94E;
+  --warn-bg: #2E2410;
+  --danger: #E07B6E;
+  --danger-bg: #331713;
+  --info: #6FB3CC;
+  --info-bg: #122A33;
+  --purple: #B79CE0;
+  --purple-bg: #241B33;
+  --sec-bg: #16241F;
+  --hover: rgba(255,255,255,.06);
+  --shadow: 0 2px 10px rgba(0,0,0,.35);
+  --shadow-lg: 0 14px 36px rgba(0,0,0,.55);
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+.card-h:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); transition: .25s; }
+.sec { color: var(--sec); }
+.bd { border-color: var(--border); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border-radius: 999px; font-weight: 700; font-size: 12px; padding: 8px 16px;
+  transition: .2s; cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+}
+.btn:active { transform: scale(.96); }
+.btn-green { background: var(--green); color: #fff; }
+.btn-green:hover { background: var(--green-mid); }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { filter: brightness(1.07); }
+.btn-soft { background: var(--green-light); color: var(--green); }
+.btn-soft:hover { background: color-mix(in srgb, var(--green-light) 60%, var(--green)); }
+.btn-line { background: transparent; border-color: var(--border); color: var(--text); }
+.btn-line:hover { background: var(--green-light); }
+.btn-danger { background: var(--danger-bg); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-sm { padding: 5px 12px; font-size: 11px; }
+
+.badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.badge-ok { background: var(--ok-bg); color: var(--ok); }
+.badge-warn { background: var(--warn-bg); color: var(--warn); }
+.badge-danger { background: var(--danger-bg); color: var(--danger); }
+.badge-info { background: var(--info-bg); color: var(--info); }
+.badge-gold { background: var(--gold-bg); color: var(--gold); }
+.badge-purple { background: var(--purple-bg); color: var(--purple); }
+.badge-sec { background: var(--sec-bg); color: var(--sec); }
+
+.inp {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 9px 14px; font-size: 13px; color: var(--text); transition: .2s;
+}
+.inp:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(13,74,58,.12); }
+.inp::placeholder { color: var(--sec); }
+select.inp { cursor: pointer; }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+.tbl th { background: var(--green-light); color: var(--sec); font-size: 11px; font-weight: 800; padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+[dir="ltr"] .tbl th { text-align: left; }
+.tbl td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tbl tbody tr { transition: .15s; }
+.tbl tbody tr:hover { background: var(--hover); }
+
+.pbar { height: 6px; border-radius: 999px; background: var(--green-light); overflow: hidden; min-width: 60px; }
+.pbar div { height: 100%; border-radius: 999px; background: var(--green); transition: width .5s; }
+.pbar-gold div { background: var(--gold); }
+
+.av { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: #fff; flex-shrink: 0; }
+
+.side-nav {
+  width: 280px; flex-shrink: 0; background: var(--green-dark);
+  position: fixed; top: 0; bottom: 0; z-index: 45;
+  overflow-y: auto; transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+[dir="rtl"] .side-nav { right: 0; transform: translateX(105%); }
+[dir="ltr"] .side-nav { left: 0; transform: translateX(-105%); }
+.side-nav.open { transform: translateX(0); }
+
+@media (min-width: 1024px) {
+  .side-nav { position: sticky; top: 0; height: 100vh; transform: none !important; }
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border-radius: 12px; color: rgba(255,255,255,.72); font-weight: 600;
+  font-size: 13px; width: 100%; text-align: start; transition: .2s;
+  cursor: pointer; position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav-item.active { background: var(--green); color: #fff; }
+.nav-item.active::before { content: ''; position: absolute; top: 9px; bottom: 9px; width: 3px; border-radius: 99px; background: var(--gold); }
+[dir="rtl"] .nav-item.active::before { right: 0; }
+[dir="ltr"] .nav-item.active::before { left: 0; }
+
+.nav-ico { width: 32px; height: 32px; border-radius: 9px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-item.active .nav-ico { background: rgba(255,255,255,.16); }
+
+.portal { display: none; min-height: 100vh; flex-direction: column; }
+.portal.active { display: flex; }
+.portal-body { max-width: 1520px; margin: 0 auto; width: 100%; display: flex; align-items: flex-start; }
+
+#drawer {
+  position: fixed; top: 0; bottom: 0; width: 540px; max-width: 94vw;
+  z-index: 80; transition: transform .32s cubic-bezier(.4,0,.2,1);
+  background: var(--bg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column;
+}
+[dir="rtl"] #drawer { right: 0; transform: translateX(105%); }
+[dir="ltr"] #drawer { left: 0; transform: translateX(-105%); }
+#drawer.open { transform: translateX(0); }
+
+.tab-pill { padding: 7px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); color: var(--sec); cursor: pointer; transition: .2s; white-space: nowrap; }
+.tab-pill:hover { background: var(--green-light); }
+.tab-pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--green-light); color: var(--green); }
+
+.tl { position: relative; padding-inline-start: 26px; }
+.tl::before { content: ''; position: absolute; top: 6px; bottom: 6px; inset-inline-start: 8px; width: 2px; background: var(--border); }
+.tl-item { position: relative; padding-bottom: 18px; }
+.tl-item::before { content: ''; position: absolute; top: 5px; inset-inline-start: -24px; width: 12px; height: 12px; border-radius: 99px; background: var(--green); border: 2px solid var(--bg); }
+
+.toast { animation: toastIn .25s ease-out forwards; }
+@keyframes toastIn { from { transform: translate(-50%,20px); opacity: 0; } to { transform: translate(-50%,0); opacity: 1; } }
+
+.fade-in { animation: fadeIn .35s ease-out forwards; }
+@keyframes fadeIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.pulse-dot { animation: pulseAnim 2s infinite cubic-bezier(.4,0,.6,1); }
+@keyframes pulseAnim { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.2); } }
+
+.gate-card { transition: .25s; }
+.gate-card:hover { transform: translateY(-5px); }
+
+.kpi-num { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.h-title { font-size: 20px; font-weight: 900; }
+
+.nav-group { font-size: 10px; letter-spacing: .14em; color: rgba(255,255,255,.4); font-weight: 900; padding: 14px 12px 6px; }
+
+#navBackdrop { position: fixed; inset: 0; background: rgba(2,48,43,.45); z-index: 44; opacity: 0; pointer-events: none; transition: .25s; }
+#navBackdrop.show { opacity: 1; pointer-events: auto; }
+
+#drawerBackdrop { position: fixed; inset: 0; background: rgba(2,48,43,.45); z-index: 79; opacity: 0; pointer-events: none; transition: .25s; }
+#drawerBackdrop.show { opacity: 1; pointer-events: auto; }
+
+.lang-btn { padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; color: var(--sec); cursor: pointer; transition: .2s; }
+.lang-btn.active { background: var(--green-dark); color: #fff; }
+html[data-theme="dark"] .lang-btn.active { background: var(--gold); color: #02302B; }
+
+[dir="ltr"] .dir-flip { transform: scaleX(-1); }
+
+.kpi-card { cursor: pointer; transition: .22s; }
+.kpi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+
+.wave { display: flex; align-items: center; gap: 3px; height: 28px; }
+.wave span { width: 3px; border-radius: 99px; background: var(--gold); animation: wv 1s infinite ease-in-out; }
+@keyframes wv { 0%,100% { height: 6px; } 50% { height: 24px; } }
+
+.ai-card { transition: .25s; cursor: pointer; }
+.ai-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.center-card { transition: .25s; cursor: pointer; }
+.center-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+@media (max-width: 767px) {
+  .side-nav { width: 280px; }
+  .portal-body { flex-direction: column; }
+  #drawer { width: 100vw; max-width: 100vw; }
+}
+</style>
+</head>
+<body class="antialiased overflow-x-hidden min-h-screen">
+
+<!-- ================= GATEWAY SELECTION ================= -->
+<div id="gatewayScreen" class="fixed inset-0 z-[60] overflow-y-auto" style="background:var(--bg)">
+  <div class="min-h-full flex flex-col">
+    <div class="h-1.5 w-full" style="background:linear-gradient(90deg,var(--green),var(--gold),var(--green))"></div>
+    <div class="flex-1 flex items-center justify-center p-4 py-10">
+      <div class="max-w-5xl w-full text-center space-y-8 fade-in">
+        <div class="space-y-3">
+          <div class="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto shadow-lg border" style="background:linear-gradient(135deg,var(--green),var(--green-dark));border-color:rgba(255,255,255,.12)">
+            <svg width="42" height="42" viewBox="0 0 28 28" fill="none">
+              <path d="M7 7V21M7 7H15.5C18.5 7 21 9 21 12.5C21 16 18.5 18 15.5 18H7M15.5 18L21 21" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="21" cy="7" r="2.5" fill="#C8994B" stroke="white" stroke-width="1"/>
+              <circle cx="7" cy="7" r="1.5" fill="#D8B56A"/>
+            </svg>
+          </div>
+          <h1 class="text-4xl lg:text-5xl font-black tracking-tight" style="font-family:'Space Grotesk','Cairo',sans-serif">RAVEN OS</h1>
+          <h2 class="text-xl lg:text-2xl font-extrabold" style="color:var(--green)" data-i18n="gwTitle">رافين — بوابات النظام</h2>
+          <p class="text-sm sec font-medium" data-i18n="gwSub">ثلاث بوابات مستقلة لمنصة واحدة — اختر البوابة للدخول إلى صفحاتها</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-right">
+          <!-- Platform Portal -->
+          <div onclick="openPortal('platform')" class="gate-card card p-6 cursor-pointer group">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition group-hover:text-white" style="background:var(--green-light);color:var(--green)">
+              <i class="ri-settings-3-line text-3xl"></i>
+            </div>
+            <p class="text-[10px] font-black tracking-widest sec mb-1">PLATFORM MANAGEMENT PORTAL</p>
+            <h3 class="text-xl font-black mb-2" data-i18n="gw1t">بوابة إدارة المنصة</h3>
+            <p class="text-[13px] sec mb-4 leading-relaxed" data-i18n="gw1d">لمدير المنصة (أ. محمد سعود رضوان): إدارة المدارس، المستخدمين، المؤشرات، والمتابعة الشاملة.</p>
+            <span class="text-[12px] font-bold flex items-center gap-1" style="color:var(--green)">
+              <span data-i18n="gwEnter">دخول البوابة</span>
+              <i class="ri-arrow-left-line dir-flip"></i>
+            </span>
+          </div>
+
+          <!-- School Portal -->
+          <div onclick="openPortal('school')" class="gate-card card p-6 cursor-pointer group">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition group-hover:text-white" style="background:var(--gold-bg);color:var(--gold)">
+              <i class="ri-building-4-line text-3xl"></i>
+            </div>
+            <p class="text-[10px] font-black tracking-widest sec mb-1">SCHOOL ADMIN PORTAL</p>
+            <h3 class="text-xl font-black mb-2" data-i18n="gw2t">بوابة مدير المدرسة</h3>
+            <p class="text-[13px] sec mb-4 leading-relaxed" data-i18n="gw2d">لمدير المدرسة: مركز القيادة، القرارات والتكليفات، الاختبارات، التقويم والاعتماد، ومحرك الأدلة.</p>
+            <span class="text-[12px] font-bold flex items-center gap-1" style="color:var(--gold)">
+              <span data-i18n="gwEnter">دخول البوابة</span>
+              <i class="ri-arrow-left-line dir-flip"></i>
+            </span>
+          </div>
+
+          <!-- User Portal -->
+          <div onclick="openPortal('user')" class="gate-card card p-6 cursor-pointer group">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition group-hover:text-white" style="background:var(--info-bg);color:var(--info)">
+              <i class="ri-group-line text-3xl"></i>
+            </div>
+            <p class="text-[10px] font-black tracking-widest sec mb-1">USER PORTAL</p>
+            <h3 class="text-xl font-black mb-2" data-i18n="gw3t">بوابة المستخدمين</h3>
+            <p class="text-[13px] sec mb-3 leading-relaxed" data-i18n="gw3d">للمعلمين والطلاب وأولياء الأمور: الخدمات اليومية، المتابعة، والتقارير الشخصية.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <button onclick="event.stopPropagation();openPortal('user','teacher')" class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:var(--info-bg);color:var(--info)">
+                <i class="ri-user-star-line"></i> <span data-i18n="roleTeacher">معلم</span>
+              </button>
+              <button onclick="event.stopPropagation();openPortal('user','student')" class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:var(--info-bg);color:var(--info)">
+                <i class="ri-graduation-cap-line"></i> <span data-i18n="roleStudent">طالب</span>
+              </button>
+              <button onclick="event.stopPropagation();openPortal('user','parent')" class="text-[11px] font-bold px-2.5 py-1 rounded-full" style="background:var(--info-bg);color:var(--info)">
+                <i class="ri-parent-line"></i> <span data-i18n="roleParent">ولي أمر</span>
+              </button>
+            </div>
+            <span class="text-[12px] font-bold flex items-center gap-1" style="color:var(--info)">
+              <span data-i18n="gwEnter">دخول البوابة</span>
+              <i class="ri-arrow-left-line dir-flip"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div class="flex items-center gap-1 p-1 rounded-full border" style="background:var(--card);border-color:var(--border)">
+            <button class="lang-btn lang-ar active" onclick="setLanguage('ar')">عربي</button>
+            <button class="lang-btn lang-en" onclick="setLanguage('en')">EN</button>
+          </div>
+          <button onclick="toggleTheme()" class="btn btn-line">
+            <i class="ri-moon-line" id="gwThemeIcon"></i>
+            <span data-i18n="themeToggle">تبديل الوضع</span>
+          </button>
+        </div>
+
+        <p class="text-[11px] sec">RAVEN OS • Phase 0–3 Prototype • Demo Data Only • <span data-i18n="rights">جميع الحقوق محفوظة لمنصة رافين</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="appShell" class="hidden min-h-screen">
+  <!-- Global Banner -->
+  <div class="sticky top-0 z-50 text-white text-[11px] border-b border-white/10" style="background:var(--green-dark)">
+    <div class="max-w-[1520px] mx-auto px-3 lg:px-6 h-11 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <button onclick="toggleMobileNav()" class="lg:hidden w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+          <i class="ri-menu-line text-white text-[13px]"></i>
+        </button>
+        <span id="bannerBadge" class="px-2.5 py-0.5 rounded text-[10px] font-black tracking-wider shrink-0" style="background:var(--gold);color:#02302B">PLATFORM</span>
+        <span id="bannerSub" class="hidden md:flex items-center gap-1 text-white/70 truncate min-w-0"></span>
+      </div>
+      <div class="flex items-center gap-1.5 sm:gap-3 text-white/70 shrink-0">
+        <button onclick="goToGateway()" class="flex items-center gap-1 font-bold text-white hover:text-white/80 transition whitespace-nowrap px-1">
+          <i class="ri-apps-2-line"></i>
+          <span class="hidden sm:inline" data-i18n="backGate">بوابات النظام</span>
+        </button>
+        <div class="hidden sm:flex items-center gap-0.5 bg-white/10 rounded-full p-0.5">
+          <button data-pswitch="platform" onclick="openPortal('platform')" class="pswitch px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1" title="إدارة المنصة">
+            <i class="ri-settings-3-line"></i>
+            <span class="hidden lg:inline" data-i18n="psPlatform">إدارة المنصة</span>
+          </button>
+          <button data-pswitch="school" onclick="openPortal('school')" class="pswitch px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1" title="مدير المدرسة">
+            <i class="ri-building-4-line"></i>
+            <span class="hidden lg:inline" data-i18n="psSchool">مدير المدرسة</span>
+          </button>
+          <button data-pswitch="user" onclick="openPortal('user')" class="pswitch px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1" title="المستخدمون">
+            <i class="ri-group-line"></i>
+            <span class="hidden lg:inline" data-i18n="psUser">المستخدمون</span>
+          </button>
+        </div>
+        <button onclick="toggleTheme()" id="themeBtn" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+          <i class="ri-moon-line text-white text-[12px]" id="themeIcon"></i>
+        </button>
+        <div class="hidden md:flex items-center gap-1 p-0.5 rounded-full bg-white/10">
+          <button class="lang-btn lang-ar active !py-0.5" onclick="setLanguage('ar')">عربي</button>
+          <button class="lang-btn lang-en !py-0.5" onclick="setLanguage('en')">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PLATFORM PORTAL ============ -->
+  <div id="portal-platform" class="portal">
+    <div class="portal-body">
+      <aside id="sidebar-platform" class="side-nav text-white">
+        <div class="p-4 space-y-5">
+          <div>
+            <p class="nav-group" data-i18n="navTitle">وحدات القيادة — COMMAND</p>
+            <nav class="space-y-1" id="platformNav">
+              <button class="nav-item active" data-ptab="dashboard" onclick="switchMainTab('dashboard')">
+                <span class="nav-ico"><i class="ri-dashboard-3-line"></i></span>
+                <span class="flex-1" data-i18n="navOverview">مركز القيادة</span>
+              </button>
+              <button class="nav-item" data-ptab="health" onclick="switchMainTab('health')">
+                <span class="nav-ico"><i class="ri-pulse-line"></i></span>
+                <span class="flex-1" data-i18n="navHealth">حالة المنصة</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:var(--green);color:#fff">99.8%</span>
+              </button>
+              <button class="nav-item" data-ptab="schools" onclick="switchMainTab('schools')">
+                <span class="nav-ico"><i class="ri-building-4-line"></i></span>
+                <span class="flex-1" data-i18n="navSchools">إدارة المدارس</span>
+                <span class="text-[11px] bg-white/10 px-2 py-0.5 rounded-full">24</span>
+              </button>
+              <button class="nav-item" data-ptab="analytics" onclick="switchMainTab('analytics')">
+                <span class="nav-ico"><i class="ri-pie-chart-2-line"></i></span>
+                <span class="flex-1" data-i18n="navAnalytics">تحليلات المنصة</span>
+              </button>
+              <button class="nav-item" data-ptab="indicators" onclick="switchMainTab('indicators')">
+                <span class="nav-ico"><i class="ri-focus-3-line"></i></span>
+                <span class="flex-1" data-i18n="navIndicators">مركز المؤشرات</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:var(--gold);color:#02302B">82%</span>
+              </button>
+              <button class="nav-item" data-ptab="tasks" onclick="switchMainTab('tasks')">
+                <span class="nav-ico"><i class="ri-task-line"></i></span>
+                <span class="flex-1" data-i18n="navTasks">المهام والمتابعة</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:var(--danger);color:#fff">14</span>
+              </button>
+              <button class="nav-item" data-ptab="activity" onclick="switchMainTab('activity')">
+                <span class="nav-ico"><i class="ri-history-line"></i></span>
+                <span class="flex-1" data-i18n="navActivity">نشاط المنصة</span>
+              </button>
+              <button class="nav-item" data-ptab="users" onclick="switchMainTab('users')">
+                <span class="nav-ico"><i class="ri-user-settings-line"></i></span>
+                <span class="flex-1" data-i18n="navUsers">إدارة المستخدمين</span>
+                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded-full">34.5K</span>
+              </button>
+              <button class="nav-item" data-ptab="ai" onclick="switchMainTab('ai')">
+                <span class="nav-ico" style="background:rgba(200,153,75,.25)"><i class="ri-robot-2-line"></i></span>
+                <span class="flex-1" data-i18n="navAI">المساعدون الأذكياء</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full font-black" style="background:var(--gold);color:#02302B">AI</span>
+              </button>
+              <button class="nav-item" data-ptab="sessions" onclick="switchMainTab('sessions')">
+                <span class="nav-ico"><i class="ri-computer-line"></i></span>
+                <span class="flex-1" data-i18n="navSessions">الجلسات النشطة</span>
+              </button>
+              <button class="nav-item" data-ptab="reports" onclick="switchMainTab('reports')">
+                <span class="nav-ico"><i class="ri-file-chart-line"></i></span>
+                <span class="flex-1" data-i18n="navReports">التقارير</span>
+              </button>
+              <button class="nav-item" data-ptab="settings" onclick="switchMainTab('settings')">
+                <span class="nav-ico"><i class="ri-settings-4-line"></i></span>
+                <span class="flex-1" data-i18n="navSettings">إعدادات المنصة</span>
+              </button>
+            </nav>
+          </div>
+          <div>
+            <p class="nav-group">RAVEN OS — <span data-i18n="portals">البوابات</span></p>
+            <div class="space-y-1">
+              <button onclick="goToGateway()" class="nav-item" style="background:rgba(200,153,75,.18);color:var(--gold-light)">
+                <span class="nav-ico"><i class="ri-apps-2-line"></i></span>
+                <span class="flex-1" data-i18n="gwSelect">اختيار البوابة</span>
+              </button>
+              <button onclick="openPortal('school')" class="nav-item">
+                <span class="nav-ico"><i class="ri-building-4-line"></i></span>
+                <span class="flex-1" data-i18n="gw2t">بوابة مدير المدرسة</span>
+              </button>
+              <button onclick="openPortal('user')" class="nav-item">
+                <span class="nav-ico"><i class="ri-group-line"></i></span>
+                <span class="flex-1" data-i18n="gw3t">بوابة المستخدمين</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1 min-w-0 p-4 lg:p-6 space-y-5" id="platformMain">
+        <!-- DASHBOARD TAB -->
+        <section id="ptab-dashboard" class="space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 class="h-title" data-i18n="dashHeading">مركز قيادة مدير المنصة</h1>
+              <p class="text-[13px] sec mt-0.5" data-i18n="dashSub">إشراف استراتيجي على المدارس والمستخدمين والمؤشرات — بيانات تجريبية للعرض</p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="openQuickAction()" class="btn btn-gold"><i class="ri-flashlight-line"></i> <span data-i18n="quickActions">إجراءات سريعة</span></button>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5" id="dashStats"></div>
+
+          <!-- AI Assistants Strip -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4" id="aiStrip"></div>
+
+          <!-- Health Strip -->
+          <div class="card p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b bd gap-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full pulse-dot" style="background:var(--ok)"></span>
+                <h3 class="font-bold text-[15px]" data-i18n="healthTitle">حالة المنصة والوحدات</h3>
+              </div>
+              <button onclick="switchMainTab('health')" class="btn btn-soft btn-sm"><span data-i18n="viewFullHealth">التقرير التفصيلي</span> <i class="ri-arrow-left-line dir-flip"></i></button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-4" id="healthStrip"></div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="card p-5 lg:col-span-2">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <div>
+                  <h3 class="font-bold text-[14px]" data-i18n="growthTitle">نمو المدارس ومستوى الإنجاز التراكمي</h3>
+                  <p class="text-[11px] sec" data-i18n="growthSub">معدل الانضمام وإتمام متطلبات الاعتماد</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="updateChartPeriod('week',this)" class="tab-pill btn-sm" data-i18n="pWeek">أسبوعي</button>
+                  <button onclick="updateChartPeriod('month',this)" class="tab-pill btn-sm active" data-i18n="pMonth">شهري</button>
+                  <button onclick="updateChartPeriod('year',this)" class="tab-pill btn-sm" data-i18n="pYear">سنوي</button>
+                </div>
+              </div>
+              <div class="h-64"><canvas id="growthChart"></canvas></div>
+            </div>
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <h3 class="font-bold text-[14px]" data-i18n="distTitle">جاهزية المدارس للاعتماد</h3>
+                  <p class="text-[11px] sec" data-i18n="distSub">توزيع المدارس حسب شرائح الإنجاز</p>
+                </div>
+              </div>
+              <div class="h-44 flex items-center justify-center"><canvas id="distChart"></canvas></div>
+              <div class="grid grid-cols-3 gap-2 text-center pt-3 border-t bd text-[11px]">
+                <div><p class="sec" data-i18n="catA">فئة أ (90%+)</p><p class="font-black" style="color:var(--ok)">10</p></div>
+                <div><p class="sec" data-i18n="catB">فئة ب (75-89%)</p><p class="font-black" style="color:var(--info)">11</p></div>
+                <div><p class="sec" data-i18n="catC">فئة ج (<75%)</p><p class="font-black" style="color:var(--warn)">3</p></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schools Quick Table -->
+          <div class="card overflow-hidden">
+            <div class="p-5 border-b bd flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="font-black text-[15px] flex items-center gap-2"><i class="ri-building-4-line" style="color:var(--green)"></i> <span data-i18n="schoolsTableHeading">قائمة المدارس التفاعلية</span></h3>
+                <p class="text-[12px] sec" data-i18n="schoolsTableSub">انقر على أي مدرسة لفتح بطاقة التفاصيل</p>
+              </div>
+              <button onclick="switchMainTab('schools')" class="btn btn-line btn-sm"><span data-i18n="viewAllSchools">إدارة المدارس بالكامل</span> <i class="ri-arrow-left-line dir-flip"></i></button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead>
+                  <tr>
+                    <th data-i18n="thSchool">المدرسة</th>
+                    <th data-i18n="thType">النوع / المدينة</th>
+                    <th data-i18n="thDirector">المدير</th>
+                    <th data-i18n="thCounts">الطلاب / المعلمون</th>
+                    <th data-i18n="thStatus">الحالة</th>
+                    <th data-i18n="thProg">الإنجاز</th>
+                  </tr>
+                </thead>
+                <tbody id="quickSchoolsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Bottom Row -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-black text-[14px] flex items-center gap-2"><i class="ri-history-line" style="color:var(--green)"></i> <span data-i18n="recentActivity">آخر نشاطات المنصة</span></h3>
+                <button onclick="switchMainTab('activity')" class="text-[11px] font-bold" style="color:var(--green)" data-i18n="viewAll">عرض الكل</button>
+              </div>
+              <div class="tl" id="dashActivity"></div>
+            </div>
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-black text-[14px] flex items-center gap-2"><i class="ri-computer-line" style="color:var(--info)"></i> <span data-i18n="activeSessions">الجلسات النشطة</span></h3>
+                <button onclick="switchMainTab('sessions')" class="text-[11px] font-bold" style="color:var(--green)" data-i18n="viewAll">عرض الكل</button>
+              </div>
+              <div id="dashSessions" class="space-y-2.5"></div>
+            </div>
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-black text-[14px] flex items-center gap-2"><i class="ri-bar-chart-line" style="color:var(--gold)"></i> <span data-i18n="clickAnalytics">تحليلات الاستخدام</span></h3>
+                <span class="badge badge-gold" data-i18n="demoTag">نموذج أولي</span>
+              </div>
+              <p class="text-[11px] sec mb-3 flex items-center gap-1.5"><i class="ri-hourglass-line"></i> <span data-i18n="analyticsPending">بانتظار تفعيل محرك التحليلات — بيانات عرض تجريبية</span></p>
+              <div id="clickAnalyticsBars" class="space-y-2.5"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- HEALTH TAB -->
+        <section id="ptab-health" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="healthHeading">حالة المنصة والبنية التشغيلية</h2>
+            <p class="text-[13px] sec" data-i18n="healthSubFull">نظام المراقبة الصحية للخدمات والوحدات</p>
+          </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5" id="healthServices"></div>
+          <div class="card overflow-hidden">
+            <div class="p-5 border-b bd"><h3 class="font-black text-[15px]" data-i18n="moduleStatus">حالة الوحدات — Module Status</h3></div>
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thModule">الوحدة</th><th data-i18n="thDesc">الوصف</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thOwner">المسؤول</th></tr></thead>
+                <tbody id="modulesBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCHOOLS TAB -->
+        <section id="ptab-schools" class="hidden space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="h-title" data-i18n="schoolsHeading">إدارة المدارس المؤسسية</h2>
+              <p class="text-[13px] sec" data-i18n="schoolsSub">البوابة المركزية لمراقبة المدارس والوحدات</p>
+            </div>
+            <button onclick="showToast('تم فتح نموذج إضافة مدرسة')" class="btn btn-green"><i class="ri-add-circle-line"></i> <span data-i18n="btnAddSchool">إضافة مدرسة</span></button>
+          </div>
+          <div class="card p-4 space-y-3">
+            <div class="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center">
+              <div class="flex-1 relative">
+                <i class="ri-search-line absolute top-1/2 -translate-y-1/2 sec" style="inset-inline-start:12px"></i>
+                <input id="schoolSearchInput" oninput="filterSchools()" class="inp" style="padding-inline-start:36px" placeholder="ابحث باسم المدرسة، المدير، أو المدينة...">
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <select id="schoolTypeSelect" onchange="filterSchools()" class="inp" style="width:auto">
+                  <option value="all">كل الأنواع</option>
+                  <option value="أهلي">أهلي</option>
+                  <option value="عالمي">عالمي / دولي</option>
+                  <option value="نموذجي">نموذجي</option>
+                </select>
+                <select id="schoolStatusSelect" onchange="filterSchools()" class="inp" style="width:auto">
+                  <option value="all">كل الحالات</option>
+                  <option value="active">نشط / منفذ</option>
+                  <option value="setup">قيد الإعداد</option>
+                  <option value="testing">قيد الاختبار</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thSchool">المدرسة</th><th data-i18n="thType">النوع</th><th data-i18n="thDirector">المدير</th><th data-i18n="thStudents">الطلاب</th><th data-i18n="thTeachers">المعلمون</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thProg">الإنجاز</th><th></th></tr></thead>
+                <tbody id="schoolsFullBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ANALYTICS TAB -->
+        <section id="ptab-analytics" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="analyticsHeading">تحليلات المنصة</h2>
+            <p class="text-[13px] sec" data-i18n="analyticsSub">مخططات تفاعلية لنمو ونشاط المنصة</p>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-4" data-i18n="userGrowth">نمو المستخدمين</h3>
+              <div class="h-56"><canvas id="userGrowthChart"></canvas></div>
+            </div>
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-4" data-i18n="activityChart">نشاط المنصة</h3>
+              <div class="h-56"><canvas id="activityChart"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- INDICATORS TAB -->
+        <section id="ptab-indicators" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="indHeading">مركز المؤشرات</h2>
+            <p class="text-[13px] sec" data-i18n="indSub">متابعة المؤشرات ونسب الإنجاز عبر المدارس</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5" id="indicatorsStats"></div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thIndicator">المؤشر</th><th data-i18n="thSchool">المدرسة</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thProg">الإنجاز</th><th data-i18n="thOwner">المسؤول</th></tr></thead>
+                <tbody id="indicatorsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TASKS TAB -->
+        <section id="ptab-tasks" class="hidden space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="h-title" data-i18n="tasksHeading">المهام والمتابعة</h2>
+              <p class="text-[13px] sec" data-i18n="tasksSub">متابعة التكليفات والمهام عبر المنصة</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2" id="taskFilters"></div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thTask">المهمة</th><th data-i18n="thSchool">المدرسة</th><th data-i18n="thOwner">المسؤول</th><th data-i18n="thDue">الموعد</th><th data-i18n="thPriority">الأولوية</th><th data-i18n="thStatus">الحالة</th></tr></thead>
+                <tbody id="tasksBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACTIVITY TAB -->
+        <section id="ptab-activity" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="activityHeading">نشاط المنصة</h2>
+            <p class="text-[13px] sec" data-i18n="activitySub">سجل الأحداث والنشاطات الأخيرة</p>
+          </div>
+          <div class="card p-5">
+            <div class="tl" id="fullActivity"></div>
+          </div>
+        </section>
+
+        <!-- USERS TAB -->
+        <section id="ptab-users" class="hidden space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="h-title" data-i18n="usersHeading">إدارة المستخدمين</h2>
+              <p class="text-[13px] sec" data-i18n="usersSub">إدارة حسابات وأدوار المستخدمين</p>
+            </div>
+            <button onclick="showToast('تم فتح نموذج إضافة مستخدم')" class="btn btn-green"><i class="ri-user-add-line"></i> <span data-i18n="addUser">إضافة مستخدم</span></button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thName">الاسم</th><th data-i18n="thRole">الدور</th><th data-i18n="thSchool">المدرسة</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thLast">آخر نشاط</th></tr></thead>
+                <tbody id="usersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI TAB -->
+        <section id="ptab-ai" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="aiHeading">المساعدون الأذكياء</h2>
+            <p class="text-[13px] sec" data-i18n="aiSub">كيان، همة، سند — مساعدو رافين الأذكياء</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="aiAssistantsFull"></div>
+          <div class="card p-5">
+            <h3 class="font-bold text-[14px] mb-3" data-i18n="voiceHud">RAVEN VOICE HUD</h3>
+            <div class="flex items-center gap-4 p-4 rounded-xl" style="background:var(--green-light)">
+              <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+              <div>
+                <p class="font-bold text-[13px]" data-i18n="voiceStatus">التكامل الصوتي غير مفعل حاليًا</p>
+                <p class="text-[11px] sec" data-i18n="voiceDesc">سيتم تفعيل المساعد الصوتي في الإصدارات القادمة</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SESSIONS TAB -->
+        <section id="ptab-sessions" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="sessHeading">الجلسات النشطة</h2>
+            <p class="text-[13px] sec" data-i18n="sessSub">مراقبة الجلسات النشطة حاليًا على المنصة</p>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thUser">المستخدم</th><th data-i18n="thRole">الدور</th><th data-i18n="thSchool">المدرسة</th><th data-i18n="thLogin">وقت الدخول</th><th data-i18n="thLastAct">آخر نشاط</th><th data-i18n="thStatus">الحالة</th></tr></thead>
+                <tbody id="sessionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- REPORTS TAB -->
+        <section id="ptab-reports" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="repHeading">التقارير</h2>
+            <p class="text-[13px] sec" data-i18n="repSub">التقارير المتاحة للتحميل والمراجعة</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="reportsGrid"></div>
+        </section>
+
+        <!-- SETTINGS TAB -->
+        <section id="ptab-settings" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="setHeading">إعدادات المنصة</h2>
+            <p class="text-[13px] sec" data-i18n="setSub">إعدادات عامة للمنصة والتخصيص</p>
+          </div>
+          <div class="card p-5 space-y-4">
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="setName">اسم المنصة</p><p class="text-[11px] sec">RAVEN OS — رافين</p></div>
+              <button class="btn btn-line btn-sm"><i class="ri-edit-line"></i></button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="setLang">اللغة الافتراضية</p><p class="text-[11px] sec">العربية</p></div>
+              <button class="btn btn-line btn-sm"><i class="ri-edit-line"></i></button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="setNotif">الإشعارات</p><p class="text-[11px] sec">مفعّلة</p></div>
+              <span class="badge badge-ok" data-i18n="enabled">مفعّل</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============ SCHOOL PORTAL ============ -->
+  <div id="portal-school" class="portal">
+    <div class="portal-body">
+      <aside id="sidebar-school" class="side-nav text-white">
+        <div class="p-4 space-y-5">
+          <div>
+            <p class="nav-group" data-i18n="schoolCenters">المراكز الأساسية — CORE CENTERS</p>
+            <nav class="space-y-1" id="schoolNav">
+              <button class="nav-item active" data-stab="s-dashboard" onclick="switchSchoolTab('s-dashboard')">
+                <span class="nav-ico"><i class="ri-dashboard-3-line"></i></span>
+                <span class="flex-1" data-i18n="sNavCmd">مركز القيادة المدرسية</span>
+              </button>
+              <button class="nav-item" data-stab="s-decisions" onclick="switchSchoolTab('s-decisions')">
+                <span class="nav-ico"><i class="ri-lightbulb-line"></i></span>
+                <span class="flex-1" data-i18n="sNavDec">مركز القرارات والتكليفات</span>
+              </button>
+              <button class="nav-item" data-stab="s-exams" onclick="switchSchoolTab('s-exams')">
+                <span class="nav-ico"><i class="ri-file-text-line"></i></span>
+                <span class="flex-1" data-i18n="sNavExam">مركز الاختبارات والتحليل</span>
+              </button>
+              <button class="nav-item" data-stab="s-accred" onclick="switchSchoolTab('s-accred')">
+                <span class="nav-ico"><i class="ri-award-line"></i></span>
+                <span class="flex-1" data-i18n="sNavAccred">مركز التقويم والاعتماد</span>
+              </button>
+              <button class="nav-item" data-stab="s-evidence" onclick="switchSchoolTab('s-evidence')">
+                <span class="nav-ico"><i class="ri-folder-3-line"></i></span>
+                <span class="flex-1" data-i18n="sNavEvidence">محرك الأدلة والإنجاز</span>
+              </button>
+            </nav>
+          </div>
+          <div>
+            <p class="nav-group" data-i18n="schoolOps">الخدمات التشغيلية — OPERATIONS</p>
+            <nav class="space-y-1">
+              <button class="nav-item" data-stab="s-teachers" onclick="switchSchoolTab('s-teachers')">
+                <span class="nav-ico"><i class="ri-user-star-line"></i></span>
+                <span class="flex-1" data-i18n="sNavTeachers">شؤون المعلمين</span>
+              </button>
+              <button class="nav-item" data-stab="s-students" onclick="switchSchoolTab('s-students')">
+                <span class="nav-ico"><i class="ri-graduation-cap-line"></i></span>
+                <span class="flex-1" data-i18n="sNavStudents">شؤون الطلاب</span>
+              </button>
+              <button class="nav-item" data-stab="s-library" onclick="switchSchoolTab('s-library')">
+                <span class="nav-ico"><i class="ri-book-2-line"></i></span>
+                <span class="flex-1" data-i18n="sNavLibrary">مكتبة رافين</span>
+              </button>
+              <button class="nav-item" data-stab="s-portals" onclick="switchSchoolTab('s-portals')">
+                <span class="nav-ico"><i class="ri-links-line"></i></span>
+                <span class="flex-1" data-i18n="sNavPortals">البوابات التقنية</span>
+              </button>
+              <button class="nav-item" data-stab="s-alerts" onclick="switchSchoolTab('s-alerts')">
+                <span class="nav-ico"><i class="ri-notification-3-line"></i></span>
+                <span class="flex-1" data-i18n="sNavAlerts">التنبيهات والمتابعة</span>
+              </button>
+              <button class="nav-item" data-stab="s-reports" onclick="switchSchoolTab('s-reports')">
+                <span class="nav-ico"><i class="ri-file-chart-line"></i></span>
+                <span class="flex-1" data-i18n="sNavReports">التقارير</span>
+              </button>
+              <button class="nav-item" data-stab="s-settings" onclick="switchSchoolTab('s-settings')">
+                <span class="nav-ico"><i class="ri-settings-4-line"></i></span>
+                <span class="flex-1" data-i18n="sNavSettings">الإعدادات المدرسية</span>
+              </button>
+            </nav>
+          </div>
+          <div>
+            <p class="nav-group">RAVEN OS — <span data-i18n="portals">البوابات</span></p>
+            <div class="space-y-1">
+              <button onclick="goToGateway()" class="nav-item" style="background:rgba(200,153,75,.18);color:var(--gold-light)">
+                <span class="nav-ico"><i class="ri-apps-2-line"></i></span>
+                <span class="flex-1" data-i18n="gwSelect">اختيار البوابة</span>
+              </button>
+              <button onclick="openPortal('platform')" class="nav-item">
+                <span class="nav-ico"><i class="ri-settings-3-line"></i></span>
+                <span class="flex-1" data-i18n="gw1t">بوابة إدارة المنصة</span>
+              </button>
+              <button onclick="openPortal('user')" class="nav-item">
+                <span class="nav-ico"><i class="ri-group-line"></i></span>
+                <span class="flex-1" data-i18n="gw3t">بوابة المستخدمين</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1 min-w-0 p-4 lg:p-6 space-y-5" id="schoolMain">
+        <!-- School Dashboard -->
+        <section id="stab-s-dashboard" class="space-y-5">
+          <div>
+            <h1 class="h-title" data-i18n="sDashTitle">مركز القيادة المدرسية</h1>
+            <p class="text-[13px] sec" data-i18n="sDashSub">نظرة شاملة على حالة المدرسة — مدرسة رافين النموذجية</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5" id="schoolStats"></div>
+          
+          <!-- Five Core Centers Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="coreCenters"></div>
+
+          <!-- Quick Actions -->
+          <div class="card p-5">
+            <h3 class="font-black text-[14px] mb-3" data-i18n="quickActTitle">إجراءات سريعة</h3>
+            <div class="flex flex-wrap gap-2" id="schoolQuickActions"></div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="card p-5">
+            <h3 class="font-black text-[14px] mb-3" data-i18n="sRecentAct">آخر النشاطات</h3>
+            <div class="tl" id="schoolActivity"></div>
+          </div>
+        </section>
+
+        <!-- Decisions Tab -->
+        <section id="stab-s-decisions" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="decTitle">مركز القرارات والتكليفات</h2>
+            <p class="text-[13px] sec" data-i18n="decSub">متابعة القرارات والتكليفات من الإصدار إلى الإغلاق</p>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thDecision">القرار / التكليف</th><th data-i18n="thOwner">المسؤول</th><th data-i18n="thDue">الموعد</th><th data-i18n="thPriority">الأولوية</th><th data-i18n="thStatus">الحالة</th></tr></thead>
+                <tbody id="decisionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Exams Tab -->
+        <section id="stab-s-exams" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="examTitle">مركز الاختبارات والتحليل</h2>
+            <p class="text-[13px] sec" data-i18n="examSub">الاختبارات الشهرية والنهائية والوطنية وتحليل النتائج</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-3" data-i18n="upcomingExams">الاختبارات القادمة</h3>
+              <div class="space-y-3" id="upcomingExamsList"></div>
+            </div>
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-3" data-i18n="examAnalysis">تحليل النتائج</h3>
+              <div class="h-48"><canvas id="examChart"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Accreditation Tab -->
+        <section id="stab-s-accred" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="accredTitle">مركز التقويم والاعتماد المدرسي</h2>
+            <p class="text-[13px] sec" data-i18n="accredSub">التقويم الذاتي والمعايير ومتطلبات الاعتماد</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5" id="accredStats"></div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thStandard">المعيار / المجال</th><th data-i18n="thReq">المتطلب</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thOwner">المسؤول</th><th data-i18n="thProg">الإنجاز</th></tr></thead>
+                <tbody id="accredBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Evidence Tab -->
+        <section id="stab-s-evidence" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="evTitle">محرك الأدلة والإنجاز</h2>
+            <p class="text-[13px] sec" data-i18n="evSub">الأدلة والملفات المرتبطة بالمؤشرات والمعايير</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5" id="evidenceStats"></div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thEvidence">الدليل</th><th data-i18n="thType">النوع</th><th data-i18n="thIndicator">المؤشر</th><th data-i18n="thOwner">المسؤول</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thDate">التاريخ</th></tr></thead>
+                <tbody id="evidenceBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Teachers Tab -->
+        <section id="stab-s-teachers" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="teachTitle">شؤون المعلمين</h2>
+            <p class="text-[13px] sec" data-i18n="teachSub">إدارة المعلمين والجداول والتكليفات</p>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thName">الاسم</th><th data-i18n="thSubject">المادة</th><th data-i18n="thLoad">النصب</th><th data-i18n="thStatus">الحالة</th><th data-i18n="thPerf">الأداء</th></tr></thead>
+                <tbody id="teachersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Students Tab -->
+        <section id="stab-s-students" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="studTitle">شؤون الطلاب</h2>
+            <p class="text-[13px] sec" data-i18n="studSub">إدارة الطلاب والحضور والسلوك</p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5" id="studentStats"></div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thName">الاسم</th><th data-i18n="thGrade">الصف</th><th data-i18n="thAttend">الحضور</th><th data-i18n="thBehavior">السلوك</th><th data-i18n="thStatus">الحالة</th></tr></thead>
+                <tbody id="studentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Library Tab -->
+        <section id="stab-s-library" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="libTitle">مكتبة رافين للملفات الذكية</h2>
+            <p class="text-[13px] sec" data-i18n="libSub">الملفات والنماذج والأدلة المؤسسية</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="libraryGrid"></div>
+        </section>
+
+        <!-- Portals Tab -->
+        <section id="stab-s-portals" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="portTitle">البوابات التقنية</h2>
+            <p class="text-[13px] sec" data-i18n="portSub">حالة التكامل مع البوابات الخارجية</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="techPortals"></div>
+        </section>
+
+        <!-- Alerts Tab -->
+        <section id="stab-s-alerts" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="alertTitle">التنبيهات والمتابعة</h2>
+            <p class="text-[13px] sec" data-i18n="alertSub">مركز التنبيهات والإجراءات المطلوبة</p>
+          </div>
+          <div class="space-y-3" id="alertsList"></div>
+        </section>
+
+        <!-- School Reports Tab -->
+        <section id="stab-s-reports" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="sRepTitle">التقارير</h2>
+            <p class="text-[13px] sec" data-i18n="sRepSub">التقارير المدرسية المتاحة</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="schoolReportsGrid"></div>
+        </section>
+
+        <!-- School Settings Tab -->
+        <section id="stab-s-settings" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="sSetTitle">الإعدادات المدرسية</h2>
+            <p class="text-[13px] sec" data-i18n="sSetSub">إعدادات المدرسة والتخصيص</p>
+          </div>
+          <div class="card p-5 space-y-4">
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="sSetName">اسم المدرسة</p><p class="text-[11px] sec">مدرسة رافين النموذجية</p></div>
+              <button class="btn btn-line btn-sm"><i class="ri-edit-line"></i></button>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="sSetYear">العام الدراسي</p><p class="text-[11px] sec">1446 هـ</p></div>
+              <button class="btn btn-line btn-sm"><i class="ri-edit-line"></i></button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ============ USER PORTAL ============ -->
+  <div id="portal-user" class="portal">
+    <div class="portal-body">
+      <aside id="sidebar-user" class="side-nav text-white">
+        <div class="p-4 space-y-5">
+          <div>
+            <p class="nav-group" data-i18n="userNav">القائمة الرئيسية</p>
+            <nav class="space-y-1" id="userNav">
+              <button class="nav-item active" data-utab="u-home" onclick="switchUserTab('u-home')">
+                <span class="nav-ico"><i class="ri-home-4-line"></i></span>
+                <span class="flex-1" data-i18n="uNavHome">الرئيسية</span>
+              </button>
+              <button class="nav-item" data-utab="u-tasks" onclick="switchUserTab('u-tasks')">
+                <span class="nav-ico"><i class="ri-task-line"></i></span>
+                <span class="flex-1" data-i18n="uNavTasks">مهامي</span>
+              </button>
+              <button class="nav-item" data-utab="u-calendar" onclick="switchUserTab('u-calendar')">
+                <span class="nav-ico"><i class="ri-calendar-line"></i></span>
+                <span class="flex-1" data-i18n="uNavCal">التقويم</span>
+              </button>
+              <button class="nav-item" data-utab="u-notif" onclick="switchUserTab('u-notif')">
+                <span class="nav-ico"><i class="ri-notification-3-line"></i></span>
+                <span class="flex-1" data-i18n="uNavNotif">الإشعارات</span>
+              </button>
+              <button class="nav-item" data-utab="u-profile" onclick="switchUserTab('u-profile')">
+                <span class="nav-ico"><i class="ri-user-3-line"></i></span>
+                <span class="flex-1" data-i18n="uNavProfile">ملفي</span>
+              </button>
+              <button class="nav-item" data-utab="u-docs" onclick="switchUserTab('u-docs')">
+                <span class="nav-ico"><i class="ri-file-list-3-line"></i></span>
+                <span class="flex-1" data-i18n="uNavDocs">المستندات</span>
+              </button>
+              <button class="nav-item" data-utab="u-settings" onclick="switchUserTab('u-settings')">
+                <span class="nav-ico"><i class="ri-settings-4-line"></i></span>
+                <span class="flex-1" data-i18n="uNavSet">الإعدادات</span>
+              </button>
+            </nav>
+          </div>
+          <div>
+            <p class="nav-group">RAVEN OS — <span data-i18n="portals">البوابات</span></p>
+            <div class="space-y-1">
+              <button onclick="goToGateway()" class="nav-item" style="background:rgba(200,153,75,.18);color:var(--gold-light)">
+                <span class="nav-ico"><i class="ri-apps-2-line"></i></span>
+                <span class="flex-1" data-i18n="gwSelect">اختيار البوابة</span>
+              </button>
+              <button onclick="openPortal('platform')" class="nav-item">
+                <span class="nav-ico"><i class="ri-settings-3-line"></i></span>
+                <span class="flex-1" data-i18n="gw1t">بوابة إدارة المنصة</span>
+              </button>
+              <button onclick="openPortal('school')" class="nav-item">
+                <span class="nav-ico"><i class="ri-building-4-line"></i></span>
+                <span class="flex-1" data-i18n="gw2t">بوابة مدير المدرسة</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1 min-w-0 p-4 lg:p-6 space-y-5" id="userMain">
+        <!-- User Home -->
+        <section id="utab-u-home" class="space-y-5">
+          <div>
+            <h1 class="h-title" data-i18n="uHomeTitle">مرحبًا بك في رافين</h1>
+            <p class="text-[13px] sec" data-i18n="uHomeSub">لوحة التحكم الشخصية — <span id="userRoleDisplay">معلم</span></p>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5" id="userStats"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-3" data-i18n="uTodayTasks">مهام اليوم</h3>
+              <div class="space-y-2.5" id="userTodayTasks"></div>
+            </div>
+            <div class="card p-5">
+              <h3 class="font-bold text-[14px] mb-3" data-i18n="uNotifPreview">آخر الإشعارات</h3>
+              <div class="space-y-2.5" id="userNotifPreview"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Tasks -->
+        <section id="utab-u-tasks" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uTasksTitle">مهامي</h2>
+            <p class="text-[13px] sec" data-i18n="uTasksSub">المهام والتكليفات المخصصة لك</p>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="tbl">
+                <thead><tr><th data-i18n="thTask">المهمة</th><th data-i18n="thDue">الموعد</th><th data-i18n="thPriority">الأولوية</th><th data-i18n="thStatus">الحالة</th></tr></thead>
+                <tbody id="userTasksBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Calendar -->
+        <section id="utab-u-calendar" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uCalTitle">التقويم</h2>
+            <p class="text-[13px] sec" data-i18n="uCalSub">الأحداث والمواعيد القادمة</p>
+          </div>
+          <div class="card p-5">
+            <div class="space-y-3" id="calendarEvents"></div>
+          </div>
+        </section>
+
+        <!-- User Notifications -->
+        <section id="utab-u-notif" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uNotifTitle">الإشعارات</h2>
+            <p class="text-[13px] sec" data-i18n="uNotifSub">جميع الإشعارات والتنبيهات</p>
+          </div>
+          <div class="space-y-3" id="userNotifList"></div>
+        </section>
+
+        <!-- User Profile -->
+        <section id="utab-u-profile" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uProfTitle">ملفي</h2>
+            <p class="text-[13px] sec" data-i18n="uProfSub">معلومات الحساب الشخصي</p>
+          </div>
+          <div class="card p-5">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="av text-lg" style="background:var(--green);width:56px;height:56px;border-radius:16px">أح</div>
+              <div>
+                <h3 class="font-black text-[16px]">أحمد محمد العلي</h3>
+                <p class="text-[12px] sec" id="userRoleProfile">معلم — رياضيات</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+                <p class="text-[11px] sec" data-i18n="email">البريد الإلكتروني</p>
+                <p class="font-bold text-[13px]">ahmed@raven.sa</p>
+              </div>
+              <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+                <p class="text-[11px] sec" data-i18n="school">المدرسة</p>
+                <p class="font-bold text-[13px]">مدرسة رافين النموذجية</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Docs -->
+        <section id="utab-u-docs" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uDocsTitle">المستندات</h2>
+            <p class="text-[13px] sec" data-i18n="uDocsSub">الملفات والمستندات المتاحة لك</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="userDocsGrid"></div>
+        </section>
+
+        <!-- User Settings -->
+        <section id="utab-u-settings" class="hidden space-y-5">
+          <div>
+            <h2 class="h-title" data-i18n="uSetTitle">الإعدادات</h2>
+            <p class="text-[13px] sec" data-i18n="uSetSub">إعدادات الحساب الشخصية</p>
+          </div>
+          <div class="card p-5 space-y-4">
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="uSetNotif">إشعارات البريد</p><p class="text-[11px] sec" data-i18n="enabled">مفعّل</p></div>
+              <span class="badge badge-ok" data-i18n="active">نشط</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+              <div><p class="font-bold text-[13px]" data-i18n="uSetLang">اللغة</p><p class="text-[11px] sec">العربية</p></div>
+              <button class="btn btn-line btn-sm"><i class="ri-edit-line"></i></button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DRAWER ================= -->
+<div id="drawerBackdrop" onclick="closeDrawer()"></div>
+<div id="drawer">
+  <div class="p-4 border-b bd flex items-center justify-between">
+    <h3 class="font-black text-[15px]" id="drawerTitle">التفاصيل</h3>
+    <button onclick="closeDrawer()" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--hover)]"><i class="ri-close-line text-lg"></i></button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-4 space-y-4" id="drawerContent"></div>
+</div>
+
+<!-- ================= NAV BACKDROP ================= -->
+<div id="navBackdrop" onclick="closeMobileNav()"></div>
+
+<!-- ================= TOAST ================= -->
+<div id="toastContainer" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] space-y-2"></div>
+
+<script>
+// ===== STATE =====
+let currentPortal = null;
+let currentLang = 'ar';
+let currentTheme = 'light';
+let currentPlatformTab = 'dashboard';
+let currentSchoolTab = 's-dashboard';
+let currentUserTab = 'u-home';
+let currentUserRole = 'teacher';
+let growthChartInstance = null;
+let distChartInstance = null;
+let userGrowthChartInstance = null;
+let activityChartInstance = null;
+let examChartInstance = null;
+
+// ===== DEMO DATA =====
+const schools = [
+  { id: 1, name: 'مدرسة رافين النموذجية', type: 'نموذجي', city: 'الرياض', director: 'أ. خالد العتيبي', students: 450, teachers: 38, status: 'active', progress: 92, lastActivity: 'منذ 3 دقائق' },
+  { id: 2, name: 'مدرسة الأمل الأهلية', type: 'أهلي', city: 'جدة', director: 'أ. سارة القحطاني', students: 320, teachers: 28, status: 'active', progress: 87, lastActivity: 'منذ 15 دقيقة' },
+  { id: 3, name: 'مدرسة النور العالمية', type: 'عالمي', city: 'الدمام', director: 'أ. فهد الدوسري', students: 280, teachers: 32, status: 'active', progress: 78, lastActivity: 'منذ ساعة' },
+  { id: 4, name: 'مدرسة الإبداع الأهلية', type: 'أهلي', city: 'الرياض', director: 'أ. نورة الشمري', students: 195, teachers: 18, status: 'setup', progress: 45, lastActivity: 'منذ يومين' },
+  { id: 5, name: 'مدرسة القمة النموذجية', type: 'نموذجي', city: 'مكة', director: 'أ. عبدالله الحربي', students: 520, teachers: 42, status: 'active', progress: 95, lastActivity: 'منذ 5 دقائق' },
+  { id: 6, name: 'مدرسة المستقبل الدولية', type: 'عالمي', city: 'الرياض', director: 'أ. ليلى العنزي', students: 380, teachers: 35, status: 'testing', progress: 62, lastActivity: 'منذ 30 دقيقة' },
+  { id: 7, name: 'مدرسة التميز الأهلية', type: 'أهلي', city: 'المدينة', director: 'أ. محمد الغامدي', students: 210, teachers: 20, status: 'active', progress: 81, lastActivity: 'منذ 45 دقيقة' },
+  { id: 8, name: 'مدرسة الريادة النموذجية', type: 'نموذجي', city: 'تبوك', director: 'أ. هند البلوي', students: 340, teachers: 30, status: 'active', progress: 88, lastActivity: 'منذ 10 دقائق' },
+];
+
+const users = [
+  { name: 'محمد سعود رضوان', role: 'مدير المنصة', school: '—', status: 'active', last: 'الآن' },
+  { name: 'خالد العتيبي', role: 'مدير مدرسة', school: 'رافين النموذجية', status: 'active', last: 'منذ 3 دقائق' },
+  { name: 'سارة القحطاني', role: 'مدير مدرسة', school: 'الأمل الأهلية', status: 'active', last: 'منذ 15 دقيقة' },
+  { name: 'أحمد محمد العلي', role: 'معلم', school: 'رافين النموذجية', status: 'active', last: 'منذ 8 دقائق' },
+  { name: 'فاطمة أحمد', role: 'معلمة', school: 'الأمل الأهلية', status: 'active', last: 'منذ 20 دقيقة' },
+  { name: 'عبدالرحمن سعد', role: 'طالب', school: 'رافين النموذجية', status: 'active', last: 'منذ ساعة' },
+  { name: 'نورة العلي', role: 'ولي أمر', school: '—', status: 'active', last: 'منذ 3 ساعات' },
+  { name: 'فهد الدوسري', role: 'مدير مدرسة', school: 'النور العالمية', status: 'active', last: 'منذ ساعة' },
+];
+
+const activities = [
+  { icon: 'ri-building-4-line', color: 'var(--green)', text: 'تم إضافة مدرسة جديدة: مدرسة الريادة', time: 'منذ 5 دقائق' },
+  { icon: 'ri-user-add-line', color: 'var(--info)', text: 'مستخدم جديد: أ. منى الشهري — معلمة', time: 'منذ 12 دقيقة' },
+  { icon: 'ri-focus-3-line', color: 'var(--gold)', text: 'تحديث مؤشر: نسبة الحضور — مدرسة الأمل', time: 'منذ 25 دقيقة' },
+  { icon: 'ri-check-double-line', color: 'var(--ok)', text: 'إنجاز مهمة: رفع أدلة التقويم الذاتي', time: 'منذ 40 دقيقة' },
+  { icon: 'ri-notification-3-line', color: 'var(--danger)', text: 'تنبيه: مهمة متأخرة في مدرسة النور', time: 'منذ ساعة' },
+  { icon: 'ri-file-upload-line', color: 'var(--purple)', text: 'رفع دليل جديد: خطة التحسين', time: 'منذ ساعتين' },
+];
+
+const tasks = [
+  { task: 'رفع أدلة معيار التعليم', school: 'رافين النموذجية', owner: 'خالد العتيبي', due: '2025-02-15', priority: 'عالية', status: 'in-progress' },
+  { task: 'مراجعة نتائج الاختبار الشهري', school: 'الأمل الأهلية', owner: 'سارة القحطاني', due: '2025-02-10', priority: 'عالية', status: 'overdue' },
+  { task: 'تحديث خطة التحسين', school: 'النور العالمية', owner: 'فهد الدوسري', due: '2025-02-20', priority: 'متوسطة', status: 'pending' },
+  { task: 'اعتماد جدول الاختبارات', school: 'رافين النموذجية', owner: 'خالد العتيبي', due: '2025-02-18', priority: 'متوسطة', status: 'completed' },
+  { task: 'تقرير الأداء الشهري', school: 'القمة النموذجية', owner: 'عبدالله الحربي', due: '2025-02-25', priority: 'منخفضة', status: 'pending' },
+];
+
+const indicators = [
+  { name: 'نسبة الحضور', school: 'رافين النموذجية', status: 'مكتمل', progress: 96, owner: 'خالد العتيبي' },
+  { name: 'نتائج الاختبارات', school: 'الأمل الأهلية', status: 'قيد التنفيذ', progress: 72, owner: 'سارة القحطاني' },
+  { name: 'التقويم الذاتي', school: 'النور العالمية', status: 'متأخر', progress: 45, owner: 'فهد الدوسري' },
+  { name: 'الأدلة المطلوبة', school: 'القمة النموذجية', status: 'مكتمل', progress: 100, owner: 'عبدالله الحربي' },
+  { name: 'خطة التحسين', school: 'الإبداع الأهلية', status: 'قيد التنفيذ', progress: 58, owner: 'نورة الشمري' },
+];
+
+const decisions = [
+  { decision: 'تكليف فريق الاعتماد بمراجعة الأدلة', owner: 'خالد العتيبي', due: '2025-02-15', priority: 'عالية', status: 'in-progress' },
+  { decision: 'اعتماد جدول الاختبارات النهائية', owner: 'سارة القحطاني', due: '2025-02-20', priority: 'متوسطة', status: 'pending' },
+  { decision: 'تحديث سياسة الحضور والغياب', owner: 'فهد الدوسري', due: '2025-02-10', priority: 'عالية', status: 'completed' },
+  { decision: 'إعداد تقرير الأداء الفصلي', owner: 'عبدالله الحربي', due: '2025-02-25', priority: 'متوسطة', status: 'pending' },
+];
+
+const evidence = [
+  { name: 'خطة التحسين المدرسي', type: 'وثيقة', indicator: 'التخطيط', owner: 'خالد العتيبي', status: 'معتمد', date: '2025-01-28' },
+  { name: 'محاضر الاجتماعات', type: 'محاضر', indicator: 'القيادة', owner: 'سارة القحطاني', status: 'مرفوع', date: '2025-01-25' },
+  { name: 'نتائج الاختبارات', type: 'بيانات', indicator: 'التحصيل', owner: 'فهد الدوسري', status: 'مسودة', date: '2025-02-01' },
+  { name: 'سجلات المتابعة', type: 'سجلات', indicator: 'المتابعة', owner: 'نورة الشمري', status: 'مراجعة', date: '2025-02-03' },
+];
+
+const accreditation = [
+  { standard: 'القيادة والحوكمة', req: 'خطة استراتيجية', status: 'مكتمل', owner: 'خالد العتيبي', progress: 100 },
+  { standard: 'التعليم والتعلم', req: 'خطط الدروس', status: 'قيد التنفيذ', owner: 'أحمد العلي', progress: 75 },
+  { standard: 'بيئة المدرسة', req: 'خطة السلامة', status: 'مكتمل', owner: 'سارة القحطاني', progress: 100 },
+  { standard: 'المشاركة المجتمعية', req: 'شراكات فعالة', status: 'يحتاج تحديث', owner: 'فهد الدوسري', progress: 60 },
+  { standard: 'تقويم الطلاب', req: 'أدوات التقويم', status: 'قيد التنفيذ', owner: 'نورة الشمري', progress: 80 },
+];
+
+const teachers = [
+  { name: 'أحمد محمد العلي', subject: 'رياضيات', load: 24, status: 'active', perf: 92 },
+  { name: 'فاطمة أحمد', subject: 'علوم', load: 22, status: 'active', perf: 88 },
+  { name: 'عمر السعيد', subject: 'لغة عربية', load: 20, status: 'active', perf: 85 },
+  { name: 'منى الشهري', subject: 'إنجليزي', load: 24, status: 'active', perf: 90 },
+  { name: 'ياسر الحربي', subject: 'تربية بدنية', load: 18, status: 'leave', perf: 78 },
+];
+
+const students = [
+  { name: 'عبدالرحمن سعد', grade: 'الثالث المتوسط', attend: '96%', behavior: 'ممتاز', status: 'active' },
+  { name: 'نورة خالد', grade: 'الأول الثانوي', attend: '98%', behavior: 'ممتاز', status: 'active' },
+  { name: 'محمد فهد', grade: 'الثاني المتوسط', attend: '89%', behavior: 'جيد', status: 'active' },
+  { name: 'سارة عمر', grade: 'الثالث الثانوي', attend: '92%', behavior: 'ممتاز', status: 'active' },
+  { name: 'أحمد ياسر', grade: 'الأول المتوسط', attend: '78%', behavior: 'يحتاج متابعة', status: 'warning' },
+];
+
+const sessions = [
+  { user: 'محمد سعود رضوان', role: 'مدير المنصة', school: '—', login: '08:30 ص', lastAct: 'الآن', status: 'active' },
+  { user: 'خالد العتيبي', role: 'مدير مدرسة', school: 'رافين النموذجية', login: '07:15 ص', lastAct: 'منذ 3 دقائق', status: 'active' },
+  { user: 'أحمد العلي', role: 'معلم', school: 'رافين النموذجية', login: '07:45 ص', lastAct: 'منذ 8 دقائق', status: 'active' },
+  { user: 'سارة القحطاني', role: 'مدير مدرسة', school: 'الأمل الأهلية', login: '08:00 ص', lastAct: 'منذ 15 دقيقة', status: 'active' },
+  { user: 'عبدالرحمن سعد', role: 'طالب', school: 'رافين النموذجية', login: '09:00 ص', lastAct: 'منذ ساعة', status: 'idle' },
+];
+
+const techPortals = [
+  { name: 'نور', status: 'متصل', lastSync: 'منذ 5 دقائق', icon: 'ri-links-line', color: 'var(--ok)' },
+  { name: 'حضوري', status: 'متصل', lastSync: 'منذ 10 دقائق', icon: 'ri-links-line', color: 'var(--ok)' },
+  { name: 'تحضيري', status: 'غير مرتبط حاليًا', lastSync: '—', icon: 'ri-link-unlink', color: 'var(--warn)' },
+  { name: 'مدرستي', status: 'متصل', lastSync: 'منذ 15 دقيقة', icon: 'ri-links-line', color: 'var(--ok)' },
+];
+
+const alerts = [
+  { type: 'عاجل', text: 'مهمة متأخرة: مراجعة نتائج الاختبار الشهري', school: 'الأمل الأهلية', action: 'فتح ومعالجة' },
+  { type: 'تحذير', text: 'دليل ناقص في معيار التعليم والتعلم', school: 'النور العالمية', action: 'عرض التفاصيل' },
+  { type: 'معلومات', text: 'اختبار قادم خلال 3 أيام', school: 'رافين النموذجية', action: 'عرض الجدول' },
+  { type: 'عاجل', text: 'مؤشر متأخر: التقويم الذاتي', school: 'النور العالمية', action: 'متابعة' },
+];
+
+// ===== I18N =====
+const i18n = {
+  ar: {
+    gwTitle: 'رافين — بوابات النظام',
+    gwSub: 'ثلاث بوابات مستقلة لمنصة واحدة — اختر البوابة للدخول إلى صفحاتها',
+    gw1t: 'بوابة إدارة المنصة',
+    gw1d: 'لمدير المنصة (أ. محمد سعود رضوان): إدارة المدارس، المستخدمين، المؤشرات، والمتابعة الشاملة.',
+    gw2t: 'بوابة مدير المدرسة',
+    gw2d: 'لمدير المدرسة: مركز القيادة، القرارات والتكليفات، الاختبارات، التقويم والاعتماد، ومحرك الأدلة.',
+    gw3t: 'بوابة المستخدمين',
+    gw3d: 'للمعلمين والطلاب وأولياء الأمور: الخدمات اليومية، المتابعة، والتقارير الشخصية.',
+    gwEnter: 'دخول البوابة',
+    backGate: 'بوابات النظام',
+    gwSelect: 'اختيار البوابة',
+    dashHeading: 'مركز قيادة مدير المنصة',
+    dashSub: 'إشراف استراتيجي على المدارس والمستخدمين والمؤشرات — بيانات تجريبية للعرض',
+    navTitle: 'وحدات القيادة — COMMAND',
+    navOverview: 'مركز القيادة',
+    navHealth: 'حالة المنصة',
+    navSchools: 'إدارة المدارس',
+    navAnalytics: 'تحليلات المنصة',
+    navIndicators: 'مركز المؤشرات',
+    navTasks: 'المهام والمتابعة',
+    navActivity: 'نشاط المنصة',
+    navUsers: 'إدارة المستخدمين',
+    navAI: 'المساعدون الأذكياء',
+    navSessions: 'الجلسات النشطة',
+    navReports: 'التقارير',
+    navSettings: 'إعدادات المنصة',
+    portals: 'البوابات',
+    healthTitle: 'حالة المنصة والوحدات',
+    viewFullHealth: 'التقرير التفصيلي',
+    growthTitle: 'نمو المدارس ومستوى الإنجاز التراكمي',
+    growthSub: 'معدل الانضمام وإتمام متطلبات الاعتماد',
+    distTitle: 'جاهزية المدارس للاعتماد',
+    distSub: 'توزيع المدارس حسب شرائح الإنجاز',
+    schoolsTableHeading: 'قائمة المدارس التفاعلية',
+    schoolsTableSub: 'انقر على أي مدرسة لفتح بطاقة التفاصيل',
+    viewAllSchools: 'إدارة المدارس بالكامل',
+    recentActivity: 'آخر نشاطات المنصة',
+    viewAll: 'عرض الكل',
+    activeSessions: 'الجلسات النشطة',
+    clickAnalytics: 'تحليلات الاستخدام',
+    demoTag: 'نموذج أولي',
+    analyticsPending: 'بانتظار تفعيل محرك التحليلات — بيانات عرض تجريبية',
+    quickActions: 'إجراءات سريعة',
+    pWeek: 'أسبوعي', pMonth: 'شهري', pYear: 'سنوي',
+    catA: 'فئة أ (90%+)', catB: 'فئة ب (75-89%)', catC: 'فئة ج (<75%)',
+    thSchool: 'المدرسة', thType: 'النوع / المدينة', thDirector: 'المدير', thCounts: 'الطلاب / المعلمون',
+    thStatus: 'الحالة', thProg: 'الإنجاز', thLast: 'آخر نشاط',
+    thName: 'الاسم', thRole: 'الدور', thTask: 'المهمة', thDue: 'الموعد',
+    thPriority: 'الأولوية', thOwner: 'المسؤول', thIndicator: 'المؤشر',
+    thModule: 'الوحدة', thDesc: 'الوصف', thUser: 'المستخدم', thLogin: 'وقت الدخول',
+    thLastAct: 'آخر نشاط', thStudents: 'الطلاب', thTeachers: 'المعلمون',
+    roleTeacher: 'معلم', roleStudent: 'طالب', roleParent: 'ولي أمر',
+    psPlatform: 'إدارة المنصة', psSchool: 'مدير المدرسة', psUser: 'المستخدمون',
+    themeToggle: 'تبديل الوضع',
+    rights: 'جميع الحقوق محفوظة لمنصة رافين',
+    sDashTitle: 'مركز القيادة المدرسية',
+    sDashSub: 'نظرة شاملة على حالة المدرسة — مدرسة رافين النموذجية',
+    schoolCenters: 'المراكز الأساسية — CORE CENTERS',
+    schoolOps: 'الخدمات التشغيلية — OPERATIONS',
+    sNavCmd: 'مركز القيادة المدرسية', sNavDec: 'مركز القرارات والتكليفات',
+    sNavExam: 'مركز الاختبارات والتحليل', sNavAccred: 'مركز التقويم والاعتماد',
+    sNavEvidence: 'محرك الأدلة والإنجاز', sNavTeachers: 'شؤون المعلمين',
+    sNavStudents: 'شؤون الطلاب', sNavLibrary: 'مكتبة رافين',
+    sNavPortals: 'البوابات التقنية', sNavAlerts: 'التنبيهات والمتابعة',
+    sNavReports: 'التقارير', sNavSettings: 'الإعدادات المدرسية',
+    uNavHome: 'الرئيسية', uNavTasks: 'مهامي', uNavCal: 'التقويم',
+    uNavNotif: 'الإشعارات', uNavProfile: 'ملفي', uNavDocs: 'المستندات', uNavSet: 'الإعدادات',
+    userNav: 'القائمة الرئيسية',
+  },
+  en: {
+    gwTitle: 'Raven — System Portals',
+    gwSub: 'Three independent portals for one platform — choose a portal to access its pages',
+    gw1t: 'Platform Management',
+    gw1d: 'For Platform Admin (Mr. Mohammed Saud Ridwan): Manage schools, users, indicators, and comprehensive oversight.',
+    gw2t: 'School Admin Portal',
+    gw2d: 'For School Admin: Command center, decisions & tasks, exams, accreditation, and evidence engine.',
+    gw3t: 'User Portal',
+    gw3d: 'For teachers, students, and parents: Daily services, tracking, and personal reports.',
+    gwEnter: 'Enter Portal',
+    backGate: 'System Portals',
+    gwSelect: 'Portal Selection',
+    dashHeading: 'Platform Admin Command Center',
+    dashSub: 'Strategic oversight of schools, users, and indicators — Demo data for display',
+    navTitle: 'Command Units — COMMAND',
+    navOverview: 'Command Center',
+    navHealth: 'Platform Health',
+    navSchools: 'School Management',
+    navAnalytics: 'Platform Analytics',
+    navIndicators: 'Indicators Center',
+    navTasks: 'Tasks & Follow-up',
+    navActivity: 'Platform Activity',
+    navUsers: 'User Management',
+    navAI: 'AI Assistants',
+    navSessions: 'Active Sessions',
+    navReports: 'Reports',
+    navSettings: 'Platform Settings',
+    portals: 'Portals',
+    healthTitle: 'Platform & Module Health',
+    viewFullHealth: 'Full Report',
+    growthTitle: 'School Growth & Cumulative Achievement',
+    growthSub: 'Enrollment rate and accreditation completion',
+    distTitle: 'School Accreditation Readiness',
+    distSub: 'Distribution by achievement tiers',
+    schoolsTableHeading: 'Interactive Schools List',
+    schoolsTableSub: 'Click any school to open details',
+    viewAllSchools: 'Full School Management',
+    recentActivity: 'Recent Platform Activity',
+    viewAll: 'View All',
+    activeSessions: 'Active Sessions',
+    clickAnalytics: 'Usage Analytics',
+    demoTag: 'Prototype',
+    analyticsPending: 'Pending analytics engine activation — Demo data',
+    quickActions: 'Quick Actions',
+    pWeek: 'Weekly', pMonth: 'Monthly', pYear: 'Yearly',
+    catA: 'Cat A (90%+)', catB: 'Cat B (75-89%)', catC: 'Cat C (<75%)',
+    thSchool: 'School', thType: 'Type / City', thDirector: 'Director', thCounts: 'Students / Teachers',
+    thStatus: 'Status', thProg: 'Progress', thLast: 'Last Activity',
+    thName: 'Name', thRole: 'Role', thTask: 'Task', thDue: 'Due Date',
+    thPriority: 'Priority', thOwner: 'Owner', thIndicator: 'Indicator',
+    thModule: 'Module', thDesc: 'Description', thUser: 'User', thLogin: 'Login Time',
+    thLastAct: 'Last Activity', thStudents: 'Students', thTeachers: 'Teachers',
+    roleTeacher: 'Teacher', roleStudent: 'Student', roleParent: 'Parent',
+    psPlatform: 'Platform', psSchool: 'School Admin', psUser: 'Users',
+    themeToggle: 'Toggle Theme',
+    rights: 'All rights reserved to Raven Platform',
+    sDashTitle: 'School Command Center',
+    sDashSub: 'Comprehensive overview — Raven Model School',
+    schoolCenters: 'Core Centers — CORE CENTERS',
+    schoolOps: 'Operations — OPERATIONS',
+    sNavCmd: 'School Command Center', sNavDec: 'Decisions & Tasks',
+    sNavExam: 'Exams & Analysis', sNavAccred: 'Accreditation',
+    sNavEvidence: 'Evidence Engine', sNavTeachers: 'Teachers Affairs',
+    sNavStudents: 'Students Affairs', sNavLibrary: 'Raven Library',
+    sNavPortals: 'Tech Portals', sNavAlerts: 'Alerts & Follow-up',
+    sNavReports: 'Reports', sNavSettings: 'School Settings',
+    uNavHome: 'Home', uNavTasks: 'My Tasks', uNavCal: 'Calendar',
+    uNavNotif: 'Notifications', uNavProfile: 'My Profile', uNavDocs: 'Documents', uNavSet: 'Settings',
+    userNav: 'Main Menu',
+  }
+};
+
+// ===== FUNCTIONS =====
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  
+  document.querySelectorAll('.lang-ar').forEach(b => b.classList.toggle('active', lang === 'ar'));
+  document.querySelectorAll('.lang-en').forEach(b => b.classList.toggle('active', lang === 'en'));
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang] && i18n[lang][key]) {
+      el.textContent = i18n[lang][key];
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (i18n[lang] && i18n[lang][key]) {
+      el.placeholder = i18n[lang][key];
+    }
+  });
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  const icons = document.querySelectorAll('#themeIcon, #gwThemeIcon');
+  icons.forEach(i => {
+    i.className = currentTheme === 'dark' ? 'ri-sun-line text-white text-[12px]' : 'ri-moon-line text-white text-[12px]';
+  });
+}
+
+function goToGateway() {
+  currentPortal = null;
+  document.getElementById('gatewayScreen').classList.remove('hidden');
+  document.getElementById('gatewayScreen').style.display = '';
+  document.getElementById('appShell').classList.add('hidden');
+  document.querySelectorAll('.portal').forEach(p => p.classList.remove('active'));
+  closeMobileNav();
+}
+
+function openPortal(portal, role) {
+  currentPortal = portal;
+  document.getElementById('gatewayScreen').style.display = 'none';
+  document.getElementById('appShell').classList.remove('hidden');
+  
+  document.querySelectorAll('.portal').forEach(p => p.classList.remove('active'));
+  document.getElementById('portal-' + portal).classList.add('active');
+  
+  // Update banner
+  const badges = { platform: 'PLATFORM', school: 'SCHOOL', user: 'USER' };
+  const badgeColors = { platform: 'var(--gold)', school: 'var(--green)', user: 'var(--info)' };
+  const badgeTextColors = { platform: '#02302B', school: '#fff', user: '#fff' };
+  document.getElementById('bannerBadge').textContent = badges[portal];
+  document.getElementById('bannerBadge').style.background = badgeColors[portal];
+  document.getElementById('bannerBadge').style.color = badgeTextColors[portal];
+  
+  // Update portal switch
+  document.querySelectorAll('.pswitch').forEach(b => {
+    b.style.background = b.dataset.pswitch === portal ? 'rgba(255,255,255,.2)' : 'transparent';
+  });
+  
+  // Handle user role
+  if (portal === 'user' && role) {
+    currentUserRole = role;
+    const roleNames = { teacher: 'معلم', student: 'طالب', parent: 'ولي أمر' };
+    const roleNamesEn = { teacher: 'Teacher', student: 'Student', parent: 'Parent' };
+    document.getElementById('userRoleDisplay').textContent = currentLang === 'ar' ? roleNames[role] : roleNamesEn[role];
+  }
+  
+  // Initialize content
+  if (portal === 'platform') initPlatformDashboard();
+  if (portal === 'school') initSchoolDashboard();
+  if (portal === 'user') initUserDashboard();
+  
+  closeMobileNav();
+}
+
+function toggleMobileNav() {
+  const sidebar = document.querySelector('.portal.active .side-nav');
+  const backdrop = document.getElementById('navBackdrop');
+  if (sidebar) {
+    sidebar.classList.toggle('open');
+    backdrop.classList.toggle('show');
+  }
+}
+
+function closeMobileNav() {
+  document.querySelectorAll('.side-nav').forEach(s => s.classList.remove('open'));
+  document.getElementById('navBackdrop').classList.remove('show');
+}
+
+function openDrawer(title, content) {
+  document.getElementById('drawerTitle').textContent = title;
+  document.getElementById('drawerContent').innerHTML = content;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerBackdrop').classList.add('show');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerBackdrop').classList.remove('show');
+}
+
+function showToast(msg) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast card px-4 py-3 text-[12px] font-bold flex items-center gap-2';
+  toast.innerHTML = `<i class="ri-check-line" style="color:var(--ok)"></i> ${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function openQuickAction() {
+  const content = `
+    <div class="grid grid-cols-2 gap-3">
+      <button onclick="showToast('تم فتح نموذج إضافة مدرسة');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-building-4-line text-2xl" style="color:var(--green)"></i>
+        <p class="text-[11px] font-bold mt-2">إضافة مدرسة</p>
+      </button>
+      <button onclick="showToast('تم فتح نموذج إضافة مستخدم');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-user-add-line text-2xl" style="color:var(--info)"></i>
+        <p class="text-[11px] font-bold mt-2">إضافة مستخدم</p>
+      </button>
+      <button onclick="showToast('تم فتح مراجعة التنبيهات');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-notification-3-line text-2xl" style="color:var(--danger)"></i>
+        <p class="text-[11px] font-bold mt-2">مراجعة التنبيهات</p>
+      </button>
+      <button onclick="showToast('تم فتح التقارير');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-file-chart-line text-2xl" style="color:var(--gold)"></i>
+        <p class="text-[11px] font-bold mt-2">التقارير</p>
+      </button>
+      <button onclick="switchMainTab('indicators');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-focus-3-line text-2xl" style="color:var(--purple)"></i>
+        <p class="text-[11px] font-bold mt-2">مراجعة المؤشرات</p>
+      </button>
+      <button onclick="switchMainTab('tasks');closeDrawer()" class="card p-4 text-center card-h">
+        <i class="ri-task-line text-2xl" style="color:var(--warn)"></i>
+        <p class="text-[11px] font-bold mt-2">متابعة المهام</p>
+      </button>
+    </div>
+  `;
+  openDrawer('إجراءات سريعة', content);
+}
+
+// ===== PLATFORM TABS =====
+function switchMainTab(tab) {
+  currentPlatformTab = tab;
+  document.querySelectorAll('#platformMain > section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('ptab-' + tab).classList.remove('hidden');
+  
+  document.querySelectorAll('#platformNav .nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.ptab === tab);
+  });
+  
+  if (tab === 'analytics') initAnalyticsCharts();
+  closeMobileNav();
+}
+
+// ===== SCHOOL TABS =====
+function switchSchoolTab(tab) {
+  currentSchoolTab = tab;
+  document.querySelectorAll('#schoolMain > section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('stab-' + tab).classList.remove('hidden');
+  
+  document.querySelectorAll('#schoolNav .nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.stab === tab);
+  });
+  
+  if (tab === 's-exams') initExamChart();
+  closeMobileNav();
+}
+
+// ===== USER TABS =====
+function switchUserTab(tab) {
+  currentUserTab = tab;
+  document.querySelectorAll('#userMain > section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('utab-' + tab).classList.remove('hidden');
+  
+  document.querySelectorAll('#userNav .nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.utab === tab);
+  });
+  closeMobileNav();
+}
+
+// ===== INIT PLATFORM DASHBOARD =====
+function initPlatformDashboard() {
+  // KPI Stats
+  const stats = [
+    { label: 'إجمالي المدارس', value: '24', icon: 'ri-building-4-line', color: 'var(--green)', bg: 'var(--green-light)', change: '+3' },
+    { label: 'المدارس النشطة', value: '19', icon: 'ri-checkbox-circle-line', color: 'var(--ok)', bg: 'var(--ok-bg)', change: '' },
+    { label: 'إجمالي المستخدمين', value: '34.5K', icon: 'ri-group-line', color: 'var(--info)', bg: 'var(--info-bg)', change: '+1.2K' },
+    { label: 'المهام المفتوحة', value: '14', icon: 'ri-task-line', color: 'var(--warn)', bg: 'var(--warn-bg)', change: '-2' },
+    { label: 'نسبة الإنجاز', value: '82%', icon: 'ri-focus-3-line', color: 'var(--gold)', bg: 'var(--gold-bg)', change: '+5%' },
+  ];
+  
+  document.getElementById('dashStats').innerHTML = stats.map(s => `
+    <div class="card p-4 kpi-card" onclick="showToast('فتح تفاصيل: ${s.label}')">
+      <div class="flex items-center justify-between mb-2">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:${s.bg};color:${s.color}">
+          <i class="${s.icon} text-lg"></i>
+        </div>
+        ${s.change ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:${s.bg};color:${s.color}">${s.change}</span>` : ''}
+      </div>
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  // AI Strip
+  const assistants = [
+    { name: 'كيان', desc: 'المساعد الذكي للمنصة', icon: 'ri-robot-2-line', color: 'var(--green)', bg: 'var(--green-light)' },
+    { name: 'همة', desc: 'مساعد التعلم والابتكار', icon: 'ri-lightbulb-flash-line', color: 'var(--gold)', bg: 'var(--gold-bg)' },
+    { name: 'سند', desc: 'المساعد التشغيلي', icon: 'ri-shield-check-line', color: 'var(--info)', bg: 'var(--info-bg)' },
+  ];
+  
+  document.getElementById('aiStrip').innerHTML = assistants.map(a => `
+    <div class="card p-4 ai-card" onclick="switchMainTab('ai')">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:${a.bg};color:${a.color}">
+          <i class="${a.icon} text-xl"></i>
+        </div>
+        <div>
+          <p class="font-black text-[13px]">${a.name}</p>
+          <p class="text-[11px] sec">${a.desc}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 mt-3">
+        <span class="w-2 h-2 rounded-full" style="background:var(--ok)"></span>
+        <span class="text-[10px] font-bold sec">جاهز</span>
+      </div>
+    </div>
+  `).join('');
+  
+  // Health Strip
+  const healthItems = [
+    { label: 'الخدمات', status: '99.8%', color: 'var(--ok)' },
+    { label: 'المدارس', status: '19/24', color: 'var(--green)' },
+    { label: 'النشاط', status: 'مرتفع', color: 'var(--info)' },
+    { label: 'المهام', status: '14 مفتوحة', color: 'var(--warn)' },
+    { label: 'التنبيهات', status: '3 جديدة', color: 'var(--danger)' },
+    { label: 'العمليات', status: 'مستقرة', color: 'var(--ok)' },
+  ];
+  
+  document.getElementById('healthStrip').innerHTML = healthItems.map(h => `
+    <div class="text-center p-2">
+      <p class="text-[10px] sec font-bold mb-1">${h.label}</p>
+      <p class="font-black text-[14px]" style="color:${h.color}">${h.status}</p>
+    </div>
+  `).join('');
+  
+  // Quick Schools Table
+  renderQuickSchools();
+  
+  // Activity Timeline
+  document.getElementById('dashActivity').innerHTML = activities.slice(0, 4).map(a => `
+    <div class="tl-item">
+      <div class="flex items-center gap-2">
+        <i class="${a.icon}" style="color:${a.color}"></i>
+        <span class="text-[12px] font-semibold flex-1">${a.text}</span>
+      </div>
+      <p class="text-[10px] sec mt-1">${a.time}</p>
+    </div>
+  `).join('');
+  
+  // Sessions
+  document.getElementById('dashSessions').innerHTML = sessions.slice(0, 4).map(s => `
+    <div class="flex items-center gap-3 p-2 rounded-xl" style="background:var(--hover)">
+      <div class="av" style="background:var(--green)">${s.user.charAt(0)}</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[12px] font-bold truncate">${s.user}</p>
+        <p class="text-[10px] sec">${s.role} — ${s.lastAct}</p>
+      </div>
+      <span class="w-2 h-2 rounded-full" style="background:${s.status === 'active' ? 'var(--ok)' : 'var(--warn)'}"></span>
+    </div>
+  `).join('');
+  
+  // Click Analytics
+  const analytics = [
+    { label: 'مركز القيادة', value: 78 },
+    { label: 'إدارة المدارس', value: 65 },
+    { label: 'إدارة المستخدمين', value: 52 },
+    { label: 'التقارير', value: 38 },
+    { label: 'المهام', value: 45 },
+  ];
+  
+  document.getElementById('clickAnalyticsBars').innerHTML = analytics.map(a => `
+    <div>
+      <div class="flex justify-between text-[11px] mb-1">
+        <span class="font-bold">${a.label}</span>
+        <span class="sec">${a.value}%</span>
+      </div>
+      <div class="pbar"><div style="width:${a.value}%"></div></div>
+    </div>
+  `).join('');
+  
+  // Charts
+  initGrowthChart();
+  initDistChart();
+  
+  // Health Services
+  const services = [
+    { name: 'قاعدة البيانات', status: 'مكتمل', uptime: '99.9%', color: 'var(--ok)' },
+    { name: 'API Gateway', status: 'مكتمل', uptime: '99.8%', color: 'var(--ok)' },
+    { name: 'خدمة الملفات', status: 'مكتمل', uptime: '99.5%', color: 'var(--ok)' },
+    { name: 'خدمة الإشعارات', status: 'تحذير', uptime: '97.2%', color: 'var(--warn)' },
+  ];
+  
+  document.getElementById('healthServices').innerHTML = services.map(s => `
+    <div class="card p-4">
+      <div class="flex items-center justify-between mb-2">
+        <p class="font-bold text-[13px]">${s.name}</p>
+        <span class="badge" style="background:${s.color}20;color:${s.color}">${s.status}</span>
+      </div>
+      <p class="text-[11px] sec">Uptime: <span class="font-bold" style="color:${s.color}">${s.uptime}</span></p>
+    </div>
+  `).join('');
+  
+  // Modules
+  const modules = [
+    { name: 'إدارة المدارس', desc: 'إنشاء وإدارة المدارس', status: 'منفذ', owner: 'فريق المنصة' },
+    { name: 'إدارة المستخدمين', desc: 'حسابات وأدوار المستخدمين', status: 'منفذ', owner: 'فريق المنصة' },
+    { name: 'مركز المؤشرات', desc: 'متابعة مؤشرات الأداء', status: 'منفذ', owner: 'فريق المؤشرات' },
+    { name: 'التقارير', desc: 'إنشاء وتصدير التقارير', status: 'قيد التطوير', owner: 'فريق التقارير' },
+    { name: 'المساعدون الأذكياء', desc: 'كيان، همة، سند', status: 'نموذج أولي', owner: 'فريق AI' },
+  ];
+  
+  document.getElementById('modulesBody').innerHTML = modules.map(m => {
+    const statusColors = { 'منفذ': 'badge-ok', 'قيد التطوير': 'badge-warn', 'نموذج أولي': 'badge-info' };
+    return `<tr>
+      <td class="font-bold">${m.name}</td>
+      <td class="sec text-[12px]">${m.desc}</td>
+      <td><span class="badge ${statusColors[m.status]}">${m.status}</span></td>
+      <td class="text-[12px]">${m.owner}</td>
+    </tr>`;
+  }).join('');
+  
+  // Schools Full
+  renderSchoolsFull();
+  
+  // Indicators
+  const indStats = [
+    { label: 'الإجمالي', value: '48', color: 'var(--green)' },
+    { label: 'المكتمل', value: '28', color: 'var(--ok)' },
+    { label: 'قيد التنفيذ', value: '14', color: 'var(--info)' },
+    { label: 'المتأخر', value: '6', color: 'var(--danger)' },
+  ];
+  
+  document.getElementById('indicatorsStats').innerHTML = indStats.map(s => `
+    <div class="card p-4 text-center">
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  document.getElementById('indicatorsBody').innerHTML = indicators.map(ind => {
+    const statusColors = { 'مكتمل': 'badge-ok', 'قيد التنفيذ': 'badge-info', 'متأخر': 'badge-danger' };
+    return `<tr>
+      <td class="font-bold">${ind.name}</td>
+      <td>${ind.school}</td>
+      <td><span class="badge ${statusColors[ind.status]}">${ind.status}</span></td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${ind.progress}%"></div></div><span class="text-[11px] font-bold">${ind.progress}%</span></div></td>
+      <td class="text-[12px]">${ind.owner}</td>
+    </tr>`;
+  }).join('');
+  
+  // Tasks
+  renderTasks();
+  
+  // Full Activity
+  document.getElementById('fullActivity').innerHTML = activities.map(a => `
+    <div class="tl-item">
+      <div class="flex items-center gap-2">
+        <i class="${a.icon}" style="color:${a.color}"></i>
+        <span class="text-[12px] font-semibold flex-1">${a.text}</span>
+      </div>
+      <p class="text-[10px] sec mt-1">${a.time}</p>
+    </div>
+  `).join('');
+  
+  // Users
+  document.getElementById('usersBody').innerHTML = users.map(u => {
+    const roleColors = { 'مدير المنصة': 'badge-gold', 'مدير مدرسة': 'badge-info', 'معلم': 'badge-ok', 'معلمة': 'badge-ok', 'طالب': 'badge-purple', 'ولي أمر': 'badge-sec' };
+    return `<tr>
+      <td><div class="flex items-center gap-2"><div class="av" style="background:var(--green)">${u.name.charAt(0)}</div><span class="font-bold">${u.name}</span></div></td>
+      <td><span class="badge ${roleColors[u.role] || 'badge-sec'}">${u.role}</span></td>
+      <td>${u.school}</td>
+      <td><span class="badge badge-ok">نشط</span></td>
+      <td class="text-[11px] sec">${u.last}</td>
+    </tr>`;
+  }).join('');
+  
+  // Sessions
+  document.getElementById('sessionsBody').innerHTML = sessions.map(s => `
+    <tr>
+      <td><div class="flex items-center gap-2"><div class="av" style="background:var(--green)">${s.user.charAt(0)}</div><span class="font-bold text-[12px]">${s.user}</span></div></td>
+      <td>${s.role}</td>
+      <td>${s.school}</td>
+      <td class="text-[11px]">${s.login}</td>
+      <td class="text-[11px] sec">${s.lastAct}</td>
+      <td><span class="badge ${s.status === 'active' ? 'badge-ok' : 'badge-warn'}">${s.status === 'active' ? 'نشط' : 'خامل'}</span></td>
+    </tr>
+  `).join('');
+  
+  // Reports
+  const reports = [
+    { name: 'تقرير المدارس الشهري', icon: 'ri-building-4-line', date: 'فبراير 2025' },
+    { name: 'تقرير المستخدمين', icon: 'ri-group-line', date: 'فبراير 2025' },
+    { name: 'تقرير المؤشرات', icon: 'ri-focus-3-line', date: 'يناير 2025' },
+    { name: 'تقرير المهام', icon: 'ri-task-line', date: 'فبراير 2025' },
+    { name: 'تقرير النشاط', icon: 'ri-history-line', date: 'فبراير 2025' },
+    { name: 'تقرير الاعتماد', icon: 'ri-award-line', date: 'يناير 2025' },
+  ];
+  
+  document.getElementById('reportsGrid').innerHTML = reports.map(r => `
+    <div class="card p-4 card-h" onclick="showToast('جاري تحميل التقرير...')">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--green-light);color:var(--green)">
+          <i class="${r.icon} text-xl"></i>
+        </div>
+        <div>
+          <p class="font-bold text-[13px]">${r.name}</p>
+          <p class="text-[11px] sec">${r.date}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  // AI Assistants Full
+  document.getElementById('aiAssistantsFull').innerHTML = assistants.map(a => `
+    <div class="card p-5 ai-card">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:${a.bg};color:${a.color}">
+          <i class="${a.icon} text-2xl"></i>
+        </div>
+        <div>
+          <p class="font-black text-[15px]">${a.name}</p>
+          <p class="text-[11px] sec">${a.desc}</p>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 text-[11px]"><span class="w-2 h-2 rounded-full" style="background:var(--ok)"></span><span>الحالة: متصل</span></div>
+        <div class="flex items-center gap-2 text-[11px]"><i class="ri-chat-1-line" style="color:${a.color}"></i><span>اقتراحات: 3 إجراءات مقترحة</span></div>
+      </div>
+      <button class="btn btn-soft btn-sm mt-3 w-full" onclick="showToast('فتح ${a.name}')">فتح المساعد</button>
+    </div>
+  `).join('');
+}
+
+function renderQuickSchools() {
+  document.getElementById('quickSchoolsBody').innerHTML = schools.slice(0, 5).map(s => {
+    const statusMap = { active: { label: 'نشط', cls: 'badge-ok' }, setup: { label: 'قيد الإعداد', cls: 'badge-warn' }, testing: { label: 'قيد الاختبار', cls: 'badge-info' } };
+    const st = statusMap[s.status];
+    return `<tr class="cursor-pointer" onclick="openSchoolDrawer(${s.id})">
+      <td class="font-bold">${s.name}</td>
+      <td class="sec text-[12px]">${s.type} — ${s.city}</td>
+      <td>${s.director}</td>
+      <td class="text-[12px]">${s.students} / ${s.teachers}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${s.progress}%"></div></div><span class="text-[11px] font-bold">${s.progress}%</span></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSchoolsFull() {
+  document.getElementById('schoolsFullBody').innerHTML = schools.map(s => {
+    const statusMap = { active: { label: 'نشط', cls: 'badge-ok' }, setup: { label: 'قيد الإعداد', cls: 'badge-warn' }, testing: { label: 'قيد الاختبار', cls: 'badge-info' } };
+    const st = statusMap[s.status];
+    return `<tr>
+      <td class="font-bold">${s.name}</td>
+      <td class="sec text-[12px]">${s.type}</td>
+      <td>${s.director}</td>
+      <td class="text-[12px]">${s.students}</td>
+      <td class="text-[12px]">${s.teachers}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${s.progress}%"></div></div><span class="text-[11px] font-bold">${s.progress}%</span></div></td>
+      <td><button onclick="openSchoolDrawer(${s.id})" class="btn btn-soft btn-sm">التفاصيل</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openSchoolDrawer(id) {
+  const school = schools.find(s => s.id === id);
+  if (!school) return;
+  
+  const content = `
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="av text-lg" style="background:var(--green);width:48px;height:48px;border-radius:14px">${school.name.charAt(0)}</div>
+        <div>
+          <h3 class="font-black text-[16px]">${school.name}</h3>
+          <p class="text-[12px] sec">${school.type} — ${school.city}</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+          <p class="text-[10px] sec">المدير</p>
+          <p class="font-bold text-[12px]">${school.director}</p>
+        </div>
+        <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+          <p class="text-[10px] sec">الطلاب / المعلمون</p>
+          <p class="font-bold text-[12px]">${school.students} / ${school.teachers}</p>
+        </div>
+        <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+          <p class="text-[10px] sec">نسبة الإنجاز</p>
+          <p class="font-bold text-[12px]" style="color:var(--green)">${school.progress}%</p>
+        </div>
+        <div class="p-3 rounded-xl border" style="border-color:var(--border)">
+          <p class="text-[10px] sec">آخر نشاط</p>
+          <p class="font-bold text-[12px]">${school.lastActivity}</p>
+        </div>
+      </div>
+      <div>
+        <p class="text-[11px] sec font-bold mb-2">حالة الوحدات</p>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-[12px]"><span>التقويم الذاتي</span><span class="badge badge-ok">مكتمل</span></div>
+          <div class="flex items-center justify-between text-[12px]"><span>الأدلة</span><span class="badge badge-info">قيد التنفيذ</span></div>
+          <div class="flex items-center justify-between text-[12px]"><span>الاختبارات</span><span class="badge badge-ok">مكتمل</span></div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-3 border-t" style="border-color:var(--border)">
+        <button onclick="showToast('عرض المدرسة');closeDrawer()" class="btn btn-green btn-sm"><i class="ri-eye-line"></i> عرض</button>
+        <button onclick="showToast('عرض التقارير');closeDrawer()" class="btn btn-soft btn-sm"><i class="ri-file-chart-line"></i> التقارير</button>
+        <button onclick="showToast('عرض النشاط');closeDrawer()" class="btn btn-line btn-sm"><i class="ri-history-line"></i> النشاط</button>
+      </div>
+    </div>
+  `;
+  openDrawer(school.name, content);
+}
+
+function filterSchools() {
+  const search = document.getElementById('schoolSearchInput').value.toLowerCase();
+  const type = document.getElementById('schoolTypeSelect').value;
+  const status = document.getElementById('schoolStatusSelect').value;
+  
+  let filtered = schools.filter(s => {
+    const matchSearch = !search || s.name.includes(search) || s.director.includes(search) || s.city.includes(search);
+    const matchType = type === 'all' || s.type === type;
+    const matchStatus = status === 'all' || s.status === status;
+    return matchSearch && matchType && matchStatus;
+  });
+  
+  document.getElementById('schoolsFullBody').innerHTML = filtered.map(s => {
+    const statusMap = { active: { label: 'نشط', cls: 'badge-ok' }, setup: { label: 'قيد الإعداد', cls: 'badge-warn' }, testing: { label: 'قيد الاختبار', cls: 'badge-info' } };
+    const st = statusMap[s.status];
+    return `<tr>
+      <td class="font-bold">${s.name}</td>
+      <td class="sec text-[12px]">${s.type}</td>
+      <td>${s.director}</td>
+      <td class="text-[12px]">${s.students}</td>
+      <td class="text-[12px]">${s.teachers}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${s.progress}%"></div></div><span class="text-[11px] font-bold">${s.progress}%</span></div></td>
+      <td><button onclick="openSchoolDrawer(${s.id})" class="btn btn-soft btn-sm">التفاصيل</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTasks() {
+  const statusMap = { 'pending': { label: 'جديد', cls: 'badge-sec' }, 'in-progress': { label: 'قيد التنفيذ', cls: 'badge-info' }, 'completed': { label: 'مكتمل', cls: 'badge-ok' }, 'overdue': { label: 'متأخر', cls: 'badge-danger' } };
+  const prioMap = { 'عالية': 'var(--danger)', 'متوسطة': 'var(--warn)', 'منخفضة': 'var(--sec)' };
+  
+  document.getElementById('tasksBody').innerHTML = tasks.map(t => {
+    const st = statusMap[t.status];
+    return `<tr>
+      <td class="font-bold text-[12px]">${t.task}</td>
+      <td>${t.school}</td>
+      <td class="text-[12px]">${t.owner}</td>
+      <td class="text-[11px]">${t.due}</td>
+      <td><span class="text-[11px] font-bold" style="color:${prioMap[t.priority]}">${t.priority}</span></td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+    </tr>`;
+  }).join('');
+  
+  // Task filters
+  const filters = ['الكل', 'جديد', 'قيد التنفيذ', 'مكتمل', 'متأخر'];
+  document.getElementById('taskFilters').innerHTML = filters.map((f, i) => `
+    <button class="tab-pill ${i === 0 ? 'active' : ''}" onclick="this.parentElement.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${f}</button>
+  `).join('');
+}
+
+// ===== CHARTS =====
+function initGrowthChart() {
+  const ctx = document.getElementById('growthChart');
+  if (!ctx) return;
+  if (growthChartInstance) growthChartInstance.destroy();
+  
+  const textColor = currentTheme === 'dark' ? '#9DB3A8' : '#5A6F56';
+  const gridColor = currentTheme === 'dark' ? '#1E352E' : '#DEE1DA';
+  
+  growthChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+      datasets: [{
+        label: 'المدارس المنضمة',
+        data: [4, 8, 12, 16, 20, 24],
+        borderColor: '#0D4A3A',
+        backgroundColor: 'rgba(13,74,58,.1)',
+        fill: true,
+        tension: .4,
+        borderWidth: 2,
+        pointRadius: 3,
+      }, {
+        label: 'مستوى الإنجاز %',
+        data: [45, 55, 62, 70, 78, 82],
+        borderColor: '#C8994B',
+        backgroundColor: 'rgba(200,153,75,.1)',
+        fill: true,
+        tension: .4,
+        borderWidth: 2,
+        pointRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } }
+      }
+    }
+  });
+}
+
+function initDistChart() {
+  const ctx = document.getElementById('distChart');
+  if (!ctx) return;
+  if (distChartInstance) distChartInstance.destroy();
+  
+  const textColor = currentTheme === 'dark' ? '#9DB3A8' : '#5A6F56';
+  
+  distChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['فئة أ', 'فئة ب', 'فئة ج'],
+      datasets: [{
+        data: [10, 11, 3],
+        backgroundColor: ['#0E7C55', '#1C5D78', '#9A6A12'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function initAnalyticsCharts() {
+  // User Growth
+  const ctx1 = document.getElementById('userGrowthChart');
+  if (ctx1) {
+    if (userGrowthChartInstance) userGrowthChartInstance.destroy();
+    const textColor = currentTheme === 'dark' ? '#9DB3A8' : '#5A6F56';
+    const gridColor = currentTheme === 'dark' ? '#1E352E' : '#DEE1DA';
+    
+    userGrowthChartInstance = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+        datasets: [{
+          label: 'المعلمون',
+          data: [120, 180, 240, 310, 380, 450],
+          backgroundColor: '#0D4A3A',
+          borderRadius: 6,
+        }, {
+          label: 'الطلاب',
+          data: [800, 1500, 3200, 5800, 8400, 12000],
+          backgroundColor: '#C8994B',
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+        scales: {
+          x: { ticks: { color: textColor }, grid: { color: gridColor } },
+          y: { ticks: { color: textColor }, grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+  
+  // Activity Chart
+  const ctx2 = document.getElementById('activityChart');
+  if (ctx2) {
+    if (activityChartInstance) activityChartInstance.destroy();
+    const textColor = currentTheme === 'dark' ? '#9DB3A8' : '#5A6F56';
+    const gridColor = currentTheme === 'dark' ? '#1E352E' : '#DEE1DA';
+    
+    activityChartInstance = new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'],
+        datasets: [{
+          label: 'التفاعلات',
+          data: [320, 450, 580, 620, 710, 490],
+          borderColor: '#0D4A3A',
+          backgroundColor: 'rgba(13,74,58,.1)',
+          fill: true,
+          tension: .4,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: textColor, font: { size: 11 } } } },
+        scales: {
+          x: { ticks: { color: textColor }, grid: { color: gridColor } },
+          y: { ticks: { color: textColor }, grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+}
+
+function initExamChart() {
+  const ctx = document.getElementById('examChart');
+  if (!ctx) return;
+  if (examChartInstance) examChartInstance.destroy();
+  const textColor = currentTheme === 'dark' ? '#9DB3A8' : '#5A6F56';
+  const gridColor = currentTheme === 'dark' ? '#1E352E' : '#DEE1DA';
+  
+  examChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['رياضيات', 'علوم', 'عربي', 'إنجليزي', 'اجتماعيات'],
+      datasets: [{
+        label: 'متوسط الدرجات',
+        data: [78, 82, 85, 72, 80],
+        backgroundColor: ['#0D4A3A', '#14614B', '#C8994B', '#1C5D78', '#6B4FA0'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor }, grid: { color: gridColor } }
+      }
+    }
+  });
+}
+
+function updateChartPeriod(period, btn) {
+  btn.parentElement.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  showToast('تم تغيير الفترة: ' + btn.textContent);
+}
+
+// ===== INIT SCHOOL DASHBOARD =====
+function initSchoolDashboard() {
+  const stats = [
+    { label: 'الطلاب', value: '450', icon: 'ri-graduation-cap-line', color: 'var(--info)', bg: 'var(--info-bg)' },
+    { label: 'المعلمون', value: '38', icon: 'ri-user-star-line', color: 'var(--green)', bg: 'var(--green-light)' },
+    { label: 'الحضور اليوم', value: '94%', icon: 'ri-calendar-check-line', color: 'var(--ok)', bg: 'var(--ok-bg)' },
+    { label: 'المهام النشطة', value: '8', icon: 'ri-task-line', color: 'var(--warn)', bg: 'var(--warn-bg)' },
+    { label: 'التنبيهات', value: '3', icon: 'ri-notification-3-line', color: 'var(--danger)', bg: 'var(--danger-bg)' },
+  ];
+  
+  document.getElementById('schoolStats').innerHTML = stats.map(s => `
+    <div class="card p-4 kpi-card">
+      <div class="flex items-center justify-between mb-2">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:${s.bg};color:${s.color}">
+          <i class="${s.icon} text-lg"></i>
+        </div>
+      </div>
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  // Core Centers
+  const centers = [
+    { name: 'مركز القيادة', icon: 'ri-dashboard-3-line', color: 'var(--green)', desc: 'حالة المدرسة والأعمال', tab: 's-dashboard' },
+    { name: 'القرارات والتكليفات', icon: 'ri-lightbulb-line', color: 'var(--gold)', desc: '4 قرارات نشطة', tab: 's-decisions' },
+    { name: 'الاختبارات والتحليل', icon: 'ri-file-text-line', color: 'var(--info)', desc: 'اختبار قادم خلال 5 أيام', tab: 's-exams' },
+    { name: 'التقويم والاعتماد', icon: 'ri-award-line', color: 'var(--purple)', desc: '78% اكتمال', tab: 's-accred' },
+    { name: 'محرك الأدلة', icon: 'ri-folder-3-line', color: 'var(--warn)', desc: '12 دليل مرفوع', tab: 's-evidence' },
+  ];
+  
+  document.getElementById('coreCenters').innerHTML = centers.map(c => `
+    <div class="card p-5 center-card" onclick="switchSchoolTab('${c.tab}')">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:${c.color}15;color:${c.color}">
+          <i class="${c.icon} text-xl"></i>
+        </div>
+        <div>
+          <p class="font-black text-[14px]">${c.name}</p>
+          <p class="text-[11px] sec">${c.desc}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  // Quick Actions
+  const actions = [
+    { label: 'إضافة تكليف', icon: 'ri-add-line', color: 'var(--green)' },
+    { label: 'رفع دليل', icon: 'ri-upload-line', color: 'var(--gold)' },
+    { label: 'فتح اختبار', icon: 'ri-file-text-line', color: 'var(--info)' },
+    { label: 'إنشاء تقرير', icon: 'ri-file-chart-line', color: 'var(--purple)' },
+  ];
+  
+  document.getElementById('schoolQuickActions').innerHTML = actions.map(a => `
+    <button onclick="showToast('${a.label}')" class="btn btn-line btn-sm">
+      <i class="${a.icon}" style="color:${a.color}"></i> ${a.label}
+    </button>
+  `).join('');
+  
+  // School Activity
+  document.getElementById('schoolActivity').innerHTML = activities.slice(0, 4).map(a => `
+    <div class="tl-item">
+      <div class="flex items-center gap-2">
+        <i class="${a.icon}" style="color:${a.color}"></i>
+        <span class="text-[12px] font-semibold flex-1">${a.text}</span>
+      </div>
+      <p class="text-[10px] sec mt-1">${a.time}</p>
+    </div>
+  `).join('');
+  
+  // Decisions
+  const statusMap = { 'pending': { label: 'جديد', cls: 'badge-sec' }, 'in-progress': { label: 'قيد التنفيذ', cls: 'badge-info' }, 'completed': { label: 'مكتمل', cls: 'badge-ok' }, 'overdue': { label: 'متأخر', cls: 'badge-danger' } };
+  const prioMap = { 'عالية': 'var(--danger)', 'متوسطة': 'var(--warn)', 'منخفضة': 'var(--sec)' };
+  
+  document.getElementById('decisionsBody').innerHTML = decisions.map(d => {
+    const st = statusMap[d.status];
+    return `<tr>
+      <td class="font-bold text-[12px]">${d.decision}</td>
+      <td>${d.owner}</td>
+      <td class="text-[11px]">${d.due}</td>
+      <td><span class="text-[11px] font-bold" style="color:${prioMap[d.priority]}">${d.priority}</span></td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+    </tr>`;
+  }).join('');
+  
+  // Upcoming Exams
+  const exams = [
+    { name: 'اختبار الرياضيات — الثالث المتوسط', date: '15 فبراير 2025', status: 'قادم' },
+    { name: 'اختبار العلوم — الأول الثانوي', date: '18 فبراير 2025', status: 'قادم' },
+    { name: 'اختبار نافس — المرحلة المتوسطة', date: '25 فبراير 2025', status: 'مخطط' },
+  ];
+  
+  document.getElementById('upcomingExamsList').innerHTML = exams.map(e => `
+    <div class="flex items-center justify-between p-3 rounded-xl border" style="border-color:var(--border)">
+      <div>
+        <p class="font-bold text-[12px]">${e.name}</p>
+        <p class="text-[10px] sec">${e.date}</p>
+      </div>
+      <span class="badge ${e.status === 'قادم' ? 'badge-info' : 'badge-sec'}">${e.status}</span>
+    </div>
+  `).join('');
+  
+  // Accreditation Stats
+  const accredStats = [
+    { label: 'المعايير', value: '12', color: 'var(--green)' },
+    { label: 'المكتمل', value: '7', color: 'var(--ok)' },
+    { label: 'قيد التنفيذ', value: '4', color: 'var(--info)' },
+    { label: 'يحتاج تحديث', value: '1', color: 'var(--warn)' },
+  ];
+  
+  document.getElementById('accredStats').innerHTML = accredStats.map(s => `
+    <div class="card p-4 text-center">
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  document.getElementById('accredBody').innerHTML = accreditation.map(a => {
+    const statusColors = { 'مكتمل': 'badge-ok', 'قيد التنفيذ': 'badge-info', 'يحتاج تحديث': 'badge-warn' };
+    return `<tr>
+      <td class="font-bold">${a.standard}</td>
+      <td class="text-[12px]">${a.req}</td>
+      <td><span class="badge ${statusColors[a.status]}">${a.status}</span></td>
+      <td class="text-[12px]">${a.owner}</td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${a.progress}%"></div></div><span class="text-[11px] font-bold">${a.progress}%</span></div></td>
+    </tr>`;
+  }).join('');
+  
+  // Evidence Stats
+  const evStats = [
+    { label: 'الأدلة', value: '24', color: 'var(--green)' },
+    { label: 'المعتمدة', value: '16', color: 'var(--ok)' },
+    { label: 'قيد المراجعة', value: '5', color: 'var(--info)' },
+    { label: 'مسودة', value: '3', color: 'var(--warn)' },
+  ];
+  
+  document.getElementById('evidenceStats').innerHTML = evStats.map(s => `
+    <div class="card p-4 text-center">
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  document.getElementById('evidenceBody').innerHTML = evidence.map(e => {
+    const statusColors = { 'معتمد': 'badge-ok', 'مرفوع': 'badge-info', 'مسودة': 'badge-sec', 'مراجعة': 'badge-warn' };
+    return `<tr>
+      <td class="font-bold text-[12px]">${e.name}</td>
+      <td class="text-[12px]">${e.type}</td>
+      <td>${e.indicator}</td>
+      <td class="text-[12px]">${e.owner}</td>
+      <td><span class="badge ${statusColors[e.status]}">${e.status}</span></td>
+      <td class="text-[11px] sec">${e.date}</td>
+    </tr>`;
+  }).join('');
+  
+  // Teachers
+  document.getElementById('teachersBody').innerHTML = teachers.map(t => `
+    <tr>
+      <td class="font-bold">${t.name}</td>
+      <td>${t.subject}</td>
+      <td class="text-[12px]">${t.load} حصة</td>
+      <td><span class="badge ${t.status === 'active' ? 'badge-ok' : 'badge-warn'}">${t.status === 'active' ? 'نشط' : 'إجازة'}</span></td>
+      <td><div class="flex items-center gap-2"><div class="pbar flex-1"><div style="width:${t.perf}%"></div></div><span class="text-[11px] font-bold">${t.perf}%</span></div></td>
+    </tr>
+  `).join('');
+  
+  // Students
+  const studStats = [
+    { label: 'الإجمالي', value: '450', color: 'var(--info)' },
+    { label: 'الحضور اليوم', value: '94%', color: 'var(--ok)' },
+    { label: 'المتأخرون', value: '12', color: 'var(--warn)' },
+    { label: 'الغائبون', value: '8', color: 'var(--danger)' },
+  ];
+  
+  document.getElementById('studentStats').innerHTML = studStats.map(s => `
+    <div class="card p-4 text-center">
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  document.getElementById('studentsBody').innerHTML = students.map(s => `
+    <tr>
+      <td class="font-bold">${s.name}</td>
+      <td class="text-[12px]">${s.grade}</td>
+      <td class="text-[12px]">${s.attend}</td>
+      <td><span class="badge ${s.behavior === 'ممتاز' ? 'badge-ok' : s.behavior === 'جيد' ? 'badge-info' : 'badge-warn'}">${s.behavior}</span></td>
+      <td><span class="badge ${s.status === 'active' ? 'badge-ok' : 'badge-warn'}">${s.status === 'active' ? 'نشط' : 'متابعة'}</span></td>
+    </tr>
+  `).join('');
+  
+  // Library
+  const libFiles = [
+    { name: 'خطة التحسين المدرسي', section: 'التخطيط', status: 'معتمد', icon: 'ri-file-text-line' },
+    { name: 'نموذج التقويم الذاتي', section: 'الاعتماد', status: 'محدث', icon: 'ri-file-list-3-line' },
+    { name: 'دليل القيادة', section: 'الأدلة', status: 'معتمد', icon: 'ri-book-2-line' },
+    { name: 'سجل الاجتماعات', section: 'المحاضر', status: 'يحتاج تحديث', icon: 'ri-file-edit-line' },
+    { name: 'خطة السلامة', section: 'البيئة', status: 'معتمد', icon: 'ri-shield-check-line' },
+    { name: 'تقرير الأداء', section: 'التقارير', status: 'مسودة', icon: 'ri-bar-chart-line' },
+  ];
+  
+  document.getElementById('libraryGrid').innerHTML = libFiles.map(f => {
+    const statusColors = { 'معتمد': 'badge-ok', 'محدث': 'badge-info', 'يحتاج تحديث': 'badge-warn', 'مسودة': 'badge-sec' };
+    return `<div class="card p-4 card-h">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--green-light);color:var(--green)">
+          <i class="${f.icon}"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-bold text-[12px] truncate">${f.name}</p>
+          <p class="text-[10px] sec">${f.section}</p>
+        </div>
+      </div>
+      <span class="badge ${statusColors[f.status]}">${f.status}</span>
+    </div>`;
+  }).join('');
+  
+  // Tech Portals
+  document.getElementById('techPortals').innerHTML = techPortals.map(p => `
+    <div class="card p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:${p.color}15;color:${p.color}">
+          <i class="${p.icon} text-xl"></i>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-[14px]">${p.name}</p>
+          <p class="text-[11px] sec">آخر مزامنة: ${p.lastSync}</p>
+        </div>
+        <span class="badge" style="background:${p.color}20;color:${p.color}">${p.status}</span>
+      </div>
+    </div>
+  `).join('');
+  
+  // Alerts
+  const alertColors = { 'عاجل': 'var(--danger)', 'تحذير': 'var(--warn)', 'معلومات': 'var(--info)' };
+  const alertBg = { 'عاجل': 'var(--danger-bg)', 'تحذير': 'var(--warn-bg)', 'معلومات': 'var(--info-bg)' };
+  
+  document.getElementById('alertsList').innerHTML = alerts.map(a => `
+    <div class="card p-4 flex items-center gap-3">
+      <div class="w-3 h-3 rounded-full flex-shrink-0" style="background:${alertColors[a.type]}"></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="badge" style="background:${alertBg[a.type]};color:${alertColors[a.type]}">${a.type}</span>
+          <span class="text-[10px] sec">${a.school}</span>
+        </div>
+        <p class="text-[12px] font-semibold">${a.text}</p>
+      </div>
+      <button onclick="showToast('${a.action}')" class="btn btn-line btn-sm flex-shrink-0">${a.action}</button>
+    </div>
+  `).join('');
+  
+  // School Reports
+  const sReports = [
+    { name: 'تقرير الحضور الشهري', icon: 'ri-calendar-check-line' },
+    { name: 'تقرير الاختبارات', icon: 'ri-file-text-line' },
+    { name: 'تقرير الأداء', icon: 'ri-bar-chart-line' },
+    { name: 'تقرير الاعتماد', icon: 'ri-award-line' },
+    { name: 'تقرير الأدلة', icon: 'ri-folder-3-line' },
+    { name: 'تقرير السلوك', icon: 'ri-shield-star-line' },
+  ];
+  
+  document.getElementById('schoolReportsGrid').innerHTML = sReports.map(r => `
+    <div class="card p-4 card-h" onclick="showToast('جاري تحميل التقرير...')">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--green-light);color:var(--green)">
+          <i class="${r.icon} text-xl"></i>
+        </div>
+        <p class="font-bold text-[13px]">${r.name}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== INIT USER DASHBOARD =====
+function initUserDashboard() {
+  const stats = [
+    { label: 'المهام النشطة', value: '5', icon: 'ri-task-line', color: 'var(--green)', bg: 'var(--green-light)' },
+    { label: 'الاختبارات القادمة', value: '2', icon: 'ri-file-text-line', color: 'var(--info)', bg: 'var(--info-bg)' },
+    { label: 'الإشعارات', value: '3', icon: 'ri-notification-3-line', color: 'var(--warn)', bg: 'var(--warn-bg)' },
+    { label: 'الإنجاز', value: '78%', icon: 'ri-focus-3-line', color: 'var(--gold)', bg: 'var(--gold-bg)' },
+  ];
+  
+  document.getElementById('userStats').innerHTML = stats.map(s => `
+    <div class="card p-4 kpi-card">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center mb-2" style="background:${s.bg};color:${s.color}">
+        <i class="${s.icon} text-lg"></i>
+      </div>
+      <p class="kpi-num" style="color:${s.color}">${s.value}</p>
+      <p class="text-[11px] sec font-bold mt-1">${s.label}</p>
+    </div>
+  `).join('');
+  
+  // Today Tasks
+  const todayTasks = [
+    { task: 'تسليم خطط الدروس', time: '10:00 ص', done: false },
+    { task: 'حضور اجتماع القسم', time: '12:00 م', done: false },
+    { task: 'تصحيح اختبارات', time: '2:00 م', done: true },
+  ];
+  
+  document.getElementById('userTodayTasks').innerHTML = todayTasks.map(t => `
+    <div class="flex items-center gap-3 p-2.5 rounded-xl" style="background:var(--hover)">
+      <div class="w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0" style="border-color:${t.done ? 'var(--ok)' : 'var(--border)'};background:${t.done ? 'var(--ok)' : 'transparent'}">
+        ${t.done ? '<i class="ri-check-line text-white text-[10px]"></i>' : ''}
+      </div>
+      <div class="flex-1">
+        <p class="text-[12px] font-bold ${t.done ? 'line-through sec' : ''}">${t.task}</p>
+        <p class="text-[10px] sec">${t.time}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // Notif Preview
+  const notifs = [
+    { text: 'تذكير: تسليم الخطط اليوم', time: 'منذ 30 دقيقة', type: 'warn' },
+    { text: 'تم تعيينك مشرفًا للاختبار', time: 'منذ ساعة', type: 'info' },
+    { text: 'اجتماع القسم غدًا', time: 'منذ 3 ساعات', type: 'sec' },
+  ];
+  
+  const notifColors = { warn: 'var(--warn)', info: 'var(--info)', sec: 'var(--sec)' };
+  document.getElementById('userNotifPreview').innerHTML = notifs.map(n => `
+    <div class="flex items-center gap-3 p-2.5 rounded-xl" style="background:var(--hover)">
+      <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${notifColors[n.type]}"></div>
+      <div class="flex-1">
+        <p class="text-[12px] font-semibold">${n.text}</p>
+        <p class="text-[10px] sec">${n.time}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // User Tasks
+  document.getElementById('userTasksBody').innerHTML = tasks.slice(0, 3).map(t => {
+    const statusMap = { 'pending': { label: 'جديد', cls: 'badge-sec' }, 'in-progress': { label: 'قيد التنفيذ', cls: 'badge-info' }, 'completed': { label: 'مكتمل', cls: 'badge-ok' } };
+    const st = statusMap[t.status] || statusMap['pending'];
+    return `<tr>
+      <td class="font-bold text-[12px]">${t.task}</td>
+      <td class="text-[11px]">${t.due}</td>
+      <td class="text-[11px]">${t.priority}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+    </tr>`;
+  }).join('');
+  
+  // Calendar Events
+  const events = [
+    { title: 'اجتماع القسم', date: 'الأحد 10 فبراير', time: '10:00 ص', color: 'var(--green)' },
+    { title: 'اختبار الرياضيات', date: 'الثلاثاء 12 فبراير', time: '8:00 ص', color: 'var(--info)' },
+    { title: 'تسليم التقارير', date: 'الخميس 14 فبراير', time: '2:00 م', color: 'var(--gold)' },
+    { title: 'ورشة تطوير مهني', date: 'الأحد 17 فبراير', time: '9:00 ص', color: 'var(--purple)' },
+  ];
+  
+  document.getElementById('calendarEvents').innerHTML = events.map(e => `
+    <div class="flex items-center gap-3 p-3 rounded-xl border" style="border-color:var(--border)">
+      <div class="w-3 h-10 rounded-full" style="background:${e.color}"></div>
+      <div class="flex-1">
+        <p class="font-bold text-[13px]">${e.title}</p>
+        <p class="text-[11px] sec">${e.date} — ${e.time}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // User Notifications
+  document.getElementById('userNotifList').innerHTML = notifs.concat([
+    { text: 'تم تحديث جدولك الدراسي', time: 'أمس', type: 'info' },
+    { text: 'موافقة على طلب إجازة', time: 'منذ يومين', type: 'sec' },
+  ]).map(n => `
+    <div class="card p-4 flex items-center gap-3">
+      <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${notifColors[n.type]}"></div>
+      <div class="flex-1">
+        <p class="text-[12px] font-semibold">${n.text}</p>
+        <p class="text-[10px] sec">${n.time}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // User Docs
+  const docs = [
+    { name: 'خطة الدروس — الفصل الثاني', icon: 'ri-file-text-line', date: 'تم التحديث: اليوم' },
+    { name: 'سجل الحضور — يناير', icon: 'ri-calendar-check-line', date: 'تم التحديث: أمس' },
+    { name: 'تقرير الأداء', icon: 'ri-bar-chart-line', date: 'تم التحديث: الأسبوع الماضي' },
+  ];
+  
+  document.getElementById('userDocsGrid').innerHTML = docs.map(d => `
+    <div class="card p-4 card-h">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--green-light);color:var(--green)">
+          <i class="${d.icon} text-xl"></i>
+        </div>
+        <div>
+          <p class="font-bold text-[12px]">${d.name}</p>
+          <p class="text-[10px] sec">${d.date}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  setLanguage('ar');
+});
+</script>
+</body>
+</html>
