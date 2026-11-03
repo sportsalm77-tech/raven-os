@@ -18,20 +18,15 @@ type LanguageContextValue = { lang:Lang; dir:"rtl"|"ltr"; isAr:boolean; setLang:
 const Context = createContext<LanguageContextValue>({
  lang:"ar",dir:"rtl",isAr:true,setLang:()=>{},toggleLang:()=>{},t:key=>dictionary[key].ar
 });
-const STORAGE_KEY="raven-lang";
 
 export function LanguageProvider({children}:{children:ReactNode}) {
  const [lang,setLangState]=useState<Lang>("ar");
- useEffect(()=>{
-  try {
-   const saved=window.localStorage.getItem(STORAGE_KEY);
-   if(saved==="ar"||saved==="en") setLangState(saved);
-  } catch { /* language remains available for this session */ }
- },[]);
+ // Arabic is the deterministic server and first-client default. Persist explicit user changes;
+ // do not read browser storage during hydration or schedule a cascading state update.
  useEffect(()=>{
   document.documentElement.lang=lang;
   document.documentElement.dir=lang==="ar"?"rtl":"ltr";
-  try { window.localStorage.setItem(STORAGE_KEY,lang); } catch { /* optional persistence */ }
+  try { window.localStorage.setItem("raven-lang",lang); } catch { /* optional preference persistence */ }
  },[lang]);
  const setLang=useCallback((value:Lang)=>setLangState(value),[]);
  const toggleLang=useCallback(()=>setLangState(value=>value==="ar"?"en":"ar"),[]);
