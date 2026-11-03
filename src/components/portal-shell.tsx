@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useLang } from "@/lib/i18n";
 import { ChevronLeft, ChevronRight, Languages, Menu, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
   const pathname = usePathname();
-  const [lang, setLang] = useState<"ar" | "en">("ar");
+  const { isAr, toggleLang } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isAr = lang === "ar";
   const direction = isAr ? "rtl" : "ltr";
   const meta = PORTAL_META[portal];
   const groups = PORTAL_NAVS[portal];
@@ -64,7 +64,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
           <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
           <div><div className="text-xs text-[#08794F]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold">{isAr ? meta.ar : meta.en}</div></div>
         </div>
-        <button onClick={() => setLang(isAr ? "en" : "ar")} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-bold" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
+        <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-bold" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
       </header>
       <main className="px-4 py-7 md:px-7 md:py-9">
         <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
