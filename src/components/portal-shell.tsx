@@ -2,19 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { ChevronLeft, ChevronRight, Languages, Menu, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Languages, Menu, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
   const pathname = usePathname();
   const { isAr, toggleLang } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const groups = PORTAL_NAVS[portal];
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
   const direction = isAr ? "rtl" : "ltr";
   const meta = PORTAL_META[portal];
-  const groups = PORTAL_NAVS[portal];
   const BackIcon = isAr ? ChevronLeft : ChevronRight;
+
+  useEffect(() => {
+    const activeGroup = groups.find(group =>
+      group.items.some(item => item.end
+        ? pathname === item.to
+        : pathname === item.to || pathname.startsWith(item.to + "/"))
+    );
+    if (activeGroup) {
+      setExpandedGroups(current => current.includes(activeGroup.ar) ? current : [...current, activeGroup.ar]);
+    }
+  }, [pathname, groups]);
+
+  const toggleGroup = (groupName: string) => {
+    setExpandedGroups(current => current.includes(groupName)
+      ? current.filter(name => name !== groupName)
+      : [...current, groupName]);
+  };
 
   const navigation = (
     <div className="flex h-full flex-col">
@@ -29,19 +47,32 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
           <div className="text-xs text-white/55">{isAr ? meta.roleAr : meta.roleEn}</div>
         </div>
       </div>
-      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4" aria-label={isAr ? "التنقل الرئيسي" : "Main navigation"}>
-        {groups.map(group => <section key={group.ar}>
-          <h2 className="mb-2 px-3 text-[10px] font-bold text-[#C1B489]">{isAr ? group.ar : group.en}</h2>
-          <div className="space-y-1">{group.items.map(item => {
-            const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
-            const Icon = item.icon;
-            return <Link key={item.to} href={item.to} onClick={() => setMobileOpen(false)}
-              aria-current={active ? "page" : undefined}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${active ? "bg-[#08794F] text-white font-bold" : "text-white/70 hover:bg-white/10 hover:text-white"}`}>
-              <Icon size={17} /><span>{isAr ? item.ar : item.en}</span>
-            </Link>;
-          })}</div>
-        </section>)}
+      <nav className="flex-1 space-y-2 overflow-y-auto px-3 py-4" aria-label={isAr ? "التنقل الرئيسي" : "Main navigation"}>
+        {groups.map(group => {
+          const expanded = expandedGroups.includes(group.ar);
+          const groupHasActive = group.items.some(item => item.end
+            ? pathname === item.to
+            : pathname === item.to || pathname.startsWith(item.to + "/"));
+          return <section key={group.ar} className="rounded-xl">
+            <button type="button" onClick={() => toggleGroup(group.ar)}
+              aria-expanded={expanded}
+              className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-3 text-start text-xs font-bold transition-colors ${groupHasActive ? "bg-white/10 text-white" : "text-[#C1B489] hover:bg-white/5 hover:text-white"}`}>
+              <span>{isAr ? group.ar : group.en}</span>
+              <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+            </button>
+            {expanded && <div className="mt-1 space-y-1 border-s border-white/10 py-1 ps-2">
+              {group.items.map(item => {
+                const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
+                const Icon = item.icon;
+                return <Link key={item.to} href={item.to} onClick={() => setMobileOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${active ? "bg-[#08794F] font-bold text-white" : "text-white/70 hover:bg-white/10 hover:text-white"}`}>
+                  <Icon size={17} /><span>{isAr ? item.ar : item.en}</span>
+                </Link>;
+              })}
+            </div>}
+          </section>;
+        })}
       </nav>
       <div className="border-t border-white/10 px-5 py-4 text-[10px] leading-5 text-white/55">
         <strong className="block text-[#D4AF37]">{isAr ? "مؤسسة رافيين للخدمات التعليمية" : "Rafeeen Foundation for Educational Services"}</strong>
