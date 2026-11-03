@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon } from "lucide-react";
+import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PortalShell } from "@/components/portal-shell";
 
@@ -17,23 +20,23 @@ function Tile({to,ar,en,Icon,isAr}:{to:string;ar:string;en:string;Icon:LucideIco
  </Link>;
 }
 export function PortalDashboard({portal}:{portal:PortalId}) {
- const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
+ const {isAr}=useLang(); const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
  return <PortalShell portal={portal}>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
    <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
-   <h1 className="text-2xl font-black md:text-3xl">{meta.ar}</h1>
-   <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{copy.ar}</p>
+   <h1 className="text-2xl font-black md:text-3xl">{isAr?meta.ar:meta.en}</h1>
+   <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{isAr?copy.ar:copy.en}</p>
    <div className="mt-5 inline-flex items-start gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs leading-6 text-white/80">
-    <AlertCircle size={16} className="mt-1 shrink-0 text-[#D4AF37]"/><span>{copy.noteAr}</span>
+    <AlertCircle size={16} className="mt-1 shrink-0 text-[#D4AF37]"/><span>{isAr?copy.noteAr:copy.noteEn}</span>
    </div>
   </section>
   <div className="mb-6 flex items-center justify-between gap-3">
-   <div><h2 className="text-lg font-black text-[#111A18]">مراكز وأقسام البوابة</h2><p className="mt-1 text-xs text-[#66736e]">خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة</p></div>
-   <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-bold text-[#66736e]">{groups.reduce((n,g)=>n+g.items.length,0)} قسم</span>
+   <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام البوابة":"Portal centers & sections"}</h2><p className="mt-1 text-xs text-[#66736e]">{isAr?"خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة":"Organized navigation — backend operations are not implied"}</p></div>
+   <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-bold text-[#66736e]">{groups.reduce((n,g)=>n+g.items.length,0)} {isAr?"قسم":"sections"}</span>
   </div>
-  <div className="space-y-7">{groups.map((group,i)=><section key={group.ar}>
-   <div className="mb-3 flex items-center gap-3"><h3 className="text-sm font-extrabold text-[#08794F]">{group.ar}</h3><span className="h-px flex-1 bg-black/10"/></div>
-   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{group.items.map(item=><Tile key={item.to} to={item.to} ar={item.ar} en={item.en} Icon={item.icon} isAr={true}/>)}</div>
+  <div className="space-y-7">{groups.map(group=><section key={group.ar}>
+   <div className="mb-3 flex items-center gap-3"><h3 className="text-sm font-extrabold text-[#08794F]">{isAr?group.ar:group.en}</h3><span className="h-px flex-1 bg-black/10"/></div>
+   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{group.items.map(item=><Tile key={item.to} to={item.to} ar={item.ar} en={item.en} Icon={item.icon} isAr={isAr}/>)}</div>
   </section>)}</div>
  </PortalShell>;
 }
