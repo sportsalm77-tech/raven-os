@@ -32,3 +32,10 @@ npm run lint
 ```
 
 Build and lint have not yet been executed in this GitHub-only step.
+
+## Default/demo data cleanup policy
+- No sample school, student, teacher, guardian, account, phone, email, attendance, grade, or performance records are seeded in this rescue scaffold.
+- Arena demo identities, sample school profiles, hard-coded dashboard metrics, and simulated save/approval actions are excluded from the port.
+- Navigation labels describe planned sections only; they do not imply that those services are connected or operational.
+- Until a real tenant-aware data source is implemented, data-dependent views must show an explicit empty/unconnected state rather than invented example records.
+- Do not insert real school data into this rescue preview. The current warning banner is intentional and must remain until authentication, authorization, and tenant isolation are verified.
