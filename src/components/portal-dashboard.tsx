@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon, Building2, Users, ShieldCheck, HeartPulse, Settings2, LockKeyhole, GitBranch, ClipboardList } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon, Building2, Users, ShieldCheck, HeartPulse, Settings2, LockKeyhole, GitBranch, ClipboardList, Cpu } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PortalShell } from "@/components/portal-shell";
