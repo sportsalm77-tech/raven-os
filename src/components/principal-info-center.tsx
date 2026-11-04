@@ -324,6 +324,11 @@ export function PrincipalInfoCenter() {
             <p className="mt-3 text-xs font-bold text-[#8a6b28]">{t("غير متصل — آلية الربط قيد التحقق", "Not connected — access method unverified")}</p>
           </div>
         </div>
+        <div className="mt-3 rounded-xl border border-emerald-700/20 bg-emerald-50/50 p-4">
+          <div className="flex items-center gap-2"><ListChecks size={19} className="text-[#08794F]" /><p className="text-sm font-extrabold text-[#26332e]">{t("رفع خطة تشغيلية موجودة", "Import an existing operational plan")}</p></div>
+          <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("يرفع المدير ملف خطته الحالية من هنا، ويصنفه النظام كخطة تشغيلية، ثم يستخرج بنودها ومؤشراتها ومبادراتها وبرامجها ومسؤولياتها قدر الإمكان مع إظهار مصدر كل معلومة للمراجعة. بعد اعتماد الاستيراد تظهر الخطة نفسها في مركز الخطة التشغيلية الذكية لإدارتها ومتابعتها.", "The principal uploads an existing plan here. Raven classifies it, extracts its objectives, indicators, initiatives, programs, and ownership where possible, and shows source references for review. Once the import is approved, the same canonical plan appears in the Smart Operational Plan Center for management and follow-up.")}</p>
+          <p className="mt-2 text-xs font-bold text-[#8a6b28]">{t("الرفع والاستخراج والاعتماد غير مفعلة بعد؛ الملف الأصلي سيبقى محفوظًا كمصدر للخطة عند تنفيذ الخدمة.", "Upload, extraction, and approval are not active yet; the original file will be retained as the plan's source when implemented.")}</p>
+        </div>
         <div className="mt-3 rounded-xl border border-black/10 p-4">
           <p className="text-sm font-extrabold text-[#26332e]">{t("الإدخال الإداري المباشر", "Principal-managed entry")}</p>
           <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("مدير المدرسة يدخل ويدير التكليفات والفرق واللجان وأعضاءها ومسؤولياتها وفترات سريانها من المركز نفسه، مع ربطها بسجلات المعلمين والفصول الموجودة دون تكرار.", "The principal enters and manages assignments, teams, committees, members, responsibilities, and effective dates here, linked to existing staff and class records without duplication.")}</p>
