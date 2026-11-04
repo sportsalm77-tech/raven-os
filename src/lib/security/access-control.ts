@@ -98,7 +98,13 @@ const ROLE_PERMISSIONS: Readonly<Record<RavenRole, readonly RavenPermission[]>> 
 };
 
 function validActor(actor: TrustedActor): boolean {
+  const portalMatchesRole =
+    (actor.role === "platform_super_admin" || actor.role === "platform_system_admin") ? actor.portal === "platform" :
+    (actor.role === "school_admin" || actor.role === "principal" || actor.role === "vice_principal") ? actor.portal === "principal" :
+    actor.role === "teacher" ? actor.portal === "teacher" :
+    actor.role === "family_guardian" ? actor.portal === "family" : false;
   return Boolean(
+    portalMatchesRole &&
     actor.subjectId.trim() &&
     actor.sessionId.trim() &&
     actor.authenticatedAt.trim() &&
