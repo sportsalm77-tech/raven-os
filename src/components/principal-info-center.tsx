@@ -302,6 +302,35 @@ export function PrincipalInfoCenter() {
         </SectionCard>
       )}
 
+
+      <SectionCard
+        title={t("مصادر إدخال البيانات المعتمدة", "Approved data-entry sources")}
+        description={t("ثلاثة مسارات تصب في سجل مدرسي مركزي واحد؛ لا تُعتمد البيانات قبل التحقق والمراجعة والصلاحية.", "Three intake paths converge on one canonical school record; nothing is committed before validation, review, and authorization.")}
+      >
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-xl border border-black/10 bg-[#F5F3EC] p-4">
+            <div className="flex items-center gap-2"><FileSpreadsheet size={19} className="text-[#08794F]" /><p className="text-sm font-extrabold text-[#26332e]">{t("الملفات المدرسية", "School files")}</p></div>
+            <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("Excel وWord وPDF وPowerPoint. يستخرج النظام البيانات الممكنة ويعرض الحقول ومصدرها للمراجعة. Excel هو الأفضل للجداول المنظمة.", "Excel, Word, PDF, and PowerPoint. Supported content is extracted with source references for review. Excel is preferred for structured tables.")}</p>
+            <p className="mt-3 text-xs font-bold text-[#8a6b28]">{t("الاستخراج والرفع غير متصلين بعد", "Extraction and upload not connected")}</p>
+          </div>
+          <div className="rounded-xl border border-black/10 bg-[#F5F3EC] p-4">
+            <div className="flex items-center gap-2"><ArrowLeftRight size={19} className="text-[#08794F]" /><p className="text-sm font-extrabold text-[#26332e]">{t("نظام نور", "Noor system")}</p></div>
+            <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("مصدر تكامل مستهدف لجلب بيانات الطلاب والمعلمين التي يتيحها مسار الربط الرسمي والمصرح به.", "Target integration source for student and teacher data exposed through an official, authorized access route.")}</p>
+            <p className="mt-3 text-xs font-bold text-[#8a6b28]">{t("غير متصل — آلية الربط قيد التحقق", "Not connected — access method unverified")}</p>
+          </div>
+          <div className="rounded-xl border border-black/10 bg-[#F5F3EC] p-4">
+            <div className="flex items-center gap-2"><ArrowLeftRight size={19} className="text-[#08794F]" /><p className="text-sm font-extrabold text-[#26332e]">{t("منصة مدرستي", "Madrasati platform")}</p></div>
+            <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("مصدر تكامل مستهدف لجلب بيانات الطلاب والمعلمين المتاحة والمصرح بها، مع حفظ مصدر كل قيمة وتاريخ المزامنة.", "Target integration source for permitted student and teacher data, preserving field provenance and sync history.")}</p>
+            <p className="mt-3 text-xs font-bold text-[#8a6b28]">{t("غير متصل — آلية الربط قيد التحقق", "Not connected — access method unverified")}</p>
+          </div>
+        </div>
+        <div className="mt-3 rounded-xl border border-black/10 p-4">
+          <p className="text-sm font-extrabold text-[#26332e]">{t("الإدخال الإداري المباشر", "Principal-managed entry")}</p>
+          <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("مدير المدرسة يدخل ويدير التكليفات والفرق واللجان وأعضاءها ومسؤولياتها وفترات سريانها من المركز نفسه، مع ربطها بسجلات المعلمين والفصول الموجودة دون تكرار.", "The principal enters and manages assignments, teams, committees, members, responsibilities, and effective dates here, linked to existing staff and class records without duplication.")}</p>
+        </div>
+        <p className="mt-3 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-xs leading-6 text-amber-900">{t("هذه المسارات معتمدة في التصميم. لا يوجد حاليًا رفع أو استخراج أو اتصال فعلي بنور أو مدرستي. لن يُستخدم كشط الصفحات أو جمع كلمات المرور؛ يلزم التحقق من قناة رسمية وصلاحياتها قبل تنفيذ التكامل.", "These paths are approved in the design. Upload/extraction and Noor/Madrasati connectors are not currently live. No scraping or password collection; an official authorized route must be verified first.")}</p>
+      </SectionCard>
+
       <SectionCard
         title={t("مسار الاستيراد والتحقق الموحد", "Unified import & validation workflow")}
         description={t(
@@ -339,7 +368,7 @@ export function PrincipalInfoCenter() {
         title={t("رفع الملفات الموجودة", "Upload existing files")}
         description={t(
           "المركز يرفع الملفات ويصنفها ويربطها بالبيانات؛ ولا ينشئ أو يصمم أو يصدر ملفات جديدة.",
-          "The center uploads, classifies, and links files to records; it does not author, design, or generate new files."
+          "The center receives files, extracts supported data for review, and links approved records; it does not generate documents."
         )}
       >
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
