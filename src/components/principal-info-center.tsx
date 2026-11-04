@@ -43,6 +43,51 @@ const moduleFields = [
   { id: "distribution", ar: "توزيع البيانات والتكامل", en: "Distribution & integration", fieldsAr: ["المركز المستفيد", "السجل وإصداره", "نطاق البيانات المصرح", "وقت الطلب والتسليم", "نتيجة التوزيع", "سبب التعثر وإعادة المحاولة"], fieldsEn: ["Consuming center", "Record and version", "Authorized data scope", "Request and delivery times", "Delivery outcome", "Failure category and retry"], noteAr: "يُرسل الحد الأدنى المصرح به فقط لكل مركز مستفيد.", noteEn: "Each consumer receives only its minimum authorized data projection." },
 ];
 
+const detailedScreens = {
+  school: [
+    { groupAr: "هوية المدرسة", groupEn: "School identity", fields: [
+      { ar: "الاسم الرسمي بالعربية", en: "Official Arabic name", typeAr: "نص إلزامي", typeEn: "Required text", ruleAr: "يطابق المصدر الرسمي المعتمد.", ruleEn: "Matches the approved official source." },
+      { ar: "الاسم الرسمي بالإنجليزية", en: "Official English name", typeAr: "نص مشروط", typeEn: "Conditional text", ruleAr: "يطلب عند تفعيل المحتوى الإنجليزي.", ruleEn: "Required when English content is enabled." },
+      { ar: "الرمز المدرسي", en: "School code", typeAr: "معرّف إلزامي", typeEn: "Required identifier", ruleAr: "فريد حسب نطاق الجهة المصدرة ولا يُخمن.", ruleEn: "Unique within issuing authority; never guessed." },
+      { ar: "نوع المدرسة والمرحلة", en: "School type and stage", typeAr: "قائمة مرجعية", typeEn: "Reference list", ruleAr: "اختيار من قيم معتمدة.", ruleEn: "Select from approved values." },
+      { ar: "الإدارة التعليمية والمنطقة", en: "Education administration and region", typeAr: "ارتباط مرجعي", typeEn: "Reference relation", ruleAr: "يرتبط بدليل الجهات المعتمد.", ruleEn: "References the approved administration directory." },
+    ]},
+    { groupAr: "العام الدراسي", groupEn: "Academic year", fields: [
+      { ar: "اسم العام الدراسي", en: "Academic-year label", typeAr: "نص إلزامي", typeEn: "Required text", ruleAr: "فريد داخل المدرسة.", ruleEn: "Unique within the school." },
+      { ar: "تاريخ البداية", en: "Start date", typeAr: "تاريخ إلزامي", typeEn: "Required date", ruleAr: "يسبق تاريخ النهاية.", ruleEn: "Must precede the end date." },
+      { ar: "تاريخ النهاية", en: "End date", typeAr: "تاريخ إلزامي", typeEn: "Required date", ruleAr: "إغلاق العام يحفظ السجلات التاريخية.", ruleEn: "Closing preserves historical records." },
+      { ar: "حالة العام", en: "Academic-year status", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "عام نشط واحد فقط لكل مدرسة.", ruleEn: "Only one active year per school." },
+    ]},
+    { groupAr: "الهيكل التعليمي", groupEn: "Academic structure", fields: [
+      { ar: "المرحلة التعليمية", en: "Education stage", typeAr: "قائمة مرجعية", typeEn: "Reference list", ruleAr: "تتوافق مع نوع المدرسة.", ruleEn: "Must match school type." },
+      { ar: "الصف الدراسي", en: "Grade", typeAr: "تابع للمرحلة", typeEn: "Stage-dependent", ruleAr: "لا ينشأ خارج المرحلة المحددة.", ruleEn: "Cannot exist outside its selected stage." },
+      { ar: "اسم/رمز الفصل", en: "Class name/code", typeAr: "إلزامي", typeEn: "Required", ruleAr: "فريد ضمن المدرسة والعام والصف.", ruleEn: "Unique within school, year, and grade." },
+      { ar: "السعة الاستيعابية", en: "Capacity", typeAr: "اختياري", typeEn: "Optional", ruleAr: "عدد صحيح غير سالب.", ruleEn: "Non-negative integer." },
+      { ar: "حالة الفصل", en: "Class status", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "الأرشفة لا تمحو العضويات التاريخية.", ruleEn: "Archiving preserves historical memberships." },
+    ]},
+  ],
+  staff: [
+    { groupAr: "السجل الأساسي", groupEn: "Staff master record", fields: [
+      { ar: "الاسم المعروض بالعربية", en: "Arabic display name", typeAr: "إلزامي", typeEn: "Required", ruleAr: "يحفظ مصدر الاسم وحالة التحقق.", ruleEn: "Record name source and verification state." },
+      { ar: "الاسم المعروض بالإنجليزية", en: "English display name", typeAr: "مشروط", typeEn: "Conditional", ruleAr: "اختياري ما لم تتطلبه العملية.", ruleEn: "Optional unless required by workflow." },
+      { ar: "الرقم الوظيفي", en: "Staff number", typeAr: "بحسب المصدر المعتمد", typeEn: "Source-dependent", ruleAr: "لا يعتمد قبل تحديد مصدره ونطاق تفرده.", ruleEn: "Requires approved source and uniqueness scope." },
+      { ar: "المسمى الوظيفي", en: "Job title", typeAr: "قائمة مرجعية", typeEn: "Reference list", ruleAr: "قيمة معتمدة لا تنشئ شخصًا جديدًا عند تغييرها.", ruleEn: "Approved value; changes do not create a new person." },
+      { ar: "التخصص/المادة", en: "Specialty/subject", typeAr: "ارتباط متعدد", typeEn: "Multi-value relation", ruleAr: "قد يرتبط الموظف بأكثر من تخصص.", ruleEn: "A staff member may have multiple specialties." },
+    ]},
+    { groupAr: "الارتباط بالمدرسة", groupEn: "School membership", fields: [
+      { ar: "المدرسة", en: "School", typeAr: "نطاق خادمي", typeEn: "Server-resolved scope", ruleAr: "لا يقبل school_id من نموذج المستخدم.", ruleEn: "Never trust a client-supplied school_id." },
+      { ar: "حالة الارتباط", en: "Membership status", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "مستقلة عن حالة حساب الدخول.", ruleEn: "Independent from login-account status." },
+      { ar: "تاريخ بداية الارتباط", en: "Membership start date", typeAr: "تاريخ إلزامي", typeEn: "Required date", ruleAr: "ارتباط مستقل بتاريخ سريان.", ruleEn: "A distinct effective-dated membership." },
+      { ar: "تاريخ نهاية الارتباط", en: "Membership end date", typeAr: "تاريخ مشروط", typeEn: "Conditional date", ruleAr: "يحفظ التاريخ الوظيفي السابق.", ruleEn: "Preserves prior membership history." },
+    ]},
+    { groupAr: "التكليفات والارتباطات", groupEn: "Duties and assignments", fields: [
+      { ar: "الدور/المهمة", en: "Role/duty", typeAr: "ارتباط", typeEn: "Relationship", ruleAr: "يرتبط بسجل الشخص دون تكرار بياناته.", ruleEn: "References the person without duplicating their profile." },
+      { ar: "الفصل/اللجنة/المهمة", en: "Class/committee/task", typeAr: "مرجع مرتبط", typeEn: "Linked reference", ruleAr: "يجب أن يكون ضمن المدرسة نفسها.", ruleEn: "Must belong to the same school." },
+      { ar: "فترة السريان", en: "Effective period", typeAr: "بداية/نهاية", typeEn: "Start/end dates", ruleAr: "التغييرات قابلة للتدقيق زمنيًا.", ruleEn: "Changes remain auditable over time." },
+    ]},
+  ],
+};
+
 const fileTypes = [
   { Icon: FileText, ar: "Word", en: "Word", ext: ".doc · .docx" },
   { Icon: FileText, ar: "PDF", en: "PDF", ext: ".pdf" },
@@ -169,6 +214,38 @@ export function PrincipalInfoCenter() {
           </p>
         </div>
       </SectionCard>
+
+      {(activeModule === "school" || activeModule === "staff") && (
+        <SectionCard
+          title={t(activeModule === "school" ? "تفاصيل شاشة بيانات المدرسة" : "تفاصيل شاشة دليل المعلمين والموظفين", activeModule === "school" ? "School profile screen specification" : "Teachers & staff directory screen specification")}
+          description={t("مجموعات مترابطة مع نوع الحقل وقاعدة التحقق؛ هذه مواصفات عرض وليست نموذج حفظ نشطًا.", "Related field groups with types and validation rules; this is a specification view, not an active save form.")}
+        >
+          <div className="space-y-4">
+            {detailedScreens[activeModule].map((group) => (
+              <section key={group.groupEn} className="overflow-hidden rounded-2xl border border-black/10">
+                <div className="border-b border-black/10 bg-[#F5F3EC] px-4 py-3">
+                  <h3 className="font-extrabold text-[#111A18]">{t(group.groupAr, group.groupEn)}</h3>
+                </div>
+                <div className="divide-y divide-black/5">
+                  {group.fields.map((field) => (
+                    <div key={field.en} className="grid gap-2 p-4 md:grid-cols-[1fr_0.7fr_1.6fr] md:items-center">
+                      <div>
+                        <p className="text-sm font-bold text-[#26332e]">{t(field.ar, field.en)}</p>
+                        <p className="mt-1 text-xs text-[#08794F]">{t(field.typeAr, field.typeEn)}</p>
+                      </div>
+                      <p className="text-xs font-semibold text-[#66736e]">{t("حقل محدد — غير قابل للتحرير الآن", "Defined field — editing unavailable")}</p>
+                      <p className="text-xs leading-6 text-[#66736e]">{t(field.ruleAr, field.ruleEn)}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+          <div className="mt-4 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-xs leading-6 text-amber-900">
+            {t("قبل تفعيل الإدخال: اعتماد مصدر البيانات الرسمي، وتحديد مسؤوليات الإضافة والتعديل والأرشفة، وربط صلاحيات الخادم وسجل التدقيق. نطاق المدرسة يُحسم من سياق موثوق لا من قيمة يرسلها المتصفح.", "Before enabling entry: approve authoritative sources and create/update/archive responsibilities, then connect server authorization and audit logging. School scope must come from trusted context, never a browser-supplied value.")}
+          </div>
+        </SectionCard>
+      )}
 
       <SectionCard
         title={t("رفع الملفات الموجودة", "Upload existing files")}
