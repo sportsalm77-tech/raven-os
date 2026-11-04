@@ -73,8 +73,8 @@ All values must be computed from real persisted records and processing events. N
 
 An unavailable data source must render an explicit unavailable/not-connected state, not zero. A zero is valid only after a successful query confirms zero records. A record is not complete merely because it was saved.
 
-## 7. Upload-only file policy
-Accepted types: DOC/DOCX, PDF, XLS/XLSX, PPT/PPTX. Uploading does not imply file generation.
+## 7. File intake and structured extraction policy
+Accepted source types: DOC/DOCX, PDF, XLS/XLSX, PPT/PPTX. Uploading does not imply file generation. Excel is preferred for tables. Other formats may be partially parsed where supported; scanned-file OCR requires separate approval. Every extracted value must retain available source location and pass human review and authorized approval. No extraction result is auto-committed.
 Before enabling upload, implement server-side authentication, tenant scoping, permission checks, file size/type validation, malware scanning or an approved scanning boundary, safe storage, access-controlled download, metadata/audit logging, retention, and upload tests. Validate actual file signatures, not only filename extensions or client MIME values. Spreadsheet processing must defend against formula injection and malformed workbooks. Do not expose public object URLs for school files.
 
 ## 8. Authorization and tenant boundaries
@@ -128,3 +128,13 @@ No production student/staff data, real mutations, upload enablement, database mi
 
 ## 13. Boundary with the existing Assignments & Tasks Center
 The Unified School Data Center is the canonical record owner and primary entry/maintenance authority for school assignments and tasks. The existing Principal Assignments & Tasks Center remains an operational workspace for authorized review, follow-up, progress monitoring, and task execution views. It must not create an independent assignment/task master store. If a permitted user initiates a change from that workspace, it submits a command to the central data service; the central service validates, authorizes, audits, and persists the change. The two screens therefore serve different purposes and do not duplicate data ownership.
+
+
+## 14. Owner clarification — source paths (2026-11-04)
+The center supports three governed source paths converging on one canonical workflow:
+
+1. **File intake:** The principal may provide Excel, Word, PDF, and PowerPoint. Excel is preferred for tabular data. Word/PDF/PowerPoint content may be partially extracted where technically supported; retain source locations (sheet/cell, page, paragraph, or slide) where available. Scanned-document OCR is not assumed and requires explicit approval and supported tooling. Every extracted value must be reviewed, corrected, validated, and approved before commit.
+2. **Noor and Madrasati:** These are intended external sources for student and teacher data, subject to official access discovery and authorization. This is a target capability, not evidence of live connectors or available APIs. Use only official authorized mechanisms. No scraping, password collection, control bypass, or unapproved browser automation. Preserve source identity, permitted external references, field provenance, sync history, and conflict decisions. Field availability and source precedence must be approved; never silently overwrite canonical values.
+3. **Principal-managed records:** The principal enters and maintains school-owned records centrally, especially assignments, teams, committees, memberships, responsibilities, and effective dates. These link to canonical staff, classes, and academic years without duplicating master records.
+
+All paths share tenant-scoped validation, review, approval, canonical commit, audit, and controlled distribution. The center does not generate documents; Raven Library owns document creation.
