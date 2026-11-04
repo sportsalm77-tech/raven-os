@@ -3,7 +3,7 @@ import {
   BarChart3, Info, ClipboardCheck, ListChecks, Target, Landmark, DoorOpen,
   UsersRound, GraduationCap, PenLine, ClipboardList, Mic, ShieldAlert, Sparkles,
   Library, CalendarDays, Stethoscope, Trophy, Star, Accessibility, MonitorPlay,
-  Plug, Bot, KeyRound, SlidersHorizontal, FileBarChart2, BookOpenCheck,
+  Plug, Bot, KeyRound, SlidersHorizontal, FileBarChart2, BookOpenCheck, Cpu,
   BellRing, UserRound, type LucideIcon,
 } from "lucide-react";
 
@@ -28,6 +28,7 @@ export const PLATFORM_NAV: NavGroup[] = [
  { ar:"الحوكمة والنظام", en:"Governance", items:[
   {to:"/platform/security",ar:"الأمان والصحة التقنية",en:"Security & System Health",icon:HeartPulse},
   {to:"/platform/settings",ar:"الإعدادات العامة",en:"Global Settings",icon:Settings},
+  {to:"/platform/engines",ar:"مركز المحركات الذكية",en:"Intelligent Engines",icon:Cpu},
  ]}
 ];
 
