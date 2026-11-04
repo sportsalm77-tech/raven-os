@@ -32,7 +32,7 @@ export type EngineDefinition = {
 
 export const RAVEN_ENGINE_REGISTRY_VERSION = "1.0.0";
 
-export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
+export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[] = [
   {
     id: "school-data",
     number: 1,
@@ -50,7 +50,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["server-side identity and school_id isolation", "canonical schema and validation", "audit trail and authorized commit workflow"]
-  },,
+  },
   {
     id: "decisions-assignments",
     number: 2,
@@ -68,7 +68,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["principal authorization policy", "immutable decision history", "approval and closure workflow"]
-  },,
+  },
   {
     id: "workflow-followup",
     number: 3,
@@ -86,7 +86,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["workflow state model", "notification authorization", "audit logging"]
-  },,
+  },
   {
     id: "evidence-documentation-impact",
     number: 4,
@@ -104,7 +104,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["secure file storage", "retention and access policy", "source provenance and review"]
-  },,
+  },
   {
     id: "operational-plans",
     number: 5,
@@ -122,7 +122,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["approved plan schema", "source-preserving import and human review", "baseline change authorization"]
-  },,
+  },
   {
     id: "school-evaluation-accreditation",
     number: 6,
@@ -140,7 +140,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["versioned standards catalogue", "traceable evidence mapping", "review and sign-off workflow"]
-  },,
+  },
   {
     id: "nafs-measurement",
     number: 7,
@@ -158,7 +158,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["authorized results source", "privacy-safe aggregation", "validated measurement definitions"]
-  },,
+  },
   {
     id: "security-protection",
     number: 8,
@@ -176,7 +176,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["server-side enforcement", "secret management", "security testing and incident procedures"]
-  },,
+  },
   {
     id: "smart-assistant",
     number: 9,
@@ -194,7 +194,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["permission-aware retrieval", "prompt and tool isolation", "safety and evaluation tests"]
-  },,
+  },
   {
     id: "governance-permissions",
     number: 10,
@@ -212,7 +212,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["trusted identity source", "server-side policy enforcement", "negative authorization tests"]
-  },,
+  },
   {
     id: "data-interoperability",
     number: 11,
@@ -230,7 +230,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: false,
     status: "architecture",
     activationGates: ["API contracts", "event idempotency", "observability and retry policy"]
-  },,
+  },
   {
     id: "recommendations-decisions",
     number: 12,
@@ -266,7 +266,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: true,
     status: "architecture",
     activationGates: ["written confirmation of supported API or official mechanism", "approved credentials and scopes", "vendor terms and security review"]
-  },,
+  },
   {
     id: "raven-external-tools",
     number: 14,
@@ -284,7 +284,7 @@ export const RAVEN_ENGINE_REGISTRY: readonly EngineDefinition[
     externalConnection: true,
     status: "architecture",
     activationGates: ["connector availability", "per-tool permission and user confirmation", "preview and validation before write", "idempotency and audit logs"]
-  },,
+  },
   {
     id: "rafeen-ecosystem-connectivity",
     number: 15,
