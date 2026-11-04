@@ -131,6 +131,13 @@ GitHub Actions workflow `Raven rescue verification` completed successfully for:
 
 Each run's `next-build` job concluded `success`. This verifies the configured CI build job only; it is not evidence of browser, mobile, accessibility, authentication, authorization, database, or tenant-isolation tests.
 
+## 11. Authorization contract prepared
+
+A technology-neutral design contract and threat-oriented negative-test matrix is now recorded at:
+`docs/IDENTITY_AUTHORIZATION_TENANT_ISOLATION_CONTRACT_2026-11-04.md`.
+
+The contract is a design artifact only. It does not select an identity provider, database, migration, external integration, or implementation approach. Owner review and confirmation of authoritative identity, teacher assignment, and guardian relationship sources are required before technical design or code changes.
+
 ## 10. Updated disposition
 
 The 24 Teacher/Family child routes have explicit route-specific workflow guidance and the configured CI build succeeds. However, source review confirms that route entry is not protected by server-side authentication or role authorization in the inspected implementation. The Teacher and Family portals therefore remain **preview-only and not safe for real personal or student data**.
