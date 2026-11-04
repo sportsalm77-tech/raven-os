@@ -216,13 +216,18 @@ export function PrincipalInfoCenter() {
       >
         <div className="grid gap-3 md:grid-cols-2">
           {modules.map(({ Icon, ar, en, descAr, descEn }) => (
-            <article key={en} className="rounded-2xl border border-black/10 bg-white p-4">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#08794F]/10 text-[#08794F]">
-                <Icon size={19} />
-              </div>
+            <button
+              key={en}
+              type="button"
+              onClick={() => setActiveModule(moduleFields.find((item) => item.ar === ar)?.id ?? "school")}
+              aria-pressed={activeModule === moduleFields.find((item) => item.ar === ar)?.id}
+              className="rounded-2xl border border-black/10 bg-white p-4 text-start transition-colors hover:border-[#08794F]/50 hover:bg-[#F5F3EC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08794F]"
+            >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={19} /></div>
               <h2 className="font-extrabold text-[#111A18]">{t(ar, en)}</h2>
               <p className="mt-2 text-xs leading-6 text-[#66736e]">{t(descAr, descEn)}</p>
-            </article>
+              <span className="mt-3 inline-flex text-xs font-bold text-[#08794F]">{t("فتح الوحدة واستعراض تفاصيلها", "Open module details")} ←</span>
+            </button>
           ))}
         </div>
       </SectionCard>
@@ -359,6 +364,71 @@ export function PrincipalInfoCenter() {
             {t("الرفع غير متصل حاليًا", "Upload not connected")}
           </span>
         </div>
+      </SectionCard>
+
+      <SectionCard
+        title={t("مراجعة جودة البيانات ومعالجة الملاحظات", "Data quality review & issue management")}
+        description={t("لوحة عمل موحدة للملاحظات الناتجة عن الإدخال والاستيراد والتحديث؛ لا تعرض أعدادًا حتى تتصل بسجل فعلي.", "A unified workbench for findings from entry, import, and updates; counts remain unavailable until connected to real records.")}
+      >
+        <div className="grid gap-3 md:grid-cols-2">
+          {[
+            { ar: "اكتمال الحقول الأساسية", en: "Required-field completeness", detailAr: "الحقول الإلزامية والقيم المرجعية الناقصة.", detailEn: "Missing required fields and reference values." },
+            { ar: "سلامة العلاقات", en: "Relationship integrity", detailAr: "التحقق من ارتباط الصفوف والفصول والموظفين بالمدرسة والعام الصحيحين.", detailEn: "Verify grades, classes, and staff belong to the correct school and year." },
+            { ar: "التكرار والتعارض", en: "Duplicates & conflicts", detailAr: "تجميع المرشحين للمراجعة البشرية دون دمج آلي.", detailEn: "Queue candidates for human review; never auto-merge." },
+            { ar: "حداثة البيانات", en: "Data freshness", detailAr: "تحديد السجلات التي تحتاج مراجعة بسبب قدم المصدر أو انتهاء الارتباط.", detailEn: "Identify records needing review due to stale sources or ended relationships." },
+          ].map((item) => (
+            <div key={item.en} className="rounded-xl border border-black/10 p-4">
+              <div className="flex items-center gap-2"><ShieldCheck size={17} className="text-[#08794F]" /><p className="text-sm font-bold text-[#26332e]">{t(item.ar, item.en)}</p></div>
+              <p className="mt-2 text-xs leading-6 text-[#66736e]">{t(item.detailAr, item.detailEn)}</p>
+              <p className="mt-3 text-xs font-bold text-[#8a6b28]">{t("بانتظار نتائج التحقق الفعلية", "Awaiting live validation results")}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 rounded-xl border border-black/10 bg-[#F5F3EC] p-4">
+          <p className="text-sm font-extrabold text-[#26332e]">{t("دورة معالجة الملاحظة", "Finding resolution lifecycle")}</p>
+          <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("مكتشفة ← مصنفة حسب الخطورة ← مسندة لمراجع مخول ← تصحيح مقترح ← تحقق بعد التصحيح ← إغلاق موثق أو تصعيد.", "Detected → severity classified → assigned to an authorized reviewer → correction proposed → revalidated → documented closure or escalation.")}</p>
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        title={t("سجل دفعات الاستيراد والمعالجة", "Import batches & processing history")}
+        description={t("مرجع موحد لكل ملف ودفعة استيراد وقرار مراجعة ونتيجة اعتماد؛ لا توجد دفعات تجريبية معروضة.", "A unified record of each file, import batch, review decision, and commit outcome; no sample batches are displayed.")}
+      >
+        <div className="grid gap-2 sm:grid-cols-3">
+          {[
+            { ar: "مسودات وملفات مستلمة", en: "Drafts & received files" },
+            { ar: "قيد الفحص والمراجعة", en: "Scanning & review" },
+            { ar: "معتمدة أو متعثرة", en: "Committed or failed" },
+          ].map((item) => (
+            <div key={item.en} className="rounded-xl border border-black/10 bg-white p-3">
+              <p className="text-sm font-bold text-[#26332e]">{t(item.ar, item.en)}</p>
+              <p className="mt-2 text-xs text-[#8a6b28]">{t("الحالة غير متاحة قبل ربط سجل الدفعات", "Unavailable until batch ledger is connected")}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 rounded-xl border border-black/10 p-4">
+          <p className="text-sm font-extrabold text-[#26332e]">{t("بيانات التتبع المطلوبة لكل دفعة", "Required traceability for every batch")}</p>
+          <p className="mt-2 text-xs leading-6 text-[#66736e]">{t("معرف الدفعة، المدرسة، المجال، بصمة الملف، إصدار خريطة الأعمدة، إصدار قواعد التحقق، المنفذ والمراجع، أوقات المراحل، نتائج الصفوف، قرار الاعتماد، ومآل التوزيع.", "Batch ID, school, domain, file checksum, mapping and validation versions, actor and reviewer, stage timestamps, row outcomes, approval decision, and distribution result.")}</p>
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        title={t("حوكمة البيانات وسجل التدقيق", "Data governance & audit trail")}
+        description={t("كل تغيير على السجل المركزي يجب أن يكون قابلًا للتتبع وإعادة المراجعة، مع فصل صلاحية العرض عن صلاحية التعديل والاعتماد.", "Every canonical change must be traceable and reviewable, separating view, edit, and approval permissions.")}
+      >
+        <div className="grid gap-3 md:grid-cols-3">
+          {[
+            { ar: "هوية ونطاق موثوق", en: "Trusted identity & scope", detailAr: "تحديد المستخدم ودوره ومدرسته على الخادم.", detailEn: "Resolve actor, role, and school on the server." },
+            { ar: "صلاحيات حسب العملية", en: "Operation-level permissions", detailAr: "عرض، إدخال، تعديل، أرشفة، استيراد، اعتماد، وتصدير.", detailEn: "View, create, edit, archive, import, approve, and export." },
+            { ar: "أثر تدقيقي واضح", en: "Clear audit history", detailAr: "الفاعل والتوقيت والسجل والتغيير والسبب والنتيجة.", detailEn: "Actor, time, record, change, reason, and outcome." },
+          ].map((item) => (
+            <div key={item.en} className="rounded-xl bg-[#F5F3EC] p-4">
+              <p className="text-sm font-extrabold text-[#26332e]">{t(item.ar, item.en)}</p>
+              <p className="mt-2 text-xs leading-6 text-[#66736e]">{t(item.detailAr, item.detailEn)}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-xs leading-6 text-amber-900">{t("متطلبات الحوكمة موثقة؛ لا يوجد حتى الآن محرك صلاحيات أو سجل تدقيق تشغيلي متصل بهذه الواجهة.", "Governance requirements are documented; no operational authorization engine or audit log is connected to this interface yet.")}</p>
       </SectionCard>
 
       <SectionCard
