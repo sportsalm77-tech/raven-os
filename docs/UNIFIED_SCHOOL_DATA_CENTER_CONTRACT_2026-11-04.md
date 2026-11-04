@@ -124,3 +124,7 @@ No production student/staff data, real mutations, upload enablement, database mi
 - The center uploads existing Word/PDF/Excel/PowerPoint files only; it does not create documents.
 - Raven Library owns later document creation, generation, reporting, and evidence production.
 - Other centers consume data from the central source and do not create competing master data stores.
+
+
+## 13. Boundary with the existing Assignments & Tasks Center
+The Unified School Data Center is the canonical record owner and primary entry/maintenance authority for school assignments and tasks. The existing Principal Assignments & Tasks Center remains an operational workspace for authorized review, follow-up, progress monitoring, and task execution views. It must not create an independent assignment/task master store. If a permitted user initiates a change from that workspace, it submits a command to the central data service; the central service validates, authorizes, audits, and persists the change. The two screens therefore serve different purposes and do not duplicate data ownership.
