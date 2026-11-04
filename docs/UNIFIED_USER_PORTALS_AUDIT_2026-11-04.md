@@ -21,9 +21,9 @@ Family destinations cover children, attendance, progress, grades, homework, beha
 
 ## 3. Explicit workspace coverage
 
-The shared workspace component `src/components/portal-module-workspace.tsx` contains explicit module definitions for 14 of the 24 Teacher/Family child routes.
+The shared workspace component `src/components/portal-module-workspace.tsx` contains explicit module definitions for all 24 Teacher/Family child routes after the scoped implementation commit `069ee32583c9e6ae74ffc5f94fe66f87448a312a`.
 
-### Explicitly defined (14)
+### Explicitly defined (24)
 Teacher:
 - `/teacher/attendance`
 - `/teacher/tasks`
@@ -42,22 +42,8 @@ Family:
 - `/family/notifications`
 - `/family/contact`
 
-### Using generic fallback (10)
-Teacher:
-- `/teacher/timetable`
-- `/teacher/exams`
-- `/teacher/behavior`
-- `/teacher/library`
-- `/teacher/notices`
-- `/teacher/profile`
-
-Family:
-- `/family/behavior`
-- `/family/timetable`
-- `/family/reports`
-- `/family/profile`
-
-Fallback routes still render an explicit not-connected workspace and do not fabricate records, but their purpose and workflow are generic rather than tailored to the destination. This is the main content-completeness gap found in this source review.
+### Generic fallback (0)
+All 10 routes previously using generic fallback now have route-specific purpose and workflow guidance. They remain unconnected previews and do not contain operational forms, fake records, or simulated persistence.
 
 ## 4. Shared shell and localization
 
@@ -93,7 +79,7 @@ Required before operational activation:
 
 This is a source-level audit based on the current rescue branch files `src/lib/nav.ts`, `src/components/portal-module-workspace.tsx`, `src/components/portal-section-page.tsx`, `src/components/portal-shell.tsx`, `src/components/portal-dashboard.tsx`, and the existing rescue execution plan.
 
-**Disposition: The shared four-portal architecture is consistent with the approved plan. Teacher and Family have 24 role-specific child routes; 14 have explicit workflow definitions and 10 still use generic fallback content. No code behavior, browser behavior, backend authorization, tenant isolation, or production readiness is certified by this document.**
+**Disposition: The shared four-portal architecture is consistent with the approved plan. Teacher and Family have 24 role-specific child routes; all 24 now have explicit route-specific workflow definitions. The new implementation commit's CI run is queued at the time of this update. No code behavior, browser behavior, backend authorization, tenant isolation, or production readiness is certified by this document.**
 
 No Arena source, `main`, or live deployment was modified. No merge or deployment was performed.
 
