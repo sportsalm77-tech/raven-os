@@ -2,7 +2,6 @@
 
 import {
   AlertCircle,
-  Archive,
   ArrowDownToLine,
   ArrowLeftRight,
   BookOpen,
@@ -11,7 +10,6 @@ import {
   FileSpreadsheet,
   FileText,
   FileUp,
-  FolderOpen,
   GraduationCap,
   Library,
   ListChecks,
