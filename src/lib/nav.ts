@@ -4,7 +4,7 @@ import {
   UsersRound, GraduationCap, PenLine, ClipboardList, Mic, ShieldAlert, Sparkles,
   Library, CalendarDays, Stethoscope, Trophy, Star, Accessibility, MonitorPlay,
   Plug, Bot, KeyRound, SlidersHorizontal, FileBarChart2, BookOpenCheck, Cpu,
-  BellRing, UserRound, type LucideIcon,
+  BellRing, UserRound, Activity, Workflow, type LucideIcon,
 } from "lucide-react";
 
 export type PortalId = "platform" | "principal" | "teacher" | "family";
