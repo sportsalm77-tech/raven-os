@@ -138,6 +138,14 @@ A technology-neutral design contract and threat-oriented negative-test matrix is
 
 The contract is a design artifact only. It does not select an identity provider, database, migration, external integration, or implementation approach. Owner review and confirmation of authoritative identity, teacher assignment, and guardian relationship sources are required before technical design or code changes.
 
+## 12. Identity/data-source discovery gate
+
+A bounded repository inspection found no identity SDK, server session implementation, database client/ORM, schema/migration, or school/teacher/guardian relationship data source in the current rescue scaffold. The transitional login page and README explicitly state that authentication and operational data are not connected.
+
+This is a repository-scoped finding only. It does not establish whether external organizational systems exist outside this repository. The owner must identify authoritative external identity, school, teacher-assignment, guardian-relationship, and student-data sources before any provider or database is selected.
+
+See `docs/IDENTITY_DATA_SOURCE_DISCOVERY_2026-11-04.md` for the evidence inventory, source-of-truth questions, design principles, and approval gates. No auth provider, database, migration, or integration was added.
+
 ## 10. Updated disposition
 
 The 24 Teacher/Family child routes have explicit route-specific workflow guidance and the configured CI build succeeds. However, source review confirms that route entry is not protected by server-side authentication or role authorization in the inspected implementation. The Teacher and Family portals therefore remain **preview-only and not safe for real personal or student data**.
