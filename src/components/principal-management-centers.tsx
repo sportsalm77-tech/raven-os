@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import {
-  Activity, ArrowLeft, ArrowRight, ClipboardCheck, FileText, Gauge,
-  Landmark, ListChecks, ShieldCheck, Target, Users, Workflow,
+  Activity, ArrowLeft, ArrowRight, BookOpenCheck, ClipboardCheck, FileText, Gauge,
+  Landmark, ListChecks, ShieldCheck, Sparkles, Target, Users, Workflow,
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { EmptyState, PageHead, SectionCard } from "@/components/raven-ui";
