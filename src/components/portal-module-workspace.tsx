@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ComponentType } from "react";
+import type { LucideIcon } from "lucide-react";
 import { ArrowLeft, ArrowRight, CircleAlert, ClipboardCheck, Database, ShieldCheck } from "lucide-react";
 import { PortalShell } from "@/components/portal-shell";
 import { PageHead, SectionCard } from "@/components/raven-ui";
@@ -38,7 +38,7 @@ function fallback(item: { ar:string; en:string }, portal: PortalId): ModuleCopy 
   return common;
 }
 
-export function PortalModuleWorkspace({ portal, item, path }: { portal: PortalId; item: { ar:string; en:string; icon: ComponentType<{size?:number}> }; path: string }) {
+export function PortalModuleWorkspace({ portal, item, path }: { portal: PortalId; item: { ar:string; en:string; icon: LucideIcon }; path: string }) {
   const { isAr } = useLang();
   const meta = PORTAL_META[portal];
   const data = MODULES[path] ?? fallback(item, portal);
