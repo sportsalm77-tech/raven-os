@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   AlertCircle,
   ArrowDownToLine,
@@ -31,6 +32,17 @@ const modules = [
   { Icon: ArrowLeftRight, ar: "توزيع البيانات والتكامل", en: "Distribution & integration", descAr: "متابعة وصول البيانات المصرح بها إلى المراكز المستفيدة.", descEn: "Track delivery of authorized data to consuming centers." },
 ];
 
+const moduleFields = [
+  { id: "school", ar: "بيانات المدرسة", en: "School profile", fieldsAr: ["الاسم الرسمي للمدرسة", "الرمز المدرسي", "المرحلة ونوع المدرسة", "الإدارة التعليمية", "العام الدراسي", "المراحل والصفوف والفصول"], fieldsEn: ["Official school name", "School code", "School stage and type", "Education administration", "Academic year", "Stages, grades, and classes"], noteAr: "تبدأ البنية المدرسية قبل إدخال سجلات الأفراد.", noteEn: "Establish the school structure before entering people records." },
+  { id: "staff", ar: "المعلمون والموظفون", en: "Teachers & staff", fieldsAr: ["الاسم وبيانات العرض", "الرقم الوظيفي (عند اعتماده)", "المسمى والتخصص", "حالة الارتباط بالمدرسة", "التكليفات والارتباطات", "فترة سريان الارتباط"], fieldsEn: ["Name and display details", "Staff number (when approved)", "Job title and specialty", "School membership status", "Assignments and memberships", "Membership effective dates"], noteAr: "الشخص سجل مستقل؛ والمهام والارتباطات علاقات مؤرخة.", noteEn: "A person is a canonical record; duties and memberships are dated relationships." },
+  { id: "students", ar: "الطلاب والفصول", en: "Students & classes", fieldsAr: ["الاسم ورقم الطالب المعتمد", "المرحلة والصف", "العام الدراسي", "عضوية الفصل وتاريخ بدايتها", "حالة القيد والنقل", "علاقة ولي الأمر الموثقة"], fieldsEn: ["Name and approved student number", "Stage and grade", "Academic year", "Class membership and start date", "Enrollment and transfer status", "Verified guardian relationship"], noteAr: "النقل ينشئ حركة عضوية جديدة ويحفظ السجل السابق.", noteEn: "A transfer creates a new membership event and preserves history." },
+  { id: "tasks", ar: "التكليفات والمهام", en: "Assignments & tasks", fieldsAr: ["عنوان المهمة وتصنيفها", "المسؤول والمشاركون", "تاريخ البداية والاستحقاق", "الأولوية والحالة", "الشواهد المرتبطة", "مصدر الطلب وسجل المراجعة"], fieldsEn: ["Task title and category", "Owner and participants", "Start and due dates", "Priority and status", "Linked evidence", "Request source and review history"], noteAr: "مركز التكليفات يعرض ويرسل أوامر معتمدة؛ والمصدر المركزي يحفظ السجل.", noteEn: "The operational center displays and submits governed commands; the central service persists the record." },
+  { id: "operations", ar: "البيانات التشغيلية", en: "Operational data", fieldsAr: ["الخطط وبنودها", "البرامج والمبادرات", "اللجان والأعضاء", "الإجراءات ومواعيدها", "المسؤولون والارتباطات", "الحالة والشواهد"], fieldsEn: ["Plans and plan items", "Programs and initiatives", "Committees and members", "Procedures and due dates", "Owners and relationships", "Status and evidence"], noteAr: "تُربط عناصر التنفيذ بالتكليفات المركزية بدل تكرارها.", noteEn: "Execution items link to canonical tasks instead of duplicating them." },
+  { id: "files", ar: "الملفات والمرفقات", en: "Files & attachments", fieldsAr: ["اسم الملف ونوعه المكتشف", "الحجم وتاريخ الرفع", "الرافع وحالة الفحص", "القسم والسجل المرتبط", "العام الدراسي والتصنيف", "الإصدار والأرشفة"], fieldsEn: ["Filename and detected type", "Size and upload date", "Uploader and scan status", "Related module and record", "Academic year and category", "Version and archive state"], noteAr: "الرفع غير مفعل حتى اكتمال الفحص والتخزين الآمن والتحقق من الصلاحية.", noteEn: "Uploads remain disabled until scanning, secure storage, and authorization are implemented." },
+  { id: "quality", ar: "جودة البيانات ومراجعتها", en: "Data quality & review", fieldsAr: ["نوع السجل والحقل المتأثر", "قاعدة التحقق وإصدارها", "درجة الخطورة", "حالة الملاحظة", "المعالجة المقترحة", "المراجع وتاريخ الإغلاق"], fieldsEn: ["Entity type and affected field", "Validation rule and version", "Severity", "Finding status", "Proposed remediation", "Reviewer and resolution date"], noteAr: "لا تُدمج السجلات المتشابهة آليًا دون سياسة ومراجعة معتمدتين.", noteEn: "Potential duplicates are never auto-merged without an approved policy and review." },
+  { id: "distribution", ar: "توزيع البيانات والتكامل", en: "Distribution & integration", fieldsAr: ["المركز المستفيد", "السجل وإصداره", "نطاق البيانات المصرح", "وقت الطلب والتسليم", "نتيجة التوزيع", "سبب التعثر وإعادة المحاولة"], fieldsEn: ["Consuming center", "Record and version", "Authorized data scope", "Request and delivery times", "Delivery outcome", "Failure category and retry"], noteAr: "يُرسل الحد الأدنى المصرح به فقط لكل مركز مستفيد.", noteEn: "Each consumer receives only its minimum authorized data projection." },
+];
+
 const fileTypes = [
   { Icon: FileText, ar: "Word", en: "Word", ext: ".doc · .docx" },
   { Icon: FileText, ar: "PDF", en: "PDF", ext: ".pdf" },
@@ -59,6 +71,8 @@ const consumers = [
 
 export function PrincipalInfoCenter() {
   const { isAr } = useLang();
+  const [activeModule, setActiveModule] = useState("school");
+  const selectedModule = moduleFields.find((item) => item.id === activeModule) ?? moduleFields[0];
   const t = (ar: string, en: string) => isAr ? ar : en;
 
   return (
@@ -115,6 +129,44 @@ export function PrincipalInfoCenter() {
               <p className="mt-2 text-xs leading-6 text-[#66736e]">{t(descAr, descEn)}</p>
             </article>
           ))}
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        title={t("مساحة تفاصيل وحدات الإدخال", "Data-entry module workspace")}
+        description={t(
+          "اختر الوحدة لاستعراض حقولها الأساسية وضوابطها. هذا التنقل محلي للعرض فقط؛ لا يحفظ بيانات ولا ينشئ سجلات.",
+          "Select a module to review its core fields and controls. This is local navigation only; it does not save data or create records."
+        )}
+      >
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t("وحدات مركز البيانات", "Data center modules")}>
+          {moduleFields.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={activeModule === item.id}
+              onClick={() => setActiveModule(item.id)}
+              className={`rounded-xl border px-3 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08794F] ${activeModule === item.id ? "border-[#08794F] bg-[#08794F] text-white" : "border-black/10 bg-white text-[#26332e] hover:bg-[#F5F3EC]"}`}
+            >
+              {t(item.ar, item.en)}
+            </button>
+          ))}
+        </div>
+        <div className="mt-4 rounded-2xl border border-black/10 bg-[#F5F3EC] p-4" role="tabpanel">
+          <h3 className="font-extrabold text-[#111A18]">{t(selectedModule.ar, selectedModule.en)}</h3>
+          <p className="mt-1 text-xs leading-6 text-[#66736e]">{t(selectedModule.noteAr, selectedModule.noteEn)}</p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {(isAr ? selectedModule.fieldsAr : selectedModule.fieldsEn).map((field) => (
+              <div key={field} className="flex items-start gap-2 rounded-xl border border-black/10 bg-white p-3 text-sm text-[#26332e]">
+                <span className="mt-0.5 text-[#08794F]">•</span>
+                <span>{field}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-xs leading-6 text-amber-900">
+            {t("حقول العرض لا تعني اعتماد نموذج الإدخال النهائي. الحفظ والتعديل والأرشفة لا تُفعّل قبل ربط الخدمة المركزية والصلاحيات الخادمية.", "Displayed fields do not constitute approval of the final entry form. Create, update, and archive remain disabled until the central service and server-side permissions are connected.")}
+          </p>
         </div>
       </SectionCard>
 
