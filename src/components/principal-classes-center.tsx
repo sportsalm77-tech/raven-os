@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   DoorOpen, Search, Users, UserRound, CalendarDays, ClipboardList, Clock3,
@@ -40,12 +40,6 @@ export function PrincipalClassesCenter() {
   const isAr = lang === "ar";
   const [query, setQuery] = useState("");
   const [area, setArea] = useState<ClassArea>("overview");
-  const [selectedClass, setSelectedClass] = useState<string | null>(null);
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return []; // Search becomes live when the approved class directory is connected.
-  }, [query]);
   const currentArea = areas.find((item) => item.id === area) ?? areas[0];
   const BackIcon = isAr ? ChevronRight : ChevronLeft;
 
