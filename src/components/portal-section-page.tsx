@@ -3,6 +3,7 @@ import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
 import { PrincipalDecisionCenter, PrincipalOperationalPlan, PrincipalImpactCenter, PrincipalSchoolAffairsCenter } from "@/components/principal-management-centers";
+import { PrincipalClassesCenter } from "@/components/principal-classes-center";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
@@ -28,6 +29,9 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   }
   if (portal === "principal" && path === "/principal/school-affairs") {
     return <PortalShell portal="principal"><PrincipalSchoolAffairsCenter /></PortalShell>;
+  }
+  if (portal === "principal" && path === "/principal/classes") {
+    return <PortalShell portal="principal"><PrincipalClassesCenter /></PortalShell>;
   }
 
   return <PortalModuleWorkspace portal={portal} item={item} path={path} />;
