@@ -20,10 +20,10 @@ The source of truth for engine identifiers and metadata is `src/lib/raven-engine
 9. Smart Assistant Engine.
 10. Governance & Permissions Engine.
 11. Data Interoperability Engine.
-12. Educational Platform Connectivity Engine (Noor, Madrasati, Rafid).
-13. Raven External Tools Connectivity Engine (Tahdeeri, lesson preparation, absence export, evidence retrieval, import/export/reconciliation tools).
-14. Rafeen Ecosystem Connectivity Engine (Raven OS, Rafeen Store, Rafeen Professional Training & Development).
-15. Recommendations & Decision Support Engine.
+12. Recommendations & Decision Support Engine.
+13. Educational Platform Connectivity Engine (Noor, Madrasati, Rafid).
+14. Raven External Tools Connectivity Engine (Tahdeeri, lesson preparation, absence export, evidence retrieval, import/export/reconciliation tools).
+15. Rafeen Ecosystem Connectivity Engine (Raven OS, Rafeen Store, Rafeen Professional Training & Development).
 
 ## 3. Architectural boundaries
 - The Unified School Data Center remains the sole canonical school-data intake and governance source. Engines consume governed records or submit validated commands; they must not create competing master records.
