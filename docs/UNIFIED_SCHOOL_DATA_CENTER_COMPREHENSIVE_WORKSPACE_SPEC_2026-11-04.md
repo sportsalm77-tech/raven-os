@@ -68,7 +68,9 @@ Plans, programs, initiatives, committees, and procedures link to canonical staff
 Allowed existing-file types: DOC/DOCX, PDF, XLS/XLSX, PPT/PPTX. Capture filename, actual detected MIME/type, size, uploader, timestamps, academic year, category, linked module/entity, scan state, version, and archive state. Validate actual file signature; quarantine and scan; store securely; enforce tenant-scoped short-lived downloads. This is upload-only; document generation belongs to Raven Library.
 
 ## 5. Import, validation, and batch history
-- Initial structured import: XLS/XLSX only. CSV requires explicit owner approval. Word/PDF/PowerPoint are attachments, not structured imports.
+- File intake supports XLS/XLSX, DOC/DOCX, PDF, and PPT/PPTX. Excel is preferred for tables; Word/PDF/PowerPoint may be partially extracted where supported and must be reviewed with source references. OCR for scanned files requires separate approval.
+- Noor and Madrasati are intended external sources for authorized student and teacher imports; connector status remains Not connected until an official access route is verified and implemented.
+- The principal manages assignments, teams, committees, memberships, and responsibilities centrally.
 - One domain per batch in initial release.
 - Pipeline: authorization -> quarantine -> scan -> parse -> inspect -> map -> normalize -> validate -> match -> review -> preview -> approve -> commit -> distribute -> reconcile -> close.
 - Preview is side-effect-free.
@@ -155,3 +157,13 @@ A quality issue is not itself permission to edit the affected record. The review
 
 ## 12. Explicit non-goals in this phase
 No auth provider, database provider, migrations, real file upload, real import, live integrations, student/staff production data, production deployment, main-branch merge, or enabling writes is authorized by this specification.
+
+
+## 13. Source-path interaction model
+**A. Files:** Accept Excel, Word, PDF, and PowerPoint. Explain Excel is preferred for structured tables. Show extracted fields with source references for correction and review. Do not promise perfect extraction; OCR remains unavailable until separately approved. Do not enable a file picker until secure upload, scanning, storage, and tenant authorization exist.
+
+**B. Noor / Madrasati:** Show separate connector states as “Not connected” until official access and a real server connector are verified. Intended scope is permitted student and teacher data only. No fake connect/sync actions, credential fields, or timestamps. Discovery must record official mechanism, permission model, available fields, source terms, limits, pagination, retries, and conflict policy.
+
+**C. Principal entry:** Provide governed entry for assignments, teams, committees, memberships, responsibilities, and effective dates after identity, authorization, and canonical services exist. Link existing staff/classes; do not duplicate them.
+
+All three paths use the same tenant-scoped validation, review, approval, canonical commit, audit, and distribution services.
