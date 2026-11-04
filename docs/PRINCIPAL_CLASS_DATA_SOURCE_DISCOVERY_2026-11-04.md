@@ -93,3 +93,18 @@ Confirm the authoritative source(s) currently used by the institution for:
 - attendance.
 
 If these are maintained in an existing school system (for example, a school SIS or approved internal database), that source must be assessed before introducing any new store. No assumption is made here that any named external system provides an API or that Raven is authorized to access it.
+
+## Owner-approved architecture decision — 2026-11-04
+The owner has confirmed that **School Data Center (مركز البيانات المدرسية)** is the single central and authoritative source of school data and the primary data-entry center for the school.
+
+### Consequences for Raven OS
+- The School Data Center owns the canonical school data records and their lifecycle.
+- Other portals and centers (including Class Operations, Teacher, and Family) consume the authoritative records through approved, permission-checked services; they must not create competing master records or shadow directories.
+- A workflow may initiate a change from another authorized module only if it submits a governed command to the School Data Center's service boundary. The write is validated, authorized, audited, and committed by the central data service. This does not create a second source of truth.
+- Read models, summaries, and caches may be used only as derived, refreshable representations; they are not authoritative and must not become independent data-entry stores.
+- Each school record remains tenant-scoped. Centralization does not mean cross-school visibility: access is limited by trusted server-side tenant and role authorization.
+- The Class Operations Center must resolve class, student membership, class leader, teacher assignment, timetable, and related school directory information from the School Data Center's canonical records.
+- Attendance, behavior, and operational events must also have a defined canonical owner and approval lifecycle within the central data architecture before live writes are enabled. This decision establishes the single data-entry authority; it does not by itself specify every domain's workflow or permission matrix.
+
+### Still to be specified
+The internal design of the School Data Center must identify its domain modules, canonical identifiers, validation rules, approval workflows, change history, data import/synchronization rules, and service/API contract. No database or authentication provider is selected by this decision.
