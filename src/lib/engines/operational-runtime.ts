@@ -33,7 +33,7 @@ export type OperationalCommand<TInput, TOutput> = Readonly<{
   execute: (tx: RavenOperationalTransaction, actor: TrustedActor, input: TInput) => Promise<TOutput>;
 }>;
 
-function auditEvent(actor: TrustedActor, command: OperationalCommand<unknown, unknown>, outcome: AuditEventInput["outcome"], reasonCode?: string): AuditEventInput {
+function auditEvent<TInput, TOutput>(actor: TrustedActor, command: OperationalCommand<TInput, TOutput>, outcome: AuditEventInput["outcome"], reasonCode?: string): AuditEventInput {
   return createAuditEvent({
     eventType: `${command.engineId}:${command.operation}`,
     outcome,
