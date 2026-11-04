@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, CheckCircle2, CircleDot, Cpu, ExternalLink, LockKeyhole, Search } from "lucide-react";
+import { CheckCircle2, CircleDot, Cpu, LockKeyhole, Search } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { RAVEN_ENGINE_GROUPS, RAVEN_ENGINE_REGISTRY, type EngineDomain } from "@/lib/raven-engines";
 
