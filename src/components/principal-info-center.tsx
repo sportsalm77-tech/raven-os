@@ -35,7 +35,7 @@ const modules = [
 const moduleFields = [
   { id: "school", ar: "بيانات المدرسة", en: "School profile", fieldsAr: ["الاسم الرسمي للمدرسة", "الرمز المدرسي", "المرحلة ونوع المدرسة", "الإدارة التعليمية", "العام الدراسي", "المراحل والصفوف والفصول"], fieldsEn: ["Official school name", "School code", "School stage and type", "Education administration", "Academic year", "Stages, grades, and classes"], noteAr: "تبدأ البنية المدرسية قبل إدخال سجلات الأفراد.", noteEn: "Establish the school structure before entering people records." },
   { id: "staff", ar: "المعلمون والموظفون", en: "Teachers & staff", fieldsAr: ["الاسم وبيانات العرض", "الرقم الوظيفي (عند اعتماده)", "المسمى والتخصص", "حالة الارتباط بالمدرسة", "التكليفات والارتباطات", "فترة سريان الارتباط"], fieldsEn: ["Name and display details", "Staff number (when approved)", "Job title and specialty", "School membership status", "Assignments and memberships", "Membership effective dates"], noteAr: "الشخص سجل مستقل؛ والمهام والارتباطات علاقات مؤرخة.", noteEn: "A person is a canonical record; duties and memberships are dated relationships." },
-  { id: "students", ar: "الطلاب والفصول", en: "Students & classes", fieldsAr: ["الاسم ورقم الطالب المعتمد", "المرحلة والصف", "العام الدراسي", "عضوية الفصل وتاريخ بدايتها", "حالة القيد والنقل", "علاقة ولي الأمر الموثقة"], fieldsEn: ["Name and approved student number", "Stage and grade", "Academic year", "Class membership and start date", "Enrollment and transfer status", "Verified guardian relationship"], noteAr: "النقل ينشئ حركة عضوية جديدة ويحفظ السجل السابق.", noteEn: "A transfer creates a new membership event and preserves history." },
+  { id: "students", ar: "الطلاب والفصول", en: "Students & classes", fieldsAr: ["الاسم الرسمي وحالة التحقق", "رقم الطالب وفق المصدر المعتمد", "المرحلة والصف والعام الدراسي", "عضوية الفصل وتاريخ السريان", "حالة القيد وحركات النقل", "ولي الأمر وعلاقة الربط الموثقة"], fieldsEn: ["Official name and verification state", "Student number from approved source", "Stage, grade, and academic year", "Class membership and effective dates", "Enrollment status and transfer events", "Guardian and verified relationship"], noteAr: "ملف طالب مركزي واحد؛ التسجيل والعضوية والنقل أحداث مستقلة تحفظ التاريخ.", noteEn: "One canonical student profile; enrollment, membership, and transfer are distinct historical events." },
   { id: "tasks", ar: "التكليفات والمهام", en: "Assignments & tasks", fieldsAr: ["عنوان المهمة وتصنيفها", "المسؤول والمشاركون", "تاريخ البداية والاستحقاق", "الأولوية والحالة", "الشواهد المرتبطة", "مصدر الطلب وسجل المراجعة"], fieldsEn: ["Task title and category", "Owner and participants", "Start and due dates", "Priority and status", "Linked evidence", "Request source and review history"], noteAr: "مركز التكليفات يعرض ويرسل أوامر معتمدة؛ والمصدر المركزي يحفظ السجل.", noteEn: "The operational center displays and submits governed commands; the central service persists the record." },
   { id: "operations", ar: "البيانات التشغيلية", en: "Operational data", fieldsAr: ["الخطط وبنودها", "البرامج والمبادرات", "اللجان والأعضاء", "الإجراءات ومواعيدها", "المسؤولون والارتباطات", "الحالة والشواهد"], fieldsEn: ["Plans and plan items", "Programs and initiatives", "Committees and members", "Procedures and due dates", "Owners and relationships", "Status and evidence"], noteAr: "تُربط عناصر التنفيذ بالتكليفات المركزية بدل تكرارها.", noteEn: "Execution items link to canonical tasks instead of duplicating them." },
   { id: "files", ar: "الملفات والمرفقات", en: "Files & attachments", fieldsAr: ["اسم الملف ونوعه المكتشف", "الحجم وتاريخ الرفع", "الرافع وحالة الفحص", "القسم والسجل المرتبط", "العام الدراسي والتصنيف", "الإصدار والأرشفة"], fieldsEn: ["Filename and detected type", "Size and upload date", "Uploader and scan status", "Related module and record", "Academic year and category", "Version and archive state"], noteAr: "الرفع غير مفعل حتى اكتمال الفحص والتخزين الآمن والتحقق من الصلاحية.", noteEn: "Uploads remain disabled until scanning, secure storage, and authorization are implemented." },
@@ -84,6 +84,46 @@ const detailedScreens = {
       { ar: "الدور/المهمة", en: "Role/duty", typeAr: "ارتباط", typeEn: "Relationship", ruleAr: "يرتبط بسجل الشخص دون تكرار بياناته.", ruleEn: "References the person without duplicating their profile." },
       { ar: "الفصل/اللجنة/المهمة", en: "Class/committee/task", typeAr: "مرجع مرتبط", typeEn: "Linked reference", ruleAr: "يجب أن يكون ضمن المدرسة نفسها.", ruleEn: "Must belong to the same school." },
       { ar: "فترة السريان", en: "Effective period", typeAr: "بداية/نهاية", typeEn: "Start/end dates", ruleAr: "التغييرات قابلة للتدقيق زمنيًا.", ruleEn: "Changes remain auditable over time." },
+    ]},
+  ],
+  students: [
+    { groupAr: "الملف الأساسي للطالب", groupEn: "Student master profile", fields: [
+      { ar: "الاسم الرسمي بالعربية", en: "Official Arabic name", typeAr: "إلزامي", typeEn: "Required", ruleAr: "يحفظ مصدر الاسم وحالة التحقق؛ لا ينشأ ملف ثانٍ عند اختلاف الكتابة.", ruleEn: "Keep source and verification state; spelling differences must not create duplicate profiles." },
+      { ar: "الاسم بالإنجليزية", en: "English name", typeAr: "مشروط", typeEn: "Conditional", ruleAr: "يطلب عند الحاجة التشغيلية أو تفعيل المحتوى الإنجليزي.", ruleEn: "Required only when operationally needed or English content is enabled." },
+      { ar: "رقم الطالب الرسمي", en: "Official student number", typeAr: "مصدر معتمد", typeEn: "Approved source", ruleAr: "لا يُخترع ولا يُعتمد قبل تحديد الجهة ونطاق التفرد.", ruleEn: "Never invent; authority and uniqueness scope must be approved." },
+      { ar: "المعرف الداخلي", en: "Internal student ID", typeAr: "ينشأ خادميًا", typeEn: "Server-generated", ruleAr: "ثابت ولا يكشف بيانات شخصية.", ruleEn: "Stable and non-identifying." },
+      { ar: "حالة التحقق ومصدر البيانات", en: "Verification state and data source", typeAr: "بيانات نظامية", typeEn: "System metadata", ruleAr: "مستورد، مدخل، قيد المراجعة، موثق؛ مع حفظ المصدر.", ruleEn: "Imported, entered, under review, verified; preserve provenance." },
+    ]},
+    { groupAr: "القيد والتسجيل", groupEn: "Enrollment", fields: [
+      { ar: "العام الدراسي", en: "Academic year", typeAr: "ارتباط إلزامي", typeEn: "Required relation", ruleAr: "يجب أن يكون العام تابعًا للمدرسة نفسها.", ruleEn: "Must belong to the same school." },
+      { ar: "المرحلة والصف", en: "Stage and grade", typeAr: "ارتباط مرجعي", typeEn: "Reference relation", ruleAr: "الصف تابع للمرحلة المعتمدة.", ruleEn: "Grade must belong to the approved stage." },
+      { ar: "تاريخ بداية القيد", en: "Enrollment start date", typeAr: "تاريخ إلزامي", typeEn: "Required date", ruleAr: "يحدد بداية سريان التسجيل.", ruleEn: "Defines the enrollment effective date." },
+      { ar: "حالة القيد", en: "Enrollment status", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "قيد المراجعة، نشط، منقول، منسحب، مكتمل؛ انتقالات مضبوطة.", ruleEn: "Pending, active, transferred, withdrawn, completed; governed transitions." },
+      { ar: "حالة الاستحقاق/التحقق", en: "Eligibility/verification state", typeAr: "حسب السياسة", typeEn: "Policy-dependent", ruleAr: "لا تمنح حالة نشطة قبل اكتمال المتطلبات المعتمدة.", ruleEn: "Do not activate before approved requirements are met." },
+    ]},
+    { groupAr: "عضوية الفصل", groupEn: "Class membership", fields: [
+      { ar: "الفصل الدراسي", en: "Class", typeAr: "مرجع إلزامي", typeEn: "Required reference", ruleAr: "يجب أن يتبع المدرسة والعام والصف المحددين.", ruleEn: "Must match school, academic year, and grade." },
+      { ar: "تاريخ بداية العضوية", en: "Membership start date", typeAr: "تاريخ إلزامي", typeEn: "Required date", ruleAr: "تاريخ بداية مستقل عن تاريخ إنشاء الملف.", ruleEn: "Distinct from the profile creation date." },
+      { ar: "تاريخ نهاية العضوية", en: "Membership end date", typeAr: "مشروط", typeEn: "Conditional", ruleAr: "لا يسبق تاريخ البداية؛ يحفظ العضوية السابقة.", ruleEn: "Cannot precede start; preserves prior membership." },
+      { ar: "حالة العضوية", en: "Membership status", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "عضوية فعالة واحدة وفق سياسة التداخل المعتمدة.", ruleEn: "One active membership under approved overlap policy." },
+    ]},
+    { groupAr: "النقل والحركة الطلابية", groupEn: "Transfers and student movement", fields: [
+      { ar: "نوع الحركة", en: "Movement type", typeAr: "قائمة مرجعية", typeEn: "Reference list", ruleAr: "نقل داخلي، نقل خارجي، انسحاب، عودة؛ وفق السياسة.", ruleEn: "Internal transfer, external transfer, withdrawal, return; policy-controlled." },
+      { ar: "الفصل السابق والجديد", en: "Previous and new class", typeAr: "ارتباطان", typeEn: "Two relations", ruleAr: "إغلاق العضوية السابقة وفتح عضوية جديدة دون محو التاريخ.", ruleEn: "Close prior membership and create a new one without erasing history." },
+      { ar: "تاريخ الحركة وسببها", en: "Movement date and reason", typeAr: "تاريخ وسبب", typeEn: "Date and reason", ruleAr: "السبب محدود الصلاحية ولا يظهر لكل الأدوار.", ruleEn: "Reason is restricted and not visible to every role." },
+      { ar: "الجهة المنفذة والمعتمدة", en: "Performed and approving actors", typeAr: "سجل تدقيق", typeEn: "Audit record", ruleAr: "لا نفترض المعتمد؛ يحدد بمصفوفة الصلاحيات.", ruleEn: "Approver is not assumed; defined by the permission matrix." },
+    ]},
+    { groupAr: "ولي الأمر والخصوصية", groupEn: "Guardian relationship and privacy", fields: [
+      { ar: "مرجع ولي الأمر", en: "Guardian reference", typeAr: "ملف مستقل", typeEn: "Separate profile", ruleAr: "لا تكرر بيانات الاتصال داخل ملف الطالب.", ruleEn: "Do not duplicate contact details in the student profile." },
+      { ar: "صلة القرابة/الصفة", en: "Relationship type", typeAr: "قائمة مرجعية", typeEn: "Reference list", ruleAr: "قيمة مضبوطة وفق سياسة المدرسة.", ruleEn: "Controlled value under school policy." },
+      { ar: "حالة التحقق من العلاقة", en: "Relationship verification", typeAr: "حالة نظامية", typeEn: "System state", ruleAr: "بوابة الأسرة لا ترى الطالب قبل تحقق العلاقة وصلاحية الخادم.", ruleEn: "Family portal cannot access the student before relationship verification and server authorization." },
+      { ar: "فترة سريان العلاقة", en: "Relationship effective dates", typeAr: "تواريخ", typeEn: "Dates", ruleAr: "التغيير أو الإلغاء يحفظ في سجل تاريخي.", ruleEn: "Changes or revocation remain in history." },
+    ]},
+    { groupAr: "الاستيراد والمطابقة وجودة السجلات", groupEn: "Import, matching, and record quality", fields: [
+      { ar: "مصدر الملف ودفعة الاستيراد", en: "Source file and import batch", typeAr: "بيانات نظامية", typeEn: "System metadata", ruleAr: "يحفظ الرافع والبصمة ونسخة خريطة الأعمدة.", ruleEn: "Preserve uploader, checksum, and mapping version." },
+      { ar: "مطابقة الأعمدة", en: "Column mapping", typeAr: "معاينة إلزامية", typeEn: "Required preview", ruleAr: "لا يعتمد ترتيب الصفوف كمعرف للطالب.", ruleEn: "Row order is never treated as student identity." },
+      { ar: "نتيجة التحقق", en: "Validation result", typeAr: "لكل سجل", typeEn: "Per record", ruleAr: "سليم، ناقص، غير صالح، مشتبه بالتكرار، متعارض.", ruleEn: "Valid, incomplete, invalid, duplicate-suspected, conflicting." },
+      { ar: "قرار المطابقة", en: "Match decision", typeAr: "مراجعة بشرية", typeEn: "Human review", ruleAr: "لا دمج تلقائي ولا استبدال صامت للبيانات الأساسية.", ruleEn: "No automatic merge or silent overwrite of master records." },
     ]},
   ],
 };
@@ -215,9 +255,9 @@ export function PrincipalInfoCenter() {
         </div>
       </SectionCard>
 
-      {(activeModule === "school" || activeModule === "staff") && (
+      {(activeModule === "school" || activeModule === "staff" || activeModule === "students") && (
         <SectionCard
-          title={t(activeModule === "school" ? "تفاصيل شاشة بيانات المدرسة" : "تفاصيل شاشة دليل المعلمين والموظفين", activeModule === "school" ? "School profile screen specification" : "Teachers & staff directory screen specification")}
+          title={t(activeModule === "school" ? "تفاصيل شاشة بيانات المدرسة" : activeModule === "staff" ? "تفاصيل شاشة دليل المعلمين والموظفين" : "منظومة بيانات الطلاب والتسجيل", activeModule === "school" ? "School profile screen specification" : activeModule === "staff" ? "Teachers & staff directory screen specification" : "Student data and enrollment system")}
           description={t("مجموعات مترابطة مع نوع الحقل وقاعدة التحقق؛ هذه مواصفات عرض وليست نموذج حفظ نشطًا.", "Related field groups with types and validation rules; this is a specification view, not an active save form.")}
         >
           <div className="space-y-4">
