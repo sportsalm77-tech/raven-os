@@ -9,6 +9,8 @@ import { createAuditEvent, type AuditEventInput } from "@/lib/security/audit";
 
 export type RavenOperationalTransaction = Readonly<{
   appendAudit(event: AuditEventInput): Promise<void>;
+  /** Atomically reserve a scoped idempotency key; false means it was already used. */
+  claimIdempotency(input: Readonly<{ key: string; actorId: string; schoolId: string; engineId: string; operation: string }>): Promise<boolean>;
   // Concrete repositories are supplied by the approved persistence adapter.
   repository<TRepository>(name: "school-data" | "decisions-assignments" | "workflow-followup" | "evidence-impact" | "operational-plans"): TRepository;
 }>;
@@ -64,6 +66,14 @@ export async function runOperationalCommand<TInput, TOutput>(
   if (!command.correlationId.trim() || !command.idempotencyKey.trim()) throw new Error("RAVEN_COMMAND_METADATA_REQUIRED");
 
   return unitOfWork.transaction(async (tx) => {
+    const claimed = await tx.claimIdempotency({
+      key: command.idempotencyKey,
+      actorId: decision.actor.subjectId,
+      schoolId: command.schoolId,
+      engineId: command.engineId,
+      operation: command.operation,
+    });
+    if (!claimed) throw new Error("RAVEN_DUPLICATE_COMMAND");
     await tx.appendAudit(auditEvent(decision.actor, command, "accepted"));
     const output = await command.execute(tx, decision.actor, command.input);
     await tx.appendAudit(auditEvent(decision.actor, command, "completed"));
