@@ -35,14 +35,14 @@ export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"1 · القيادة المدرسية",en:"1 · School Leadership",items:[
   {to:"/principal",ar:"المؤشرات التفاعلية",en:"Interactive Indicators",icon:BarChart3,end:true},
   {to:"/principal/info-center",ar:"مركز البيانات المدرسية الموحد",en:"Unified School Data Center",icon:Info},
-  {to:"/principal/assignments",ar:"مركز التكليفات والمهام",en:"Assignments & Tasks",icon:ClipboardCheck},
+  {to:"/principal/operational-plan",ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",icon:ListChecks},
   {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement",icon:Target},
   {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs",icon:Landmark},
   {to:"/principal/classes",ar:"مركز الفصول المدرسية",en:"Classes Center",icon:DoorOpen},
  ]},
- {ar:"مركز القرار الإداري",en:"Administrative Decision Center",items:[
-  {to:"/principal/decision-center",ar:"مركز القرار الإداري",en:"Administrative Decision Center",icon:Landmark,end:true},
-  {to:"/principal/operational-plan",ar:"الخطة التشغيلية (قسم فرعي)",en:"Operational Plan (Subsection)",icon:ListChecks},
+ {ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",items:[
+  {to:"/principal/decision-center",ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",icon:Landmark,end:true},
+  {to:"/principal/assignments",ar:"سجل التكليفات ومتابعة تنفيذها",en:"Assignments Register & Follow-up",icon:ClipboardCheck},
  ]},
  {ar:"2 · شؤون المعلمين و3 · شؤون الطلاب",en:"2 · Teachers & Students",items:[
   {to:"/principal/teachers",ar:"شؤون المعلمين",en:"Teacher Affairs",icon:UsersRound},
