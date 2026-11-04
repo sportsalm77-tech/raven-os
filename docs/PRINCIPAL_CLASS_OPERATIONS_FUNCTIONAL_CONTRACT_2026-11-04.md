@@ -129,3 +129,10 @@ Gate E — Verification: run automated security tests, build/lint, browser flows
 Gate F — Controlled release: explicit approval before merge or deployment.
 
 No auth provider, database, migration, or external integration is selected by this contract.
+
+## Central data authority — owner-approved decision (2026-11-04)
+The School Data Center (مركز البيانات المدرسية) is the single authoritative source and primary data-entry center for school data.
+
+For this contract, class records, student master data and class membership, staff/school membership, class-leader assignments, teacher assignments, and approved timetable data must be read from canonical School Data Center records. Other centers may initiate an authorized workflow command, but the central service owns validation, authorization, audit, and persistence. No duplicate class/student/staff master-data stores are permitted. Any cache or read model is derived and non-authoritative.
+
+This does not itself approve a database/auth provider, external-system integration, or live operational writes. Attendance and behavior event ownership, approval roles, and their exact placement in the central data architecture must be specified before enabling those writes.
