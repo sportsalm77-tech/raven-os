@@ -71,6 +71,17 @@ export function PrincipalOperationalPlan() {
       <div className="rounded-xl border border-emerald-700/20 bg-emerald-50/60 p-4 text-sm leading-7 text-emerald-950">
         {isAr ? "الترابط المعتمد: هدف ← خطة ← مبادرة أو برنامج ← إجراء أو تكليف مرتبط ← تنفيذ ← شاهد ← متابعة وقياس أثر. تظل سجلات القرارات والتكليفات في مركزها الأصلي، ويُحفظ هنا مرجع الربط فقط." : "Approved chain: objective → plan → initiative or program → linked action or assignment → execution → evidence → follow-up and impact. Decision and assignment records remain in their source center; this center stores their references only."}
       </div>
+      <SectionCard title={isAr ? "التوليد الذكي للخطة" : "Intelligent Plan Generation"} description={isAr ? "عندما يحتاج المدير إلى خطة، يطلب من رافين توليد مسودة مترابطة اعتمادًا على البيانات المعتمدة من مركز البيانات المدرسية ومركز القرارات والتكليفات الإدارية وسائر الأقسام ذات العلاقة." : "When the principal needs a plan, Raven can be asked to generate a connected draft from approved data in the Unified School Data Center, Administrative Decisions & Assignments Center, and other relevant sections."}>
+        <div className="flex flex-col gap-3 rounded-xl border border-emerald-700/20 bg-emerald-50/50 p-4 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-3xl text-sm leading-7 text-[var(--foreground)]">
+            {isAr ? "يحلل النظام المدخلات المتاحة، ويكشف النواقص والتعارضات، ثم يقترح الأهداف والمبادرات والبرامج والمؤشرات والمسؤوليات والجدول الزمني. الناتج مسودة للمراجعة؛ ولا يعتمد أو يصدر تكليفات تلقائيًا." : "Raven analyzes available inputs, identifies gaps and conflicts, then proposes objectives, initiatives, programs, indicators, ownership, and timelines. The result is a reviewable draft; it is not approved and does not issue assignments automatically."}
+          </div>
+          <Link href="/principal/operational-plan/management" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[#08794F] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#066440]">
+            {isAr ? "الانتقال إلى توليد الخطة" : "Go to plan generation"} <ArrowLeft size={16} className="ms-2"/>
+          </Link>
+        </div>
+        <p className="mt-3 text-xs leading-6 text-[var(--muted)]">{isAr ? "التوليد الفعلي يتطلب محركًا متصلًا بمصادر البيانات والصلاحيات وسجل التدقيق. هذا المسار يوضح الوظيفة المستهدفة ولا ينفذ توليدًا وهميًا." : "Live generation requires a connected engine, governed data sources, authorization, and audit logging. This entry describes the intended capability and does not simulate generation."}</p>
+      </SectionCard>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {branches.map(({ href, icon: Icon, ar, en, detailAr, detailEn }) => (
           <Link key={href} href={href} className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 transition hover:border-emerald-600/40 hover:bg-emerald-50/30">
