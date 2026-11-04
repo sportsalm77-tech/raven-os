@@ -6,7 +6,7 @@ Status: Design contract only; no live import is enabled.
 The Unified School Data Center remains the sole canonical school-data source and primary entry point. This workflow is a module within that center, not a new center. Imports must write through canonical domain services; consumer portals do not maintain competing master records.
 
 ## Supported scope
-Initial structured imports: XLS/XLSX only. CSV requires a separate owner decision. Word, PDF, and PowerPoint remain uploaded source attachments, not structured imports. Initial domains: school structure, staff, students, class memberships, assignments/tasks. Operational domains are added only after their field rules and approval authority are defined.
+File intake supports XLS/XLSX, DOC/DOCX, PDF, and PPT/PPTX. Excel is preferred for structured tables; Word/PDF/PowerPoint may be partially extracted where supported and must be reviewed with source references. OCR for scanned files is not assumed. CSV requires separate owner approval. Initial domains: school structure, staff, students, class memberships, assignments/tasks. Operational domains are added only after their field rules and approval authority are defined.
 
 ## Pipeline
 1. Authorize the actor and resolve school scope from trusted server session.
@@ -87,3 +87,18 @@ Canonical commit is separate from consumer delivery. Publish versioned events on
 
 ## Activation gate
 This is a specification only. No real import, file parsing, database writes, or student/staff data processing is enabled. Activation requires approved owner decisions, trusted identity, server-side authorization, tenant isolation, secure file pipeline, canonical services, audit, idempotency, backup/recovery, and passing acceptance tests. No provider choice, migration, merge to main, or deployment is authorized.
+
+
+## External source imports: Noor and Madrasati
+Noor and Madrasati are intended sources for authorized student and teacher imports. This contract does not assert that a connector, API, credential, or permission currently exists.
+- Use only official authorized integration mechanisms (documented API, formally approved export/import, or another formally authorized channel).
+- Do not scrape authenticated pages, collect passwords, bypass MFA/anti-bot controls, or automate browser sessions without explicit security/legal approval.
+- Scope every sync to the authenticated school tenant and minimum approved fields.
+- Preserve source system, permitted external reference, source update time, sync run ID, field provenance, and conflict decision.
+- Preview and audit synchronization. Never silently overwrite canonical values; source precedence is field-specific and requires approval.
+- Store secrets only in approved server-side secret storage, never in client code, repository files, logs, or chat.
+- Handle throttling, pagination, partial failures, retries, and reconciliation without duplicates.
+- Fields not exposed or authorized by the source remain unavailable.
+
+## Principal-managed entry
+Assignments, teams, committees, memberships, responsibilities, and effective dates are school-owned records entered and maintained by authorized school leadership in this center. They reference canonical staff, class, and academic-year records and use the same validation, approval, audit, and commit safeguards.
