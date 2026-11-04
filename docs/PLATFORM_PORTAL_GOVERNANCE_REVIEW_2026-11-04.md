@@ -70,6 +70,8 @@ The following remain unimplemented or unverified:
 
 **Disposition: Platform interface governance increment committed; verification pending.**
 
+CI revalidation trigger: this report update is committed on the rescue branch to request a fresh push-triggered verification of the unchanged Platform portal implementation. The resulting run must be checked before Build/Lint can be marked passed.
+
 The five Platform destinations are structurally covered by dedicated descriptive workspaces, with section-specific governance boundaries and activation checks. This is an interface and governance foundation, not a completed operational administration system and not production-ready.
 
 Next acceptance gate:
