@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
@@ -10,10 +11,10 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   if (!item || item.end) notFound();
 
   if (portal === "principal" && path === "/principal/info-center") {
-    return <PrincipalInfoCenter />;
+    return <PortalShell portal="principal"><PrincipalInfoCenter /></PortalShell>;
   }
   if (portal === "principal" && path === "/principal/assignments") {
-    return <PrincipalAssignmentsCenter />;
+    return <PortalShell portal="principal"><PrincipalAssignmentsCenter /></PortalShell>;
   }
 
   return <PortalModuleWorkspace portal={portal} item={item} path={path} />;
