@@ -41,7 +41,10 @@ export const PRINCIPAL_NAV: NavGroup[] = [
   {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs",icon:Landmark},
   {to:"/principal/classes",ar:"مركز الفصول المدرسية",en:"Classes Center",icon:DoorOpen},
  ]},
- {ar:"مركز القرار الإداري",en:"Administrative Decision Center",items:[\n  {to:"/principal/operational-plan",ar:"الخطة التشغيلية (قسم فرعي)",en:"Operational Plan (Subsection)",icon:ListChecks},\n ]},\n {ar:"2 · شؤون المعلمين و3 · شؤون الطلاب",en:"2 · Teachers & Students",items:[
+ {ar:"مركز القرار الإداري",en:"Administrative Decision Center",items:[
+  {to:"/principal/operational-plan",ar:"الخطة التشغيلية (قسم فرعي)",en:"Operational Plan (Subsection)",icon:ListChecks},
+ ]},
+ {ar:"2 · شؤون المعلمين و3 · شؤون الطلاب",en:"2 · Teachers & Students",items:[
   {to:"/principal/teachers",ar:"شؤون المعلمين",en:"Teacher Affairs",icon:UsersRound},
   {to:"/principal/students",ar:"شؤون الطلاب",en:"Student Affairs",icon:GraduationCap},
  ]},
