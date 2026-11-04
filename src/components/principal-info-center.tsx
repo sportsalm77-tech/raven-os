@@ -135,6 +135,16 @@ const fileTypes = [
   { Icon: BookOpen, ar: "PowerPoint", en: "PowerPoint", ext: ".ppt · .pptx" },
 ];
 
+const importStages = [
+  { ar: "استلام الملف وفحصه", en: "Receive and scan file", detailAr: "التحقق من النوع الفعلي والحجم وفحص السلامة وعزل الملف قبل القراءة.", detailEn: "Validate actual file type and size, scan it, and quarantine before parsing." },
+  { ar: "اختيار نطاق البيانات", en: "Choose data domain", detailAr: "مدرسة، معلمون، طلاب، فصول، تكليفات أو بيانات تشغيلية ضمن مدرسة المستخدم.", detailEn: "School, staff, students, classes, assignments, or operational data within the actor's school scope." },
+  { ar: "مطابقة الأعمدة", en: "Map columns", detailAr: "معاينة الأعمدة وربطها بالحقول المعتمدة وتحديد الأعمدة المستبعدة صراحة.", detailEn: "Preview columns, map approved fields, and explicitly exclude unused columns." },
+  { ar: "التحقق وكشف التعارض", en: "Validate and detect conflicts", detailAr: "فحص الإلزاميات والتواريخ والعلاقات والتكرار والتعارض دون تعديل السجلات.", detailEn: "Check required values, dates, relationships, duplicates, and conflicts without mutating records." },
+  { ar: "المعاينة وقرار المراجع", en: "Preview and reviewer decision", detailAr: "عرض ما سينشأ أو يتحدث أو يرفض؛ الحالات المشتبهة تحتاج مراجعة بشرية.", detailEn: "Show exact creates, updates, and rejections; suspected matches require human review." },
+  { ar: "الاعتماد والإدخال", en: "Approve and commit", detailAr: "اعتماد مصرح به، تنفيذ قابل لإعادة المحاولة دون تكرار، وسجل تدقيق لكل نتيجة.", detailEn: "Authorized commit, idempotent retries, and an audit record for every outcome." },
+  { ar: "المطابقة والتوزيع", en: "Reconcile and distribute", detailAr: "تحديث المراكز المستفيدة ومراقبة نجاح التسليم أو التعثر وإعادة المحاولة.", detailEn: "Refresh consuming centers and track delivery, failures, and retries." },
+];
+
 const indicators = [
   { ar: "إجمالي السجلات", en: "Total records" },
   { ar: "بيانات مكتملة", en: "Complete records" },
@@ -286,6 +296,39 @@ export function PrincipalInfoCenter() {
           </div>
         </SectionCard>
       )}
+
+      <SectionCard
+        title={t("مسار الاستيراد والتحقق الموحد", "Unified import & validation workflow")}
+        description={t(
+          "مسار واحد لجميع مجالات البيانات؛ الملف لا يغيّر السجلات المعتمدة قبل المعاينة والاعتماد المصرح به.",
+          "One workflow for every data domain; a file cannot change canonical records before preview and authorized approval."
+        )}
+      >
+        <div className="space-y-3">
+          {importStages.map((stage, index) => (
+            <div key={stage.en} className="flex gap-3 rounded-xl border border-black/10 p-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#08794F]/10 text-sm font-extrabold text-[#08794F]">{index + 1}</div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-[#111A18]">{t(stage.ar, stage.en)}</p>
+                <p className="mt-1 text-xs leading-6 text-[#66736e]">{t(stage.detailAr, stage.detailEn)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <div className="rounded-xl border border-black/10 bg-[#F5F3EC] p-3">
+            <p className="text-sm font-bold text-[#26332e]">{t("نتائج كل سجل", "Per-record outcomes")}</p>
+            <p className="mt-1 text-xs leading-6 text-[#66736e]">{t("جاهز · ناقص · غير صالح · مشتبه بالتكرار · متعارض · مرفوض", "Ready · incomplete · invalid · duplicate candidate · conflict · rejected")}</p>
+          </div>
+          <div className="rounded-xl border border-black/10 bg-[#F5F3EC] p-3">
+            <p className="text-sm font-bold text-[#26332e]">{t("حدود الاعتماد", "Commit safeguards")}</p>
+            <p className="mt-1 text-xs leading-6 text-[#66736e]">{t("لا دمج تلقائي، لا استبدال صامت، لا اعتماد دون صلاحية وسجل تدقيق.", "No automatic merge, no silent overwrite, and no commit without authorization and audit.")}</p>
+          </div>
+        </div>
+        <div className="mt-3 rounded-xl border border-amber-300/70 bg-amber-50 p-3 text-xs leading-6 text-amber-900">
+          {t("المسار موثق كتصميم فقط؛ الاستيراد الفعلي ومعاينة الملفات والاعتماد غير متصلة حتى تنفيذ خدمات الخادم والأمان.", "This workflow is a design specification only; real parsing, preview, and commit remain disabled until server and security services are implemented.")}
+        </div>
+      </SectionCard>
 
       <SectionCard
         title={t("رفع الملفات الموجودة", "Upload existing files")}
