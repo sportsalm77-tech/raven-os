@@ -34,7 +34,7 @@ export const PLATFORM_NAV: NavGroup[] = [
 export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"1 · القيادة المدرسية",en:"1 · School Leadership",items:[
   {to:"/principal",ar:"المؤشرات التفاعلية",en:"Interactive Indicators",icon:BarChart3,end:true},
-  {to:"/principal/info-center",ar:"مركز المعلومات المدرسية",en:"School Information Center",icon:Info},
+  {to:"/principal/info-center",ar:"مركز البيانات المدرسية الموحد",en:"Unified School Data Center",icon:Info},
   {to:"/principal/assignments",ar:"مركز التكليفات والمهام",en:"Assignments & Tasks",icon:ClipboardCheck},
   {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement",icon:Target},
   {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs",icon:Landmark},
