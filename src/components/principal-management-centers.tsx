@@ -29,12 +29,12 @@ function CenterLink({ href, icon: Icon, ar, en }: {
 export function PrincipalDecisionCenter() {
   const { isAr } = useCopy();
   const stages = isAr
-    ? ["تحديد القضية والهدف", "جمع المعلومات والشواهد", "تحليل البدائل والمخاطر", "اعتماد القرار وتحديد المسؤوليات", "متابعة التنفيذ وقياس الأثر"]
-    : ["Define the issue and objective", "Gather information and evidence", "Assess options and risks", "Approve the decision and assign ownership", "Follow execution and measure impact"];
+    ? ["القرارات الإدارية والتعاميم والخطابات", "التكليفات الإدارية وتحديد المسؤولين", "ورش العمل وبرامج التطوير المهني", "الزيارات الميدانية والمتابعة", "الشواهد والإغلاق والأرشفة"]
+    : ["Administrative decisions, circulars, and letters", "Administrative assignments and ownership", "Workshops and professional development", "Field visits and follow-up", "Evidence, closure, and archiving"];
   return (
     <div className="space-y-6">
-      <PageHead icon={Landmark} eyebrow="RAVEN OS · PRINCIPAL · DECISION" title={isAr ? "مركز القرار الإداري" : "Administrative Decision Center"} description={isAr ? "المساحة المركزية لتحويل احتياج المدرسة إلى قرار موثق، وتكليف قابل للمتابعة، وشاهد، وأثر قابل للقياس." : "The central workspace for turning a school need into a documented decision, accountable assignment, evidence, and measurable impact."}/>
-      <SectionCard title={isAr ? "دورة القرار" : "Decision lifecycle"} description={isAr ? "تسلسل العمل المعتمد؛ لا تمثل هذه المراحل إجراءات إلكترونية مفعلة بعد." : "The approved workflow; these stages are not yet live electronic actions."}>
+      <PageHead icon={Landmark} eyebrow="RAVEN OS · PRINCIPAL · ADMINISTRATIVE ACTIONS" title={isAr ? "مركز القرارات والتكليفات الإدارية" : "Administrative Decisions & Assignments Center"} description={isAr ? "المركز الموحد لجميع الإجراءات الإدارية التي يصدرها مدير المدرسة داخل المنصة والمدرسة، من القرار والتكليف إلى المتابعة والتوثيق والإغلاق." : "The unified center for administrative actions issued by the principal, from decisions and assignments to follow-up, evidence, and closure."}/>
+      <SectionCard title={isAr ? "دورة الإجراء الإداري" : "Administrative action lifecycle"} description={isAr ? "يشمل القرارات والتعاميم والخطابات والورش والبرامج والزيارات والتكليفات." : "Covers decisions, circulars, letters, workshops, programs, visits, and assignments."}>
         <ol className="grid gap-3 md:grid-cols-5">
           {stages.map((stage, i) => <li key={stage} className="rounded-xl border border-[var(--border)] p-4">
             <span className="mb-3 grid h-8 w-8 place-items-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-800">{i + 1}</span>
@@ -43,13 +43,13 @@ export function PrincipalDecisionCenter() {
         </ol>
       </SectionCard>
       <div className="grid gap-4 md:grid-cols-2">
-        <CenterLink href="/principal/info-center" icon={FileText} ar="مركز المعلومات والشواهد" en="Information & Evidence Center"/>
-        <CenterLink href="/principal/assignments" icon={ClipboardCheck} ar="التكليفات ومتابعة التنفيذ" en="Assignments & Execution Follow-up"/>
-        <CenterLink href="/principal/operational-plan" icon={ListChecks} ar="الخطة التشغيلية — قسم فرعي" en="Operational Plan — Subsection"/>
+        <CenterLink href="/principal/assignments" icon={ClipboardCheck} ar="سجل التكليفات الإدارية" en="Administrative Assignments Register"/>
+        <CenterLink href="/principal/operational-plan" icon={ListChecks} ar="الارتباط بالخطة التشغيلية" en="Link to Operational Plan"/>
+        <CenterLink href="/principal/info-center" icon={FileText} ar="البيانات والشواهد المعتمدة" en="Approved Data & Evidence"/>
         <CenterLink href="/principal/impact" icon={Gauge} ar="قياس الأثر والتحسين" en="Impact Measurement & Improvement"/>
       </div>
-      <SectionCard title={isAr ? "سجل القرارات" : "Decision register"} description={isAr ? "ستظهر القرارات بعد ربط مصدر البيانات وخدمة الاعتماد وسجل التدقيق." : "Decisions will appear after connecting the data source, approval service, and audit log."}>
-        <EmptyState title={isAr ? "لا توجد قرارات متصلة" : "No connected decisions"} description={isAr ? "لا توجد بيانات افتراضية أو قرارات تجريبية. لن تتاح إضافة قرار أو اعتماده حتى تتصل الهوية والصلاحيات والحفظ الخادمي." : "No sample data or demo decisions are shown. Decision creation and approval remain unavailable until identity, permissions, and server persistence are connected."}/>
+      <SectionCard title={isAr ? "سجل القرارات والإجراءات" : "Decisions & Actions Register"} description={isAr ? "ستظهر السجلات الفعلية بعد ربط مصدر البيانات وخدمة الاعتماد وسجل التدقيق." : "Live records will appear after connecting the data source, approval service, and audit log."}>
+        <EmptyState title={isAr ? "لا توجد سجلات متصلة" : "No connected records"} description={isAr ? "لا توجد بيانات أو قرارات تجريبية. إنشاء القرار أو إصداره أو اعتماده غير متاح حتى تتصل الهوية والصلاحيات والحفظ الخادمي." : "No sample records or demo decisions. Creating or approving actions remains unavailable until identity, permissions, and server persistence are connected."}/>
       </SectionCard>
     </div>
   );
@@ -57,26 +57,38 @@ export function PrincipalDecisionCenter() {
 
 export function PrincipalOperationalPlan() {
   const { isAr } = useCopy();
-  const domains = [
-    { icon: Target, ar: "الأهداف ومؤشرات الأداء", en: "Objectives & Performance Indicators", detailAr: "تعريف الهدف ومصدر المؤشر وخط الأساس والمستهدف.", detailEn: "Define the objective, indicator source, baseline, and target." },
-    { icon: Workflow, ar: "المبادرات والإجراءات", en: "Initiatives & Actions", detailAr: "ربط المبادرة بالإجراء والنتيجة المتوقعة.", detailEn: "Link each initiative to actions and expected outcomes." },
-    { icon: Users, ar: "المسؤولون والجداول الزمنية", en: "Owners & Timelines", detailAr: "تحديد المسؤوليات والفترات بعد اعتماد التكليف.", detailEn: "Assign ownership and timelines after assignment approval." },
-    { icon: FileText, ar: "الشواهد ومراجعة الإنجاز", en: "Evidence & Progress Review", detailAr: "ربط الشواهد بمصدرها والتحقق منها قبل الاحتساب.", detailEn: "Link evidence to its source and validate it before counting progress." },
+  const branches = [
+    { href: "/principal/operational-plan/management", icon: Target, ar: "إدارة الخطة التشغيلية", en: "Operational Plan Management", detailAr: "إنشاء الخطة يدويًا أو توليدها ذكيًا، ثم مراجعتها واعتماد نسختها وتحديثها.", detailEn: "Create manually or generate intelligently, then review, approve, and maintain the plan." },
+    { href: "/principal/operational-plan/follow-up", icon: ClipboardCheck, ar: "متابعة الخطة التشغيلية", en: "Operational Plan Follow-up", detailAr: "متابعة التنفيذ والإنجاز والتأخر والمسؤوليات والشواهد والتقارير.", detailEn: "Track execution, progress, delays, ownership, evidence, and reports." },
+    { href: "/principal/operational-plan/development", icon: Activity, ar: "الخطة التطويرية", en: "Development Plan", detailAr: "تحديد فرص التحسين والأولويات والمستهدفات ومشروعات التطوير.", detailEn: "Define improvement opportunities, priorities, targets, and development projects." },
+    { href: "/principal/operational-plan/alternatives", icon: Workflow, ar: "الخطط البديلة", en: "Contingency Plans", detailAr: "خطة بديلة مرتبطة بكل خطة أصلية مع سبب التفعيل وشروط العودة.", detailEn: "A contingency plan linked to each original plan, with activation and return criteria." },
+    { href: "/principal/operational-plan/initiatives", icon: Sparkles, ar: "مبادرات الخطة التشغيلية", en: "Operational Plan Initiatives", detailAr: "إدارة المبادرات وربط كل مبادرة بهدف ومؤشر ومسؤول وشواهد.", detailEn: "Manage initiatives linked to objectives, indicators, owners, and evidence." },
+    { href: "/principal/operational-plan/programs", icon: BookOpenCheck, ar: "برامج الخطة التشغيلية", en: "Operational Plan Programs", detailAr: "بناء البرامج والأنشطة التنفيذية ومواعيدها ومخرجاتها وقياسها.", detailEn: "Build operational programs and activities with schedules, outputs, and measures." },
   ];
   return (
     <div className="space-y-6">
-      <PageHead icon={ListChecks} eyebrow="RAVEN OS · PRINCIPAL · DECISION SUBSECTION" title={isAr ? "الخطة التشغيلية" : "Operational Plan"} description={isAr ? "قسم فرعي داخل مركز القرار الإداري، وليس مركزًا مستقلًا ضمن المراكز الرئيسية." : "A subsection within the Administrative Decision Center, not a separate primary center."}/>
-      <Link href="/principal/decision-center" className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--surface)]">
-        {isAr ? "العودة إلى مركز القرار الإداري" : "Back to Administrative Decision Center"} <ArrowLeft size={16}/>
-      </Link>
+      <PageHead icon={ListChecks} eyebrow="RAVEN OS · PRINCIPAL · SCHOOL LEADERSHIP" title={isAr ? "مركز الخطة التشغيلية الذكية" : "Smart Operational Plan Center"} description={isAr ? "مركز مستقل لإدارة الخطة التشغيلية والخطط التطويرية والبديلة ومبادراتها وبرامجها ومتابعة تنفيذها." : "An independent center for operational and development plans, contingency plans, initiatives, programs, and execution follow-up."}/>
       <div className="rounded-xl border border-emerald-700/20 bg-emerald-50/60 p-4 text-sm leading-7 text-emerald-950">
-        {isAr ? "الترابط المعتمد: الهدف ← المبادرة ← الإجراء ← المسؤول والمدة ← الشاهد ← قياس الإنجاز والتحسين." : "Approved chain: objective → initiative → action → owner and timeline → evidence → progress measurement and improvement."}
+        {isAr ? "الترابط المعتمد: هدف ← خطة ← مبادرة أو برنامج ← إجراء أو تكليف مرتبط ← تنفيذ ← شاهد ← متابعة وقياس أثر. تظل سجلات القرارات والتكليفات في مركزها الأصلي، ويُحفظ هنا مرجع الربط فقط." : "Approved chain: objective → plan → initiative or program → linked action or assignment → execution → evidence → follow-up and impact. Decision and assignment records remain in their source center; this center stores their references only."}
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {domains.map(({ icon: Icon, ar, en, detailAr, detailEn }) => <SectionCard key={en} title={isAr ? ar : en} description={isAr ? detailAr : detailEn}>
-          <EmptyState title={isAr ? "بانتظار اعتماد مصدر البيانات" : "Awaiting approved data source"} description={isAr ? "لا توجد أهداف أو مبادرات أو نسب إنجاز افتراضية في هذا القسم." : "No sample objectives, initiatives, or completion percentages are displayed."}/>
-        </SectionCard>)}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {branches.map(({ href, icon: Icon, ar, en, detailAr, detailEn }) => (
+          <Link key={href} href={href} className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 transition hover:border-emerald-600/40 hover:bg-emerald-50/30">
+            <span className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-800"><Icon size={19}/></span>
+            <h2 className="text-sm font-bold text-[var(--foreground)]">{isAr ? ar : en}</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{isAr ? detailAr : detailEn}</p>
+            <span className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-emerald-800">{isAr ? "فتح القسم" : "Open section"} <ArrowLeft size={14}/></span>
+          </Link>
+        ))}
       </div>
+      <SectionCard title={isAr ? "ضوابط سلامة البيانات" : "Data integrity rules"} description={isAr ? "لا توجد خطط أو نسب إنجاز افتراضية؛ كل فرع ينتظر مصدرًا موثوقًا واعتمادًا بشريًا قبل احتساب النتائج." : "No sample plans or completion rates. Each branch requires a trusted source and human approval before results are calculated."}>
+        <ul className="space-y-2 text-sm leading-6 text-[var(--muted)]">
+          <li>{isAr ? "لكل خطة معرف مرجعي وإصدار وحالة اعتماد." : "Each plan has a reference ID, version, and approval status."}</li>
+          <li>{isAr ? "لا تُكرر بيانات القرارات أو التكليفات؛ تُربط بمعرفاتها فقط." : "Decision and assignment data is never duplicated; link by reference ID only."}</li>
+          <li>{isAr ? "تُحسب نسب الإنجاز من إجراءات وشواهد معتمدة فقط." : "Progress is calculated only from approved actions and evidence."}</li>
+          <li>{isAr ? "تُسجل التعديلات والاعتمادات والإغلاق في سجل تدقيق عند تفعيل الخدمة." : "Changes, approvals, and closure must be audited when the service is activated."}</li>
+        </ul>
+      </SectionCard>
     </div>
   );
 }
