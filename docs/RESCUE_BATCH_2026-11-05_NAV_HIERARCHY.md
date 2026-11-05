@@ -24,3 +24,13 @@ A narrow correction aligning Principal navigation with the approved information 
 - Repository ref and base commit were re-read immediately before writing.
 - Static source checks: navigation replacement was anchored to the exact previous block; documentation status entries were reconciled against current `PortalSectionPage` dispatch.
 - Build, lint, browser, mobile, and automated route tests have **not** been run in this GitHub-only operation. No passing test claim is made.
+
+
+## Superseding correction — 2026-11-05
+The earlier change described above placed the Operational Plan center beneath the Decisions & Assignments group. That grouping conflicts with the approved Raven OS architecture, which defines Operational Plan as a distinct Principal center. The earlier grouping is superseded.
+
+- Operational Plan now has its own top-level navigation group, separate from Decisions & Assignments.
+- The six existing operational-plan subsections remain grouped beneath that center.
+- All route paths and page components are preserved; only navigation hierarchy and the overview label were clarified.
+- No data, authorization, backend, external integration, main branch, merge, or deployment changes were made.
+- Verification is limited to the exact source-block replacement and subsequent source read-back; build/lint and browser tests remain pending.
