@@ -61,12 +61,12 @@ Therefore:
 8. Run build, lint, route coverage, accessibility, responsive, browser, and negative authorization tests. CI build/lint alone is not production certification.
 
 ## 7. Current disposition
-**Source discovery is complete for the files listed in this inventory; application integration is not complete.**
+**Shared presentation integration has begun; portal page parity and operational integration remain incomplete.** The rescue branch has adapted additional Arena visual primitives without importing the Arena sample-data layer. See `docs/RESCUE_BATCH_2026-11-05_SHARED_VISUALS.md` for the exact batch.
 
 No application source files were changed by this inventory. No Arena source, `main`, production site, hosting configuration, authentication provider, database, or deployment was modified. No merge or deployment was performed.
 
 ## 8. Recommended next engineering batch
-Prepare a controlled porting matrix by module, beginning with the shared design system and portal shell, then Platform and Principal modules, followed by Teacher and Family. For each module record: source files, required shared dependencies, demo-data dependencies, route mapping, target files, removed/sanitized behavior, and verification evidence. Do not begin bulk code transfer until the exact protected Raven homepage/deployment source has been identified and the owner-approved Principal information architecture has been reconciled.
+Continue with page-level adaptation in larger bounded groups, starting with Platform and Principal sections whose rescue routes and governance contracts are already defined. Teacher and Family page sources must be re-authored against the rescue route map and empty/unconnected states rather than copied with fixture imports. For every group, record source files, dependencies, demo-data removals, route mapping, target files, and verification evidence. The protected public homepage is outside this portal migration batch.
 
 ---
 **مؤسسة رافيين للخدمات التعليمية**  

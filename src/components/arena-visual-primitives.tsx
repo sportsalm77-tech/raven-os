@@ -1,5 +1,5 @@
 import { useEffect, useId, type ReactNode } from "react";
-import { Inbox, X, type LucideIcon } from "lucide-react";
+import { Inbox, Search, X, type LucideIcon } from "lucide-react";
 
 /** Design Arena presentation patterns adapted for Raven. No seeded data or persistence. */
 export function ArenaPanel({ title, description, children }: {
@@ -122,4 +122,65 @@ export function ArenaDialog({ open, onClose, title, description, children, foote
       {footer ? <footer className="flex flex-wrap justify-end gap-2 border-t border-black/10 px-6 py-4">{footer}</footer> : null}
     </section>
   </div>;
+}
+
+
+/** KPI presentation only. Values must come from a verified source. */
+export function ArenaKpiCard({ label, value, description, icon: Icon }: {
+  label: string; value: string | number; description?: string; icon?: LucideIcon;
+}) {
+  return <section className="min-w-0 rounded-2xl border border-black/10 bg-white p-4">
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-xs font-bold text-[#66736e]">{label}</span>
+      {Icon ? <Icon size={18} className="text-[#08794F]"/> : null}
+    </div>
+    <div className="mt-3 text-2xl font-black tabular-nums text-[#111A18]">{value}</div>
+    {description ? <p className="mt-2 text-xs leading-5 text-[#66736e]">{description}</p> : null}
+  </section>;
+}
+
+export function ArenaCardTitle({ title, description, action }: {
+  title: string; description?: string; action?: ReactNode;
+}) {
+  return <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/5 px-5 py-4">
+    <div><h3 className="font-extrabold text-[#111A18]">{title}</h3>
+      {description ? <p className="mt-1 text-xs leading-5 text-[#66736e]">{description}</p> : null}</div>
+    {action ? <div className="shrink-0">{action}</div> : null}
+  </div>;
+}
+
+export function ArenaBars({ data, labels, color = "#15445A", height = 150 }: {
+  data: number[]; labels: string[]; color?: string; height?: number;
+}) {
+  if (!data.length || data.length !== labels.length || !data.every(Number.isFinite)) {
+    return <ArenaEmptyState title="لا تتوفر بيانات كافية للرسم" description="سيظهر الرسم عند اتصال مصدر موثوق وتطابق القيم مع التسميات." />;
+  }
+  const max = Math.max(1, ...data);
+  return <div className="flex w-full items-end gap-2 sm:gap-3" style={{ height }}>
+    {data.map((value, index) => <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-1.5">
+      <span className="text-[10px] font-bold tabular-nums text-[#66736e]">{value}</span>
+      <div className="w-full max-w-[46px] rounded-t-lg" style={{ height: Math.max(2, value / max * (height - 44)), background: color }} />
+      <span className="w-full truncate text-center text-[10px] font-bold text-[#66736e]">{labels[index]}</span>
+    </div>)}
+  </div>;
+}
+
+export function ArenaStatusDot({ tone, label }: {
+  tone: "green" | "gold" | "red" | "blue" | "neutral"; label?: string;
+}) {
+  const colors = { green: "bg-emerald-600", gold: "bg-amber-500", red: "bg-red-600", blue: "bg-sky-700", neutral: "bg-slate-400" };
+  return <span className="inline-flex items-center gap-2">
+    <span className={`inline-block h-2 w-2 shrink-0 rounded-full ${colors[tone]}`} aria-hidden="true"/>
+    {label ? <span className="text-xs text-[#66736e]">{label}</span> : null}
+  </span>;
+}
+
+export function ArenaSearchInput({ value, onChange, placeholder, label }: {
+  value: string; onChange: (value: string) => void; placeholder: string; label: string;
+}) {
+  return <label className="relative block min-w-0">
+    <Search size={16} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-[#66736e]" aria-hidden="true"/>
+    <input value={value} onChange={event => onChange(event.target.value)} placeholder={placeholder} aria-label={label}
+      className="h-10 w-full rounded-xl border border-black/10 bg-white ps-9 pe-3 text-sm text-[#111A18] outline-none placeholder:text-[#66736e]/70 focus:border-[#08794F]/50"/>
+  </label>;
 }

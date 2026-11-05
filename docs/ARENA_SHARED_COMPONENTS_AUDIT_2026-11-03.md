@@ -52,3 +52,17 @@ This is a source-level review of the listed files, not a full automated reposito
 - Source review completed for the seven files listed above.
 - No local install, Next.js build, lint, unit test, browser test, accessibility test, or deployment verification was run in this audit.
 - No Arena files, Raven `main`, or live deployment were modified.
+
+
+## Rescue integration update — 2026-11-05
+The rescue branch now contains Next.js-safe adaptations of additional Arena presentation patterns in `src/components/arena-visual-primitives.tsx`:
+- `ArenaKpiCard` and `ArenaCardTitle` (presentation only).
+- `ArenaBars` (validates array alignment and finite values; renders an empty state for invalid inputs).
+- `ArenaStatusDot` (status display; meaning is supplied by the caller).
+- `ArenaSearchInput` (controlled local input; it does not search records).
+
+The earlier rescue adaptations remain: `ArenaPanel`, `ArenaEmptyState`, `ArenaStatus`, `ArenaProgress`, `ArenaTable`, `ArenaDonut`, `ArenaTrendChart`, `ArenaPageHeader`, and `ArenaDialog`. The trend chart has a safe empty-data path and no random SVG identifier; the dialog uses React `useId`.
+
+Excluded deliberately: Arena `SampleBadge`, seeded KPI values, demo notifications, fake async/toast actions, `ExportButton` without a real export service, and the full Arena shell. These can imply sample records, persistence, authentication, or successful operations and are not safe to transfer as-is. The Raven portal shell, navigation, and language provider remain authoritative.
+
+This is a source integration update, not a runtime test or proof that any metric is connected. Callers must supply only verified data; otherwise use empty/unconnected states.
