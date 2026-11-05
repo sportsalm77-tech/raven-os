@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Inbox } from "lucide-react";
+import { useEffect, useId, type ReactNode } from "react";
+import { Inbox, X, type LucideIcon } from "lucide-react";
 
 /** Design Arena presentation patterns adapted for Raven. No seeded data or persistence. */
 export function ArenaPanel({ title, description, children }: {
@@ -81,4 +81,45 @@ export function ArenaTrendChart({ data, labels, height = 150 }: {
     {data.map((v,i) => <g key={i}><circle cx={x(i)} cy={y(v)} r="3.5" fill="white" stroke="#08794F" strokeWidth="2"/>
       <text x={x(i)} y={height-3} textAnchor="middle" fontSize="10" fill="#66736e">{labels[i]}</text></g>)}
   </svg></div>;
+}
+
+export function ArenaPageHeader({ icon: Icon, eyebrow, title, description, actions }: {
+  icon?: LucideIcon; eyebrow?: string; title: string; description?: string; actions?: ReactNode;
+}) {
+  return <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
+    <div className="flex min-w-0 items-start gap-3">
+      {Icon ? <span className="hidden h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#111A18] text-[#D4AF37] sm:grid"><Icon size={21}/></span> : null}
+      <div className="min-w-0">{eyebrow ? <p className="mb-1 text-xs font-extrabold text-[#08794F]">{eyebrow}</p> : null}
+        <h1 className="text-xl font-black leading-8 text-[#111A18] md:text-2xl">{title}</h1>
+        {description ? <p className="mt-1 max-w-3xl text-sm leading-7 text-[#66736e]">{description}</p> : null}
+      </div>
+    </div>
+    {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+  </header>;
+}
+
+export function ArenaDialog({ open, onClose, title, description, children, footer }: {
+  open: boolean; onClose: () => void; title: string; description?: string; children: ReactNode; footer?: ReactNode;
+}) {
+  const titleId = useId();
+  useEffect(() => {
+    if (!open) return;
+    const handle = (event: KeyboardEvent) => { if (event.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handle);
+    return () => window.removeEventListener("keydown", handle);
+  }, [open, onClose]);
+  if (!open) return null;
+  return <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-6">
+    <button type="button" className="absolute inset-0 bg-[#111A18]/60" onClick={onClose} aria-label="إغلاق النافذة"/>
+    <section role="dialog" aria-modal="true" aria-labelledby={titleId}
+      className="relative flex max-h-[92vh] w-full max-w-2xl flex-col rounded-t-3xl border border-black/10 bg-[#F5F3EC] shadow-2xl sm:rounded-3xl">
+      <header className="flex items-start justify-between gap-4 border-b border-black/10 px-6 py-5">
+        <div><h2 id={titleId} className="font-black text-[#111A18]">{title}</h2>
+          {description ? <p className="mt-1 text-xs leading-6 text-[#66736e]">{description}</p> : null}</div>
+        <button type="button" onClick={onClose} className="rounded-lg p-2 text-[#66736e] hover:bg-black/5" aria-label="إغلاق"><X size={18}/></button>
+      </header>
+      <div className="overflow-y-auto px-6 py-5">{children}</div>
+      {footer ? <footer className="flex flex-wrap justify-end gap-2 border-t border-black/10 px-6 py-4">{footer}</footer> : null}
+    </section>
+  </div>;
 }
