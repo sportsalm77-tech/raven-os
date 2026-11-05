@@ -5,6 +5,7 @@ import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon, Building2, Users, 
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PortalShell } from "@/components/portal-shell";
+import { PortalOverviewPanels } from "@/components/portal-overview-panels";
 
 const COPY: Record<PortalId,{ar:string;en:string;noteAr:string;noteEn:string}> = {
  platform:{ar:"مركز الحوكمة والإدارة المركزية لمنظومة رافين ومدارسها، مع فصل واضح بين إدارة المنصة وإدارة كل مدرسة.",en:"The central governance workspace for Raven OS and its schools, with a clear boundary between platform administration and each school.",noteAr:"هذه النسخة لا تتصل بعد بمصدر المدارس أو الهوية أو سجل التدقيق. لا توجد سجلات تشغيلية أو أرقام افتراضية.",noteEn:"This build is not yet connected to school, identity, or audit services. No operational records or fabricated metrics are shown."},
@@ -37,6 +38,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
     <AlertCircle size={16} className="mt-1 shrink-0 text-[#D4AF37]"/><span>{isAr?copy.noteAr:copy.noteEn}</span>
    </div>
   </section>
+  <PortalOverviewPanels portal={portal} />
   {portal==="platform" && <>
    <section className="mb-7 rounded-2xl border border-[#08794F]/15 bg-white p-5 md:p-6">
     <div className="mb-4 flex items-center gap-2"><LockKeyhole size={18} className="text-[#08794F]"/><h2 className="font-black text-[#111A18]">{isAr?"نطاق مسؤولية مدير المنصة":"Platform administrator boundary"}</h2></div>
