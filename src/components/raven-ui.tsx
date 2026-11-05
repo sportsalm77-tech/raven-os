@@ -58,9 +58,10 @@ export function ProgressBar({ value, label }: { value: number; label?: string })
   );
 }
 
-export function EmptyState({ title, description }: { title: string; description: string }) {
+export function EmptyState({ icon: Icon, title, description }: { icon?: LucideIcon; title: string; description: string }) {
   return (
     <div className="rounded-xl border border-dashed border-[#C1B489] bg-[#F5F3EC]/60 px-5 py-8 text-center">
+      {Icon && <span className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-xl bg-[#111A18] text-[#D4AF37]"><Icon size={19} aria-hidden="true" /></span>}
       <p className="font-extrabold text-[#111A18]">{title}</p>
       <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-[#66736e]">{description}</p>
     </div>
