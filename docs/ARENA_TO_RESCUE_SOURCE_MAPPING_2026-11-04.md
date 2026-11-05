@@ -48,7 +48,7 @@ Therefore:
 - Arena `src/App.tsx` declares the four portal route families and dedicated Principal routes; Teacher and Family use nested routed components.
 - Arena source comments describe the Principal portal as 18 sections. The rescue navigation currently has 29 Principal destinations including the landing destination and subsections. The user-approved formal Principal section list must remain the authority; this count is not a substitute for that approval.
 - Rescue Teacher navigation defines 13 child destinations; Family defines 11 child destinations. These are route/workspace definitions, not proof that the original Arena modules were transferred or that operational services exist.
-- Operational Plan remains a subsection under the Administrative Decision Center, not a separate top-level center.
+- **Superseded by the 2026-11-05 rescue correction:** Operational Plan is a distinct top-level Principal navigation center, separate from Administrative Decisions & Assignments. Its six established subsections remain beneath it; route paths and page components are preserved.
 
 ## 6. Critical preservation and integration gates
 1. Identify and verify the exact source repository/ref for the Next.js deployment mentioned in historical Vercel evidence. Do not infer it from the deployment framework alone.
