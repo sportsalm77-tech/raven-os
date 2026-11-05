@@ -41,7 +41,7 @@ The rescue branch contains:
 - Central route/navigation definitions in `src/lib/nav.ts`.
 - Arabic/English localization via the application providers.
 - Dedicated principal implementations in `src/components/principal-info-center.tsx` and `src/components/principal-assignments-center.tsx`.
-- The principal operational-plan route is retained as a subsection under the Administrative Decision Center; it must not be promoted into an additional independent center.
+- **Superseded:** the principal operational-plan route is now a separate top-level navigation center, distinct from the Administrative Decisions & Assignments Center. Its six existing subsections remain nested beneath it. This is a navigation hierarchy correction only; no route or page was removed.
 
 The shared `PortalSectionPage` currently renders dedicated components for the Principal Information Center and Assignments Center. Other registered child routes are rendered through `PortalModuleWorkspace`, which provides route-specific purpose, workflow guidance, boundaries, and audit requirements. This is more than an empty route fallback, but it is not the same as porting the detailed Arena page components and their local interactions.
 
@@ -75,7 +75,7 @@ Some UI actions display success messages or simulate a short busy state. Those b
 
 1. Shared shell, navigation, language direction, typography, design tokens and responsive behavior.
 2. Platform portal visual modules, preserving the five approved governance areas.
-3. Principal portal, mapping each Arena component to the existing Raven route and preserving the Administrative Decision Center hierarchy.
+3. Principal portal, mapping each Arena component to the existing Raven route and preserving the separate Administrative Decisions & Assignments Center and Smart Operational Plan Center.
 4. Teacher portal, route by route.
 5. Family portal, route by route, with guardian-to-student relationship authorization as a hard dependency for real data.
 6. Build, lint, route review, keyboard/accessibility review, and explicit mobile/tablet testing.
@@ -86,7 +86,7 @@ Some UI actions display success messages or simulate a short busy state. Those b
 - Do not modify `main`, merge, deploy, or change Design Arena.
 - Do not introduce a fifth portal.
 - Do not replace Next.js App Router with the Arena router.
-- Do not promote the operational plan into a sixth independent principal center.
+- Keep the Operational Plan as its own approved Principal center; do not merge it into the Administrative Decisions & Assignments Center or miscount it as an extra center outside the approved structure.
 - Do not select or introduce an authentication provider or database without an explicit decision.
 - Do not treat client-side portal switching or hidden navigation as authorization.
 - Enforce identity, role, school scope, teacher assignment scope, and guardian-child relationship on the server before connecting sensitive data.
