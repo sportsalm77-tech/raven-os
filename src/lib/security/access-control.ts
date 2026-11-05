@@ -20,6 +20,9 @@ export type RavenRole =
 export type RavenPermission =
   | "platform:engines:read"
   | "platform:security:read"
+  | "platform:schools:password_reset"
+  | "school:accounts:read"
+  | "school:accounts:generate"
   | "school:data:read"
   | "school:data:write"
   | "school:decisions:read"
@@ -61,23 +64,18 @@ const VICE_ROLES: readonly RavenRole[] = ["vice_principal"];
 
 const ROLE_PERMISSIONS: Readonly<Record<RavenRole, readonly RavenPermission[]>> = {
   platform_super_admin: [
-    "platform:engines:read", "platform:security:read",
-    "school:data:read", "school:data:write",
-    "school:decisions:read", "school:decisions:write",
-    "school:plans:read", "school:plans:write",
-    "school:evidence:read", "school:evidence:write",
-    "school:attendance:read", "school:attendance:write",
-    "school:assessment:read", "school:assessment:write",
-    "school:integrations:read", "school:integrations:execute",
+    "platform:engines:read", "platform:security:read", "platform:schools:password_reset",
   ],
   platform_system_admin: ["platform:engines:read", "platform:security:read"],
   school_admin: [
+    "school:accounts:read", "school:accounts:generate",
     "school:data:read", "school:data:write", "school:decisions:read", "school:decisions:write",
     "school:plans:read", "school:plans:write", "school:evidence:read", "school:evidence:write",
     "school:attendance:read", "school:attendance:write", "school:assessment:read", "school:assessment:write",
     "school:integrations:read", "school:integrations:execute",
   ],
   principal: [
+    "school:accounts:read", "school:accounts:generate",
     "school:data:read", "school:data:write", "school:decisions:read", "school:decisions:write",
     "school:plans:read", "school:plans:write", "school:evidence:read", "school:evidence:write",
     "school:attendance:read", "school:attendance:write", "school:assessment:read", "school:assessment:write",
@@ -122,7 +120,12 @@ export function authorize(request: AuthorizationRequest): AuthorizationDecision 
   if (!ROLE_PERMISSIONS[actor.role].includes(permission)) return { allowed: false, reason: "role_denied" };
 
   if (PLATFORM_ROLES.includes(actor.role)) {
-    if (permission.startsWith("school:") && !targetSchoolId) {
+    // Platform administration is a separate portal authority, never a school-user session.
+    // Cross-domain administrative operations must use explicit platform permissions.
+    if (!permission.startsWith("platform:")) {
+      return { allowed: false, reason: "role_denied" };
+    }
+    if (permission === "platform:schools:password_reset" && !targetSchoolId) {
       return { allowed: false, reason: "scope_required" };
     }
     return { allowed: true, actor, reason: "authorized" };
