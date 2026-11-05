@@ -17,6 +17,8 @@
 - `/principal/school-affairs` → dedicated `PrincipalSchoolAffairsCenter`.
 - `/principal/classes` → dedicated `PrincipalClassesCenter`.
 - Other recognized paths → `PortalModuleWorkspace` with route-specific copy/workflow boundaries.
+
+The navigation hierarchy was corrected on 2026-11-05: Operational Plan is a separate top-level center, not a child of Administrative Decisions & Assignments. Its six routes remain intact. This change does not itself port the Arena page-level implementations.
 The current dispatch also includes dedicated Raven components for decision center, operational plan, impact, school affairs, and classes. These are Raven-native adaptations, not proof of full Arena visual parity or connected operational services. Navigation lookup is not authorization.
 
 ## Route-by-route mapping
