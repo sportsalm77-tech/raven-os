@@ -3,7 +3,6 @@
 import {
   UsersRound, GraduationCap, ClipboardList, PenLine, ShieldCheck, CalendarDays,
   HeartPulse, Star, FileText, LockKeyhole, Database, ClipboardCheck, AlertCircle,
-  BookOpenCheck, UserRoundCog,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useLang } from "@/lib/i18n";
