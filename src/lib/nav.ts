@@ -43,7 +43,9 @@ export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",items:[
   {to:"/principal/decision-center",ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",icon:Landmark,end:true},
   {to:"/principal/assignments",ar:"سجل التكليفات ومتابعة تنفيذها",en:"Assignments Register & Follow-up",icon:ClipboardCheck},
-  {to:"/principal/operational-plan",ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",icon:ListChecks},
+ ]},
+ {ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",items:[
+  {to:"/principal/operational-plan",ar:"نظرة عامة على الخطة التشغيلية",en:"Operational Plan Overview",icon:ListChecks,end:true},
   {to:"/principal/operational-plan/management",ar:"إدارة الخطة التشغيلية",en:"Operational Plan Management",icon:Target},
   {to:"/principal/operational-plan/follow-up",ar:"متابعة الخطة التشغيلية",en:"Operational Plan Follow-up",icon:ClipboardCheck},
   {to:"/principal/operational-plan/development",ar:"الخطة التطويرية",en:"Development Plan",icon:Activity},
