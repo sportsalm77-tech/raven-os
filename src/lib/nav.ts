@@ -36,13 +36,6 @@ export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"1 · القيادة المدرسية",en:"1 · School Leadership",items:[
   {to:"/principal",ar:"المؤشرات التفاعلية",en:"Interactive Indicators",icon:BarChart3,end:true},
   {to:"/principal/info-center",ar:"مركز البيانات المدرسية الموحد",en:"Unified School Data Center",icon:Info},
-  {to:"/principal/operational-plan",ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",icon:ListChecks},
-  {to:"/principal/operational-plan/management",ar:"إدارة الخطة التشغيلية",en:"Operational Plan Management",icon:Target},
-  {to:"/principal/operational-plan/follow-up",ar:"متابعة الخطة التشغيلية",en:"Operational Plan Follow-up",icon:ClipboardCheck},
-  {to:"/principal/operational-plan/development",ar:"الخطة التطويرية",en:"Development Plan",icon:Activity},
-  {to:"/principal/operational-plan/alternatives",ar:"الخطط البديلة",en:"Contingency Plans",icon:Workflow},
-  {to:"/principal/operational-plan/initiatives",ar:"مبادرات الخطة التشغيلية",en:"Operational Plan Initiatives",icon:Sparkles},
-  {to:"/principal/operational-plan/programs",ar:"برامج الخطة التشغيلية",en:"Operational Plan Programs",icon:BookOpenCheck},
   {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement",icon:Target},
   {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs",icon:Landmark},
   {to:"/principal/classes",ar:"مركز الفصول المدرسية",en:"Classes Center",icon:DoorOpen},
@@ -50,6 +43,13 @@ export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",items:[
   {to:"/principal/decision-center",ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",icon:Landmark,end:true},
   {to:"/principal/assignments",ar:"سجل التكليفات ومتابعة تنفيذها",en:"Assignments Register & Follow-up",icon:ClipboardCheck},
+  {to:"/principal/operational-plan",ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",icon:ListChecks},
+  {to:"/principal/operational-plan/management",ar:"إدارة الخطة التشغيلية",en:"Operational Plan Management",icon:Target},
+  {to:"/principal/operational-plan/follow-up",ar:"متابعة الخطة التشغيلية",en:"Operational Plan Follow-up",icon:ClipboardCheck},
+  {to:"/principal/operational-plan/development",ar:"الخطة التطويرية",en:"Development Plan",icon:Activity},
+  {to:"/principal/operational-plan/alternatives",ar:"الخطط البديلة",en:"Contingency Plans",icon:Workflow},
+  {to:"/principal/operational-plan/initiatives",ar:"مبادرات الخطة التشغيلية",en:"Operational Plan Initiatives",icon:Sparkles},
+  {to:"/principal/operational-plan/programs",ar:"برامج الخطة التشغيلية",en:"Operational Plan Programs",icon:BookOpenCheck},
  ]},
  {ar:"2 · شؤون المعلمين و3 · شؤون الطلاب",en:"2 · Teachers & Students",items:[
   {to:"/principal/teachers",ar:"شؤون المعلمين",en:"Teacher Affairs",icon:UsersRound},

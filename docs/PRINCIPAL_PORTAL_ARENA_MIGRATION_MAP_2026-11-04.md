@@ -11,8 +11,13 @@
 `src/app/principal/[...slug]/page.tsx` resolves through `PortalSectionPage`. That component checks whether the exact path exists in principal navigation, then dispatches:
 - `/principal/info-center` → dedicated `PrincipalInfoCenter`.
 - `/principal/assignments` → dedicated `PrincipalAssignmentsCenter`.
+- `/principal/decision-center` → dedicated `PrincipalDecisionCenter`.
+- `/principal/operational-plan` → dedicated `PrincipalOperationalPlan`.
+- `/principal/impact` → dedicated `PrincipalImpactCenter`.
+- `/principal/school-affairs` → dedicated `PrincipalSchoolAffairsCenter`.
+- `/principal/classes` → dedicated `PrincipalClassesCenter`.
 - Other recognized paths → `PortalModuleWorkspace` with route-specific copy/workflow boundaries.
-This establishes route coverage and tailored guidance, not parity with Arena page layouts or real operational behavior. Navigation lookup is not authorization.
+The current dispatch also includes dedicated Raven components for decision center, operational plan, impact, school affairs, and classes. These are Raven-native adaptations, not proof of full Arena visual parity or connected operational services. Navigation lookup is not authorization.
 
 ## Route-by-route mapping
 
@@ -21,11 +26,11 @@ This establishes route coverage and tailored guidance, not parity with Arena pag
 | `/principal` | `PrincipalDashboard` | Dedicated dashboard route | Compare dashboard composition; remove all sample KPIs, names, alerts and trends unless backed by approved live sources. |
 | `/principal/info-center` | `InfoCenter` | `PrincipalInfoCenter` | Dedicated component exists. Compare detailed sections and interactions; keep records empty until connected. |
 | `/principal/assignments` | `AssignmentsCenter` | `PrincipalAssignmentsCenter` | Dedicated component exists. Preserve task lifecycle and approval boundaries; no fake submit/success. |
-| `/principal/impact` | `ImpactCenter` | Generic module workspace | Candidate for dedicated migration after data definitions and indicator provenance are agreed. |
-| `/principal/school-affairs` | `SchoolAffairs` | Generic module workspace | Migrate structure selectively; do not invent school records or committee activity. |
-| `/principal/classes` | `ClassesCenter` | Generic module workspace | Requires authoritative class/section source and principal scope. |
-| `/principal/decision-center` | No exact standalone route/component in Arena nav; related planning/impact elements exist | Generic module workspace | Raven-specific approved center. Keep as a genuine top-level decision center. |
-| `/principal/operational-plan` | `OperationalPlan` | Generic module workspace | Must remain a subsection under Administrative Decision Center; never promote to a sixth center. |
+| `/principal/impact` | `ImpactCenter` | Dedicated `PrincipalImpactCenter` | Raven-native dedicated shell exists; keep indicators unpopulated until trusted sources are connected. |
+| `/principal/school-affairs` | `SchoolAffairs` | Dedicated `PrincipalSchoolAffairsCenter` | Dedicated Raven component exists; retain empty/unconnected records and verify Arena parity separately. |
+| `/principal/classes` | `ClassesCenter` | Dedicated `PrincipalClassesCenter` | Dedicated interface exists with explicit unconnected-state guard; class/student operations remain unavailable until verified data and server-side scope are implemented. |
+| `/principal/decision-center` | No exact standalone route/component in Arena nav; related planning/impact elements exist | Dedicated `PrincipalDecisionCenter` | Raven-specific approved center and parent navigation group for assignments and the operational-plan sub-center. |
+| `/principal/operational-plan` | `OperationalPlan` | Dedicated `PrincipalOperationalPlan` | Dedicated Raven component exists. Keep it nested under Administrative Decision Center, not as a peer top-level center. |
 | `/principal/teachers` | `TeachersAffairs` | Generic module workspace | Requires staff directory and school-scoped records. |
 | `/principal/students` | `StudentsAffairs` | Generic module workspace | Student data must remain unavailable until identity, school scope and permissions are enforced server-side. |
 | `/principal/exams/grades` | `ExamsGrades` | Generic module workspace | Grades require approved assessment source, audit trail and role-based access. |
@@ -64,18 +69,18 @@ The five Arena principal page files export 27 page-level components plus `VoiceE
 - Arena source uses Vite/React Router conventions and relative imports. Adapt UI and interaction patterns to Raven's Next.js App Router, existing i18n, and Raven UI components rather than copying the app structure.
 
 ## Approved hierarchy and security gates
-1. Preserve the five approved principal centers and their agreed responsibilities.
-2. Administrative Decision Center remains a primary center. Operational Plan remains inside it as a subsection.
+1. Preserve the seven approved school-leadership centers and their agreed responsibilities.
+2. Administrative Decision Center remains a primary center. Operational Plan is subordinate to it and must not appear as a peer top-level navigation center.
 3. Keep Principal-only surfaces separate from Super Admin/System Admin capabilities; privileged prompt engines and click analytics/reduction tools must not appear for principal, vice-principal or lower school roles.
 4. Do not connect student, guardian, staff, attendance, grades, health or behavior records until trusted identity, school membership, server-side authorization, tenant isolation and audit requirements are implemented and tested.
 5. Do not treat navigation visibility, client props, toasts, modal confirmations or local component state as authorization or persistence.
 
 ## Recommended migration sequence
-**P0 — Establish page parity inventory:** capture the two existing Raven dedicated centers and compare their structure against Arena; identify shared visual primitives that can be reused without fixture data.
+**P0 — Establish page parity inventory:** capture the current dedicated Raven principal components (information, assignments, decision, operational plan, impact, school affairs, and classes) and compare their structure against Arena; identify shared visual primitives that can be reused without fixture data.
 
 **P1 — Decision and operations spine:** implement the approved Administrative Decision Center and its Operational Plan subsection, then map assignments, information/evidence and impact workflows around the approved chain: work → procedure → assignment → follow-up → execution → evidence → archiving → indicators → improvement.
 
-**P2 — Low-risk operational shells:** timetable, resources, activities, labs, reports and school affairs; keep records empty or clearly marked as disconnected until their sources are approved.
+**P2 — Low-risk operational shells:** timetable, resources, activities, labs, and reports; keep records empty or clearly marked as disconnected until their sources are approved. School Affairs already has a dedicated Raven component and belongs in the P0 parity review.
 
 **P3 — Restricted student/staff records:** classes, teachers, students, exams, attendance, behavior, health, talented and special education only after server-side authorization and tenant-isolation gates pass.
 
@@ -91,4 +96,4 @@ The five Arena principal page files export 27 page-level components plus `VoiceE
 - Build/lint and route tests pass; browser and mobile verification are recorded separately rather than assumed.
 
 ## Evidence boundary
-This document is a repository-source comparison, not a browser QA report and not a production readiness certificate. No application source files, database schema, authentication configuration, external integration, main branch, Design Arena branch, or deployment were changed.
+This document is a repository-source comparison, not a browser QA report and not a production readiness certificate. The 2026-11-05 navigation correction and status reconciliation are documented in `docs/RESCUE_BATCH_2026-11-05_NAV_HIERARCHY.md`. No database schema, authentication configuration, external integration, main branch, Design Arena branch, or deployment was changed.
