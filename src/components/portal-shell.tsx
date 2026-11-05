@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { ChevronDown, ChevronLeft, ChevronRight, Languages, Menu, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Languages, Menu, Search, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
@@ -14,6 +14,15 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
   const groups = PORTAL_NAVS[portal];
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
+  const [navQuery, setNavQuery] = useState("");
+  const filteredGroups = useMemo(() => {
+    const query = navQuery.trim().toLocaleLowerCase();
+    if (!query) return groups;
+    return groups.map(group => ({
+      ...group,
+      items: group.items.filter(item => `${item.ar} ${item.en}`.toLocaleLowerCase().includes(query)),
+    })).filter(group => group.items.length > 0);
+  }, [groups, navQuery]);
   const direction = isAr ? "rtl" : "ltr";
   const meta = PORTAL_META[portal];
   const BackIcon = isAr ? ChevronLeft : ChevronRight;
@@ -48,7 +57,15 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
         </div>
       </div>
       <nav className="flex-1 space-y-2 overflow-y-auto px-3 py-4" aria-label={isAr ? "التنقل الرئيسي" : "Main navigation"}>
-        {groups.map(group => {
+        <label className="relative mb-3 block">
+          <Search size={16} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <input value={navQuery} onChange={event => setNavQuery(event.target.value)}
+            placeholder={isAr ? "ابحث في أقسام البوابة..." : "Search portal sections..."}
+            aria-label={isAr ? "البحث في أقسام البوابة" : "Search portal sections"}
+            className="h-10 w-full rounded-xl border border-white/10 bg-white/5 ps-9 pe-3 text-xs text-white outline-none placeholder:text-white/40 focus:border-[#D4AF37]/60 focus:bg-white/10" />
+        </label>
+        {filteredGroups.length === 0 && <p className="rounded-lg px-3 py-4 text-center text-xs text-white/50">{isAr ? "لا توجد أقسام مطابقة" : "No matching sections"}</p>}
+        {filteredGroups.map(group => {
           const groupHasActive = group.items.some(item => item.end
             ? pathname === item.to
             : pathname === item.to || pathname.startsWith(item.to + "/"));
@@ -63,7 +80,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
               {group.items.map(item => {
                 const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
                 const Icon = item.icon;
-                return <Link key={item.to} href={item.to} onClick={() => setMobileOpen(false)} aria-current={active ? "page" : undefined}
+                return <Link key={item.to} href={item.to} onClick={() => { setMobileOpen(false); setNavQuery(""); }} aria-current={active ? "page" : undefined}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${active ? "bg-[#08794F] font-bold text-white" : "text-white/70 hover:bg-white/10 hover:text-white"}`}>
                   <Icon size={17} /><span>{isAr ? item.ar : item.en}</span>
                 </Link>;
