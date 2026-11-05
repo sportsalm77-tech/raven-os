@@ -4,6 +4,7 @@ import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
 import { PrincipalDecisionCenter, PrincipalOperationalPlan, PrincipalImpactCenter, PrincipalSchoolAffairsCenter } from "@/components/principal-management-centers";
 import { PrincipalClassesCenter } from "@/components/principal-classes-center";
+import { PrincipalOperationsScreen, type PrincipalOperationsArea } from "@/components/principal-operations-screen";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
@@ -32,6 +33,20 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   }
   if (portal === "principal" && path === "/principal/classes") {
     return <PortalShell portal="principal"><PrincipalClassesCenter /></PortalShell>;
+  }
+
+  const principalOperations: Record<string, PrincipalOperationsArea> = {
+    "/principal/teachers": "teachers",
+    "/principal/students": "students",
+    "/principal/exams/grades": "grades",
+    "/principal/exams/control": "exam-control",
+    "/principal/behavior/absence": "absence",
+    "/principal/behavior/violations": "violations",
+    "/principal/behavior/positive": "positive",
+  };
+  const operationsArea = portal === "principal" ? principalOperations[path] : undefined;
+  if (operationsArea) {
+    return <PortalShell portal="principal"><PrincipalOperationsScreen area={operationsArea} /></PortalShell>;
   }
 
   return <PortalModuleWorkspace portal={portal} item={item} path={path} />;
