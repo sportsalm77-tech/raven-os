@@ -58,6 +58,32 @@ test.describe("Teacher portal browser acceptance", () => {
     });
   }
 
+  for (const scenario of [
+    { route: "/teacher/lesson-plans", title: "مسودة تحضير درس", first: "عنوان الدرس", second: "نواتج التعلم", button: "معاينة المسودة محليًا", value: "تحضير تجريبي غير مرتبط بطلاب" },
+    { route: "/teacher/homework", title: "مسودة واجب أو نشاط", first: "عنوان المهمة", second: "التعليمات والأهداف", button: "معاينة المسودة محليًا", value: "مسودة نشاط محلية" },
+    { route: "/teacher/achievements", title: "بطاقة وصف شاهد", first: "عنوان الشاهد", second: "المجال أو المؤشر المرتبط", button: "معاينة بطاقة الشاهد", value: "وصف شاهد غير مرفوع" },
+  ]) {
+    test(`supports a clearly temporary local draft on ${scenario.route}`, async ({ page }) => {
+      await page.goto(scenario.route);
+      await expect(page.getByRole("heading", { name: scenario.title })).toBeVisible();
+      await page.getByLabel(scenario.first).fill(scenario.value);
+      await page.getByLabel(scenario.second).fill("محتوى محلي للاختبار");
+      await page.getByRole("button", { name: scenario.button }).click();
+      await expect(page.getByText(/معاينة مؤقتة — غير محفوظة/)).toBeVisible();
+      await expect(page.getByText(scenario.value)).toBeVisible();
+      await page.reload();
+      await expect(page.getByText(/معاينة مؤقتة — غير محفوظة/)).toHaveCount(0);
+    });
+  }
+
+  test("keeps student-linked sections free of local student or attendance entry forms", async ({ page }) => {
+    for (const route of ["/teacher/classes", "/teacher/attendance", "/teacher/grades"]) {
+      await page.goto(route);
+      await expect(page.getByText(/مصدر البيانات غير متصل/).first()).toBeVisible();
+      await expect(page.locator("form")).toHaveCount(0);
+    }
+  });
+
   test("opens and closes the teacher mobile navigation", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/teacher");
