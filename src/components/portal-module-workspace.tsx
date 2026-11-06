@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
 import { ArrowLeft, ArrowRight, CircleAlert, ClipboardCheck, Database, ShieldCheck } from "lucide-react";
 import { PortalShell } from "@/components/portal-shell";
 import { PageHead, SectionCard } from "@/components/raven-ui";
@@ -101,7 +100,7 @@ function fallback(item: { ar:string; en:string }, portal: PortalId): ModuleCopy 
   return common;
 }
 
-export function PortalModuleWorkspace({ portal, item, path }: { portal: PortalId; item: { ar:string; en:string; icon: LucideIcon }; path: string }) {
+export function PortalModuleWorkspace({ portal, item, path }: { portal: PortalId; item: { ar:string; en:string }; path: string }) {
   const { isAr } = useLang();
   const meta = PORTAL_META[portal];
   const data = MODULES[path] ?? fallback(item, portal);
@@ -110,7 +109,7 @@ export function PortalModuleWorkspace({ portal, item, path }: { portal: PortalId
     <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]">
       <span>{isAr ? meta.ar : meta.en}</span><span>/</span><span className="font-bold text-[#08794F]">{isAr ? item.ar : item.en}</span>
     </div>
-    <PageHead icon={item.icon} eyebrow={`RAVEN OS · ${portal.toUpperCase()}`} title={isAr ? data.ar : data.en} description={isAr ? data.purposeAr : data.purposeEn} />
+    <PageHead icon={ShieldCheck} eyebrow={`RAVEN OS · ${portal.toUpperCase()}`} title={isAr ? data.ar : data.en} description={isAr ? data.purposeAr : data.purposeEn} />
     <div className="grid gap-4 xl:grid-cols-[1.35fr_1fr]">
       <SectionCard title={isAr ? "مسار العمل المقترح" : "Workflow"} description={isAr ? "هيكل تشغيلي للقسم، وليس ادعاءً بأن الإجراءات الخلفية مفعلة." : "An operational structure, not a claim that backend actions are enabled."}>
         <ol className="space-y-3">
