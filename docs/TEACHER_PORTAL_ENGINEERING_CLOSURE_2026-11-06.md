@@ -52,7 +52,7 @@ The following remain unimplemented and must not be represented as complete:
 - Human/manual accessibility review on real devices and production-like authenticated scenarios.
 
 ## Acceptance rule
-Front-end closure is accepted only when GitHub Actions on the resulting branch HEAD completes successfully, including build, lint, Chromium installation, and the full Playwright suite. This document records the closure scope; the observed CI result must be appended after it completes.
+Front-end closure is accepted only when GitHub Actions on the resulting branch HEAD completes successfully, including build, lint, Chromium installation, and the full Playwright suite. Observed CI evidence (2026-11-06): GitHub Actions run `42173431007` completed with `success` on commit `07b64f58e9129aa98e67b27b09facb9b0fa4f687` in the target rescue branch. Job `next-build` completed successfully. Steps passed: dependency installation, Next.js production build, ESLint, Chromium installation, and `npm run test:e2e` (Playwright suite). Run: https://github.com/sportsalm77-tech/raven-os/actions/runs/42173431007. This evidence applies to the tested commit; any later commit requires its own successful run before being treated as verified.
 
 ---
 **مؤسسة رافيين للخدمات التعليمية**
