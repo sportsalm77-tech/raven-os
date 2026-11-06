@@ -6,6 +6,7 @@ import { PrincipalDecisionCenter, PrincipalOperationalPlan, PrincipalImpactCente
 import { PrincipalClassesCenter } from "@/components/principal-classes-center";
 import { PrincipalOperationsScreen, type PrincipalOperationsArea } from "@/components/principal-operations-screen";
 import { PrincipalSupportServicesScreen, type PrincipalSupportArea } from "@/components/principal-support-services-screen";
+import { PrincipalGovernanceScreen, type PrincipalGovernanceArea } from "@/components/principal-governance-screen";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
@@ -62,6 +63,16 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   const supportArea = portal === "principal" ? principalSupport[path] : undefined;
   if (supportArea) {
     return <PortalShell portal="principal"><PrincipalSupportServicesScreen area={supportArea} /></PortalShell>;
+  }
+
+  const principalGovernance: Record<string, PrincipalGovernanceArea> = {
+    "/principal/permissions": "permissions",
+    "/principal/settings": "settings",
+    "/principal/reports": "reports",
+  };
+  const governanceArea = portal === "principal" ? principalGovernance[path] : undefined;
+  if (governanceArea) {
+    return <PortalShell portal="principal"><PrincipalGovernanceScreen area={governanceArea} /></PortalShell>;
   }
 
   const operationsArea = portal === "principal" ? principalOperations[path] : undefined;
