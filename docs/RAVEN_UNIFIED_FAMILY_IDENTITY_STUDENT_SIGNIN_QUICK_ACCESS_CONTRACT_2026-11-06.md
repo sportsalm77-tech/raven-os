@@ -13,10 +13,10 @@ This contract records the decisions discussed for a consistent, low-friction and
 
 Governing principles:
 
-- One centrally managed family identity can be linked to multiple students across multiple Raven-participating schools.
-- Each student retains an independent canonical student identity, school enrollment, school scope, and student permissions.
-- A student's Madrasati sign-in identifier may be reused as the Raven student username. Reuse of the Madrasati password is conditional on a supported, official authentication federation/integration; it must not be achieved by importing, extracting, or storing the password.
-- A family credential is distinct from every student's credentials.
+- One unified Raven account identity and one Raven-managed password serve the family and its linked students across participating schools and education stages.
+- Each student retains an independent canonical student identity, school enrollment, school scope, and student permissions; unified sign-in does not merge student records or grant cross-child access.
+- A verified Madrasati student email/username may be used as a Raven sign-in identifier after validation. Reuse of a Madrasati password is conditional on a supported, official authentication federation/integration; it must not be achieved by importing, extracting, or storing the password.
+- Student and family are distinct authorized contexts/roles under the unified Raven account, not separate passwords.
 - QR Quick Access is role-limited. It is not a replacement for the central identity provider or authorization checks.
 - School boundaries and guardian-to-student authorization are enforced server-side on every protected request.
 - No production integration or live credential behavior is claimed by this document.
@@ -39,7 +39,7 @@ A student may be enrolled in a primary, intermediate, secondary, boys', or girls
 
 ### 2.2 Unified family identity
 
-Raven OS provides one platform-level family identity for a family, rather than creating a new family login for every child or every school.
+Raven OS provides one unified platform-level Raven account for family/student sign-in rather than creating a separate family login or password for every child or school.
 
 - One family identity can be associated with multiple verified guardian-to-student relationships.
 - The family can include multiple children enrolled in different Raven-participating schools.
@@ -49,19 +49,19 @@ Raven OS provides one platform-level family identity for a family, rather than c
 - Cross-school matching must use approved reliable identifiers and verification workflow. Name similarity, shared phone number, or a student email alone is not proof of family identity or legal relationship.
 - Conflicts and uncertain matches go to authorized human review; no automatic family merge or guardian link is permitted.
 
-### 2.3 Family username and password
+### 2.3 Unified Raven username and password
 
-The family uses a single family-level sign-in identity for the Family portal:
+The student and family contexts use the same unified Raven account identity and one Raven-managed password:
 
-- The username may be a Raven-issued family username/identifier or another verified family identifier explicitly supported by the approved identity policy.
-- On first family-account creation, Raven may issue one temporary initial password for secure delivery through the school's approved handover process.
-- The guardian changes the temporary password after receiving it and completing the first sign-in.
-- The same family password is used regardless of how many participating schools or children are linked.
-- A school must not be able to view or retrieve the current family password.
-- A school adding another child must not issue or learn a new family password.
-- The family password is not the student's Madrasati password and is not shared with student accounts.
+- One password serves the linked family and student contexts regardless of the number of children, their education stages, or their participating schools.
+- Raven may issue one temporary initial Raven password through the approved secure handover process; it must be changed after first sign-in.
+- Linking another verified child must not create another account or issue another password.
+- A verified Madrasati student email/username may be used as a sign-in identifier after source, ownership, and uniqueness validation.
+- Where several children have distinct Madrasati identifiers, the account-linking design may map verified identifiers to the same unified Raven account only after collision, ownership, and account-recovery risks are resolved. No automatic or silent merge is allowed.
+- The Raven password is not the Madrasati password. Reuse of the latter requires official supported federation.
+- A school must not be able to view or retrieve the current Raven password.
 
-The exact family username format, recovery channel, and whether multiple adult guardians may use separately authenticated credentials against the same family identity remain owner decisions and must not be assumed by implementation.
+The exact primary identifier, safe multi-identifier mapping, recovery channel, and separate access for additional adult guardians remain technical/owner approval gates; this contract does not silently decide them.
 
 ## 3. Student sign-in using Madrasati identity
 
@@ -73,17 +73,17 @@ Each student has a Madrasati username/email identifier in the school's source da
 - The identifier is linked to the canonical Raven student ID and the appropriate school enrollment.
 - The import pipeline validates format, source provenance, tenant scope, and uniqueness/conflict conditions.
 - If the identifier changes or conflicts, the system routes the change through an authorized reconciliation process; it must not silently reassign an account to another student.
-- The Madrasati email identifies the student account; it is not the family username and does not prove a guardian relationship.
+- The Madrasati email identifies a student sign-in alias only after validation; it does not by itself prove authentication, unified-account ownership, or a guardian relationship.
 
 ### 3.2 Password reuse and authentication federation
 
-The owner-approved objective is to avoid generating a second student password when the student already has a Madrasati credential. The same Madrasati username and password may be accepted for Raven sign-in only if an official, supported authentication integration permits it.
+The owner-approved sign-in objective is one Raven-managed password for the unified family/student account. A Madrasati username/email may be used as a sign-in identifier after validation. The same Madrasati password may be accepted only if an official, supported authentication integration permits it; this is a separate capability and is not assumed by the unified-account decision.
 
 Required implementation conditions:
 
 1. Verify that the relevant Madrasati authority provides an approved authentication protocol/API or identity federation suitable for Raven OS.
 2. Use the supported federation flow (for example, an approved SSO/OIDC/SAML arrangement where actually offered); do not infer availability of a protocol.
-3. Raven receives and validates a signed authentication result/token and maps the verified external subject to the canonical Raven student identity.
+3. Raven receives and validates a signed authentication result/token and maps the verified external subject to the unified Raven account and the relevant canonical student identity without merging student records.
 4. Raven does not request, import, scrape, log, or store the student's Madrasati password.
 5. Raven validates issuer, audience, signature, expiry, nonce/state, redirect URI, and replay protections as applicable to the selected protocol.
 6. Raven independently applies its own school tenant, role, student status, and resource authorization after authentication.
@@ -97,7 +97,7 @@ If the Madrasati authority does not provide an approved integration for authenti
 
 - Raven must not claim that Madrasati passwords work in Raven.
 - Raven may use the imported Madrasati identifier as the username, subject to policy.
-- A separate Raven student credential or another approved identity method is then required.
+- The unified account uses its approved Raven-managed password or another owner-approved identity method; this is not represented as Madrasati password compatibility.
 - This fallback must be clearly communicated and must not silently attempt to test Madrasati credentials against an unofficial endpoint.
 - The owner must approve the fallback credential issuance and recovery policy before implementation.
 
@@ -108,9 +108,9 @@ No student password is generated solely because a student has been imported if a
 1. A participating school imports/enrolls the student through the Unified School Data Center.
 2. The system validates the student identifier and the minimum approved guardian-link information.
 3. The school submits a family-link request for the student; it does not create a duplicate family account by default.
-4. Raven checks for a possible existing family identity using approved stable identifiers and existing verified relationships.
-5. If a verified family identity is confidently established under the approved policy, Raven creates the new student-family relationship through an authorized workflow.
-6. If no family identity exists, the system initiates first-time family identity creation and secure credential handover.
+4. Raven checks for the existing unified Raven account using approved stable identifiers and verified relationships; it must not create a duplicate account or password for a linked child.
+5. If the existing unified account and guardian relationship are confidently verified under the approved policy, Raven links the new canonical student record to that account through an authorized workflow.
+6. If no unified account exists, the system initiates first-time account creation and one secure Raven password handover.
 7. If matching or relationship evidence is incomplete or conflicting, the request is held for human verification; no access is granted while pending.
 8. Once verified, the new child appears in the family portal, while the school sees only its own enrollment and the status of its own request.
 9. Every creation, verification, rejection, correction, and revocation is audited.
@@ -228,12 +228,12 @@ This is a logical service boundary, not authorization to create a separate famil
 
 ### Owner-directed principles recorded in this contract
 
-- One central family identity across Raven-participating schools.
-- One family password, initially issued once and changed by the guardian after first handover.
-- No new family password when another verified child is linked.
-- Madrasati student username/email may be reused as the Raven student username when imported and validated.
-- Reuse of the Madrasati password is desired to avoid duplicate student passwords, conditional on official supported authentication federation.
-- Family credentials and student credentials remain separate.
+- One unified Raven account identity for student and family sign-in across participating schools and education stages.
+- One Raven-managed password, issued once through secure handover and changed after first sign-in.
+- No duplicate account or password when another verified child is linked.
+- A validated Madrasati student username/email may be used as a sign-in identifier; multiple child identifiers may map to one account only through an explicitly designed and verified mapping process.
+- Reuse of the Madrasati password is conditional on official supported authentication federation; it is never imported or stored by Raven.
+- Student records, family/guardian relationships, roles, school memberships, and permissions remain separate and independently authorized.
 - QR Quick Access is allowed for teachers and students.
 - Family QR is allowed only on guardian request with school verification/approval and signed acknowledgement.
 - QR Quick Access is prohibited for platform and school administrators.
