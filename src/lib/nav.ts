@@ -19,16 +19,24 @@ export const PORTAL_META: Record<PortalId, { ar: string; en: string; roleAr: str
 };
 
 export const PLATFORM_NAV: NavGroup[] = [
- { ar:"الإدارة العامة", en:"Administration", items:[
-  {to:"/platform",ar:"نظرة عامة",en:"Overview",icon:LayoutDashboard,end:true},
-  {to:"/platform/schools",ar:"إدارة المدارس",en:"Schools",icon:Building2},
-  {to:"/platform/users",ar:"إدارة المستخدمين",en:"Users",icon:Users},
-  {to:"/platform/roles",ar:"الأدوار والصلاحيات",en:"Roles & Permissions",icon:ShieldCheck},
+ { ar:"القيادة والتحكم", en:"Command & Control", items:[
+  {to:"/platform",ar:"مركز القيادة التنفيذي",en:"Executive Command Center",icon:LayoutDashboard,end:true},
+  {to:"/platform/security",ar:"مركز مراقبة التشغيل",en:"Operations Monitoring",icon:HeartPulse},
+  {to:"/platform/communications",ar:"مركز الرسائل والتنبيهات",en:"Communications & Alerts",icon:BellRing},
+  {to:"/platform/support",ar:"مركز الدعم الفني",en:"Technical Support",icon:Activity},
+  {to:"/platform/subscriptions",ar:"مركز الاشتراكات والتفعيل",en:"Subscriptions & Activation",icon:ShieldAlert},
  ]},
- { ar:"الحوكمة والنظام", en:"Governance", items:[
-  {to:"/platform/security",ar:"الأمان والصحة التقنية",en:"Security & System Health",icon:HeartPulse},
-  {to:"/platform/settings",ar:"الإعدادات العامة",en:"Global Settings",icon:Settings},
-  {to:"/platform/engines",ar:"مركز المحركات الذكية",en:"Intelligent Engines",icon:Cpu},
+ { ar:"قسم إدارة المدارس والمستخدمين", en:"Schools & Users Administration", items:[
+  {to:"/platform/schools",ar:"ملفات المدارس ودورة حياتها",en:"School Profiles & Lifecycle",icon:Building2},
+  {to:"/platform/users",ar:"حسابات المستخدمين والعضويات",en:"User Accounts & Memberships",icon:Users},
+ ]},
+ { ar:"الذكاء والأدلة", en:"Intelligence & Evidence", items:[
+  {to:"/platform/engines",ar:"مركز الذكاء والتحليل",en:"Intelligence & Analytics",icon:Cpu},
+  {to:"/platform/evidence",ar:"مركز الأدلة والاعتماد",en:"Evidence & Accreditation",icon:ClipboardCheck},
+ ]},
+ { ar:"الحوكمة والسجلات", en:"Governance & Records", items:[
+  {to:"/platform/roles",ar:"مركز الحوكمة والسجلات",en:"Governance & Records",icon:ShieldCheck},
+  {to:"/platform/settings",ar:"إعدادات المنصة العامة",en:"Global Platform Settings",icon:Settings},
  ]}
 ];
 
