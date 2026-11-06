@@ -81,8 +81,8 @@ const MODULES: Record<string, ModuleCopy> = {
 
 };
 
-function workflow(ar:string,en:string,purposeAr:string,purposeEn:string,stepsAr:string[],stepsEn:string[]):ModuleCopy {
- return {ar,en,purposeAr,purposeEn,stepsAr,stepsEn,recordsAr:"لا توجد سجلات فعلية معروضة. يتطلب التشغيل ربط قاعدة البيانات والمصادقة والصلاحيات وسجل التدقيق.",recordsEn:"No live records are displayed. Activation requires a database, authentication, authorization, and audit logging."};
+function workflow(ar:string,en:string,purposeAr:string,purposeEn:string,stepsAr:string[],stepsEn:string[],recordsAr="لا توجد سجلات فعلية معروضة. يتطلب التشغيل ربط قاعدة البيانات والمصادقة والصلاحيات وسجل التدقيق.",recordsEn="No live records are displayed. Activation requires a database, authentication, authorization, and audit logging."):ModuleCopy {
+ return {ar,en,purposeAr,purposeEn,stepsAr,stepsEn,recordsAr,recordsEn};
 }
 
 function fallback(item: { ar:string; en:string }, portal: PortalId): ModuleCopy {
