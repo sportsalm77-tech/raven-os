@@ -94,4 +94,32 @@ test.describe("Teacher portal browser acceptance", () => {
     await page.getByRole("button", { name: "Close navigation" }).last().click();
     await expect(page.getByRole("button", { name: "Open navigation" })).toBeVisible();
   });
+
+
+  for (const route of teacherRoutes) {
+    test(`renders one dedicated page heading on ${route}`, async ({ page }) => {
+      const response = await page.goto(route);
+      expect(response?.status()).toBe(200);
+      await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page.locator("h1")).toBeVisible();
+      await expect(page.getByText(/مصدر البيانات غير متصل|Data source not connected/).first()).toBeVisible();
+      await expect(page.locator("body")).not.toContainText("سارة الحربي");
+      await expect(page.locator("body")).not.toContainText("Internal Server Error");
+    });
+  }
+
+  for (const route of teacherRoutes) {
+    for (const width of [320, 390, 768]) {
+      test(`keeps ${route} within the viewport at ${width}px`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(route);
+        const dimensions = await page.evaluate(() => ({
+          viewport: document.documentElement.clientWidth,
+          scroll: document.documentElement.scrollWidth,
+        }));
+        expect(dimensions.scroll, `Horizontal overflow at ${route} / ${width}px`).toBeLessThanOrEqual(dimensions.viewport + 1);
+      });
+    }
+  }
+
 });
