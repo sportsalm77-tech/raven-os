@@ -66,6 +66,6 @@ test.describe("Platform portal browser acceptance", () => {
   test("does not expose real operational forms or pretend backend success", async ({ page }) => {
     await page.goto("/platform/communications");
     await expect(page.getByText(/غير متصل بخدمة خلفية|Backend not connected/).first()).toBeVisible();
-    await expect(page.getByText(/لا تُعرض بيانات افتراضية|No sample data/).first()).toBeVisible();
+    await expect(page.getByText(/لا توجد خدمة رسائل أو قناة إرسال متصلة|No messaging service or delivery channel is connected/).first()).toBeVisible();
   });
 });
