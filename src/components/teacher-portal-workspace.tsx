@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_NAVS } from "@/lib/nav";
+import { TeacherLocalDraft } from "@/components/teacher-local-draft";
 
 type SectionDetail = {
   purposeAr: string;
@@ -330,6 +331,10 @@ export function TeacherSectionWorkspace({ slug }: { slug: string }) {
           </section>
         </div>
       </div>
+
+      {(slug === "lesson-plans" || slug === "homework" || slug === "achievements") && (
+        <TeacherLocalDraft kind={slug} isAr={isAr} />
+      )}
 
       <section className="rounded-2xl border border-black/10 bg-white p-5">
         <div className="mb-2 flex items-center gap-2">
