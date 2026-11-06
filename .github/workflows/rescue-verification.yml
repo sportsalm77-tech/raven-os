@@ -28,3 +28,7 @@ jobs:
         run: npm run build
       - name: Lint
         run: npm run lint
+      - name: Install Chromium for browser verification
+        run: npx playwright install --with-deps chromium
+      - name: Run Platform browser and responsive checks
+        run: npm run test:e2e
