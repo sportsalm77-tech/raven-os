@@ -5,6 +5,7 @@ import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-c
 import { PrincipalDecisionCenter, PrincipalOperationalPlan, PrincipalImpactCenter, PrincipalSchoolAffairsCenter } from "@/components/principal-management-centers";
 import { PrincipalClassesCenter } from "@/components/principal-classes-center";
 import { PrincipalOperationsScreen, type PrincipalOperationsArea } from "@/components/principal-operations-screen";
+import { PrincipalSupportServicesScreen, type PrincipalSupportArea } from "@/components/principal-support-services-screen";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
@@ -44,6 +45,25 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
     "/principal/behavior/violations": "violations",
     "/principal/behavior/positive": "positive",
   };
+  const principalSupport: Record<string, PrincipalSupportArea> = {
+    "/principal/library": "library",
+    "/principal/timetable": "timetable",
+    "/principal/health": "health",
+    "/principal/activities": "activities",
+    "/principal/talented": "talented",
+    "/principal/special-ed": "special-ed",
+    "/principal/resources": "resources",
+    "/principal/labs": "labs",
+    "/principal/integrations/noor": "noor",
+    "/principal/integrations/madrasati": "madrasati",
+    "/principal/integrations/hudori": "hudori",
+    "/principal/assistant": "assistant",
+  };
+  const supportArea = portal === "principal" ? principalSupport[path] : undefined;
+  if (supportArea) {
+    return <PortalShell portal="principal"><PrincipalSupportServicesScreen area={supportArea} /></PortalShell>;
+  }
+
   const operationsArea = portal === "principal" ? principalOperations[path] : undefined;
   if (operationsArea) {
     return <PortalShell portal="principal"><PrincipalOperationsScreen area={operationsArea} /></PortalShell>;
