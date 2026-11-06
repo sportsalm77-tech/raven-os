@@ -1,75 +1,85 @@
 # RAVEN OS — Principal & Platform Arena Transfer Reconciliation
-Date: 2026-11-05
+Date: 2026-11-06
 Working branch: `rescue/unified-arena-integration-2026-11-03`
-Arena source commit: `13823c0cdd7dd663c18c9beed435aeddab0fc5bf`
-Rescue branch head reviewed before this report: `9d3492e3cec92f15e9c5d20ed3b9f350c879d24e`
+Arena source commit reviewed: `13823c0cdd7dd663c18c9beed435aeddab0fc5bf`
+Rescue branch head at reconciliation: `2f623fea811d4daf81554800e1fc93918d533eb8`
 
 ## 1. Scope and safety
-This is a source-to-rescue reconciliation of the Principal and Platform portal UI. It is not a claim of full visual parity, functional completion, browser verification, or backend integration. Arena remains unchanged. No changes were made to `main`, no merge was performed, and no deployment was initiated.
+This document supersedes the earlier 2026-11-05 reconciliation. It updates the implementation map against the current rescue branch after the Principal Operations, Support Services, and Governance route dispatches were added.
 
-The rescue branch remains the authoritative current source where the two implementations differ. Approved Raven hierarchy and data-governance rules take precedence over Arena demo behavior.
+Arena remains a read-only design/source reference. Raven's Next.js App Router, approved route structure, and Raven-native data governance remain authoritative. No changes to `main`, no merge, and no deployment are part of this work.
 
-## 2. Principal portal source inventory
-The five Arena files expose 27 page-level components plus the shared `VoiceEntryModal`:
-- `PrincipalPages.tsx`: `PrincipalDashboard`, `InfoCenter`, `VoiceEntryModal`.
-- `PrincipalPages2.tsx`: `AssignmentsCenter`, `OperationalPlan`, `ImpactCenter`, `SchoolAffairs`, `ClassesCenter`, `TeachersAffairs`, `StudentsAffairs`, `ExamsGrades`, `ExamsControl`.
-- `PrincipalPages3.tsx`: `BehaviorAbsence`, `BehaviorViolations`, `BehaviorPositive`, `LibraryPage`, `TimetablePage`.
-- `PrincipalPages4.tsx`: `HealthPage`, `ActivitiesPage`, `TalentedPage`, `SpecialEdPage`, `ResourcesPage`, `LabsPage`, `IntegrationPage`, `AssistantPage`.
-- `PrincipalPages5.tsx`: `PermissionsPage`, `PrincipalSettings`, `ReportsPage`.
+## 2. Principal source inventory
+The reviewed Arena source has five split Principal page files:
+- `PrincipalPages.tsx`: dashboard, information center, and shared voice-entry modal.
+- `PrincipalPages2.tsx`: assignments, operational plan, impact, school affairs, classes, teacher affairs, student affairs, grades, and exam control.
+- `PrincipalPages3.tsx`: absence, behavior violations, positive behavior, library, and timetable.
+- `PrincipalPages4.tsx`: health, activities, gifted students, special education, resources, laboratories, integrations, and assistant.
+- `PrincipalPages5.tsx`: permissions, settings, and reports.
 
-## 3. Verified rescue implementation mapping
-| Rescue route / component | Current implementation | Classification |
-|---|---|---|
-| `/principal` | Shared Raven `PortalDashboard` | Raven-native dashboard; not proof of Arena dashboard parity |
-| `/principal/info-center` | `PrincipalInfoCenter` | Dedicated Raven component |
-| `/principal/assignments` | `PrincipalAssignmentsCenter` | Dedicated Raven workflow component |
-| `/principal/decision-center` | `PrincipalDecisionCenter` | Dedicated Raven component; approved Raven-specific center |
-| `/principal/operational-plan` | `PrincipalOperationalPlan` | Dedicated Raven component; correctly subordinate to Decision Center |
-| `/principal/impact` | `PrincipalImpactCenter` | Dedicated Raven component |
-| `/principal/school-affairs` | `PrincipalSchoolAffairsCenter` | Dedicated Raven component |
-| `/principal/classes` | `PrincipalClassesCenter` | Dedicated Raven component with unconnected-state guard |
-| Remaining 21 Arena page-level components | Routes resolve through `PortalModuleWorkspace` | Route/workflow descriptions only; detailed Arena screens have not been transferred |
+Arena demo records, identities, fixed KPIs, dates, sample names, chart series, local success toasts, and simulated actions are excluded from migration.
 
-The 21 remaining Arena components are: `TeachersAffairs`, `StudentsAffairs`, `ExamsGrades`, `ExamsControl`, `BehaviorAbsence`, `BehaviorViolations`, `BehaviorPositive`, `LibraryPage`, `TimetablePage`, `HealthPage`, `ActivitiesPage`, `TalentedPage`, `SpecialEdPage`, `ResourcesPage`, `LabsPage`, `IntegrationPage`, `AssistantPage`, `PermissionsPage`, `PrincipalSettings`, `ReportsPage`, and the Arena-specific dashboard parity work. The dedicated Raven dashboard is retained and is not to be replaced by the seeded Arena dashboard.
+## 3. Current Raven Principal implementation map
+The current route dispatcher is `src/components/portal-section-page.tsx`.
 
-## 4. Platform portal reconciliation
-Arena `src/pages/platform/PlatformPortal.tsx` is a single React Router portal file containing the overview and platform administration screens. It imports `SCHOOLS`, `PLATFORM_USERS`, `AUDIT_LOGS`, and `HEALTH_STATS` fixtures and includes seeded KPIs, school records, alert examples, and simulated local actions.
+Dedicated Raven screen families now cover:
+- Core centers: `PrincipalInfoCenter`, `PrincipalAssignmentsCenter`, the Raven Decision Center, Operational Plan center, Impact Center, School Affairs Center, and Classes Center.
+- Operations: `PrincipalOperationsScreen` with explicit typed areas for teachers, students, grades, exam control, absence, behavior violations, and positive behavior.
+- Support: `PrincipalSupportServicesScreen` with explicit typed areas for library, timetable, health, activities, gifted students, special education, learning resources, laboratories, Noor, Madrasati, Hudori, and assistant.
+- Governance: `PrincipalGovernanceScreen` with explicit areas for permissions, school settings, and reports.
 
-Raven already exposes the five approved platform destinations in `src/lib/nav.ts`, each resolved through the Platform catch-all route and the explicit `MODULES` map in `src/components/portal-module-workspace.tsx`:
+These are Raven-native screen implementations with defined workflows, governance rules, and empty/unconnected states. They are not connected business operations and do not establish full pixel-level parity with Arena.
+
+Six operational-plan child routes (management, follow-up, development, alternatives, initiatives, and programs) remain handled by the route-specific workflow definitions in `PortalModuleWorkspace`. They are not to be mistaken for missing routes, nor for fully connected plan operations.
+
+The Operational Plan is a distinct top-level Principal center, separate from the Administrative Decisions & Assignments Center. Its six subsections remain under the Operational Plan navigation group. This reflects the approved Raven architecture and supersedes the earlier incorrect wording that placed the plan beneath the Decisions Center.
+
+## 4. Platform implementation map
+Arena `src/pages/platform/PlatformPortal.tsx` includes fixture-backed schools, platform users, audit logs, health statistics, seeded KPIs, and simulated local actions. None of those records or behaviors may be imported as real platform data.
+
+Raven currently has five Platform administration destinations in `src/lib/nav.ts` and route-specific governance definitions in `src/components/portal-module-workspace.tsx`:
 1. `/platform/schools`
 2. `/platform/users`
 3. `/platform/roles`
 4. `/platform/security`
 5. `/platform/settings`
 
-The five destinations have section-specific workflow descriptions, backend-not-connected messaging, and governance/activation requirements. This is the safe Raven-native destination baseline, not a transfer of the full Arena screens. Do not add a sixth independent Users portal; user management remains within Platform Management. The Intelligent Engines route is a separately approved Raven navigation item and is not an Arena sixth administration screen.
+These are detailed Raven-native workflow workspaces, not full Arena screen parity and not live administration services. User management remains inside Platform Management; no fifth standalone Users portal is permitted. The Intelligent Engines destination is a separate approved Raven capability.
 
-## 5. Data and interaction exclusions
-Do not transfer Arena fixtures or derived content, including school/user identities, student or staff records, attendance, grades, class lists, task/initiative records, notifications, audit logs, health/uptime figures, event histories, chart series, or realistic-looking counts and dates.
+## 5. Teacher and Family reconciliation
+Teacher and Family routes exist in Raven navigation and have route-specific workflow definitions in `PortalModuleWorkspace`. The current state is structured workflow workspaces, not detailed page-level Arena component parity.
 
-Do not carry over client-only success toasts, timer-driven completion, simulated approvals, notifications, exports, or save/send actions as if they were durable operations. Keep records empty or explicitly unconnected until trusted server sources, identity, tenant isolation, authorization, persistence, and audit are implemented and tested.
+Arena Teacher and Family source components depend on fixture identities and records, including teacher/class/grade/timetable/homework/notification fixtures and family-child/attendance/grade/behavior fixtures. These must not be copied.
 
-Family data must remain inaccessible until the server verifies the guardian identity and each guardian-child relationship. Teacher data must be scoped server-side to the authenticated teacher, school, and assigned classes.
+- Teacher records must be scoped server-side to the authenticated teacher, school, and assigned classes.
+- Family records must remain unavailable until the server verifies the authenticated guardian and the exact guardian-child relationship.
+- Decorative verification badges, client-side identity selection, and simulated save/send/approval/export actions are not authorization or persistence.
 
-## 6. Shared UI and route reconciliation
-- The current Next.js App Router route files correctly delegate to Raven portal dashboard and section routing; do not copy Arena's React Router or HashRouter structure.
-- The current navigation has four portal identities only: Platform, Principal, Teacher, and Family.
-- The shared Arena shell remains excluded because it carries demo identity, demo notifications, decorative verified-access language, and client-only read state. Continue using the Raven shell and navigation as authoritative.
-- The existing Arena visual primitives adaptation is reusable presentation infrastructure; it does not mean the individual Arena portal pages are transferred.
-- Operational Plan remains a child of the Administrative Decisions & Assignments Center hierarchy. Do not flatten it into a peer center.
+## 6. Shared route and data rules
+- Preserve the four portal identities only: Platform, Principal, Teacher, and Family.
+- Preserve Raven's Next.js App Router; do not transplant Arena's React Router or HashRouter.
+- Keep school data isolated by server-verified `school_id`.
+- Do not import Arena fixture files, seeded people, student records, grades, attendance, schedules, notifications, audit logs, metrics, dates, chart data, or derived counts.
+- Do not carry over simulated success messages or local-only operations as if they were durable.
+- Keep unconnected areas explicitly empty/unconnected until trusted identity, authorization, data sources, persistence, and audit services exist and are tested.
 
-## 7. Current status and next transfer batch
-- Platform: five approved destinations exist as Raven-native governance workspaces; full Arena screen parity remains outstanding.
-- Principal: seven dedicated Raven components exist for the approved central areas; the remaining Arena page-level screens are currently generic workspaces, not transferred screens.
-- Routes: the four portal route families and explicit navigation entries exist. Route existence alone is not acceptance evidence.
-- Data: no Arena demo records should be migrated.
-- Verification: this pass was a source/code review only. It did not run browser, device, accessibility, end-to-end, or security tests.
+## 7. Verification boundary and remaining work
+The two GitHub Actions runs supplied for the Governance component creation and route wiring both report successful jobs, including Next.js build and lint:
+- https://github.com/sportsalm77-tech/raven-os/actions/runs/42156267233
+- https://github.com/sportsalm77-tech/raven-os/actions/runs/42156275810
 
-Recommended next batch: port the highest-value safe presentation structure from the remaining Principal Arena screens into Raven-native components in grouped batches, starting with staff/student administration, exams, and behavior/attendance. Rebuild the UI against Raven empty/unconnected states and existing navigation; do not transplant Arena data or client-only business actions. Then handle library/timetable/health/activities/resources/integrations/assistant/reporting surfaces. Review Platform overview separately only after removing all fixture-dependent metrics and identity claims.
+This verifies those CI jobs only. It does not establish browser/mobile rendering, accessibility, end-to-end behavior, backend persistence, RBAC, or tenant isolation.
+
+Remaining migration work:
+1. Continue detailed Teacher and Family screen adaptation from Arena structure into Raven-native components, without fixtures or simulated actions.
+2. Review and adapt Platform overview and its administration screens beyond the current route-specific workflow workspaces.
+3. Audit Principal plan child routes and all route-to-screen mappings for completeness.
+4. Run current build/lint and add route/unit coverage after each implementation batch.
+5. Perform responsive, accessibility, authorization, and tenant-isolation tests when the required services are available.
 
 ## 8. Acceptance statement
-This report records the actual distinction between dedicated Raven components, generic route workspaces, and backend-connected functionality. It does not certify the portals as complete or production-ready.
+This reconciliation distinguishes Raven-native dedicated screens, route-specific workflow workspaces, Arena source structures not yet adapted, and backend-connected functionality. It does not certify Raven OS as production-ready.
 
 ---
-**مؤسسة رافيين للخدمات التعليمية**  
+**مؤسسة رافيين للخدمات التعليمية**
 **نحن نصنع الفرق**
