@@ -3,8 +3,7 @@
 import Link from "next/link";
 import {
   ArrowLeft, ArrowRight, BookOpenCheck, CalendarDays, CheckCircle2, ClipboardCheck,
-  ClipboardList, FileText, GraduationCap, Library, LockKeyhole, MessageSquare,
-  PenLine, ShieldCheck, Sparkles, Trophy, UserRound, CircleAlert,
+  FileText, GraduationCap, LockKeyhole, ShieldCheck, CircleAlert,
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_NAVS } from "@/lib/nav";
@@ -170,7 +169,6 @@ function StatusNotice({ isAr }: { isAr: boolean }) {
 export function TeacherPortalHome() {
   const { isAr } = useLang();
   const groups = PORTAL_NAVS.teacher;
-  const sections = groups.flatMap((group) => group.items).filter((item) => !item.end);
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 
   return (
