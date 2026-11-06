@@ -80,5 +80,5 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
     return <PortalShell portal="principal"><PrincipalOperationsScreen area={operationsArea} /></PortalShell>;
   }
 
-  return <PortalModuleWorkspace portal={portal} item={item} path={path} />;
+  return <PortalModuleWorkspace portal={portal} item={{ ar: item.ar, en: item.en }} path={path} />;
 }
