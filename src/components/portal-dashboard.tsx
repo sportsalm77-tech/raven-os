@@ -7,6 +7,7 @@ import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PortalShell } from "@/components/portal-shell";
 import { PortalOverviewPanels } from "@/components/portal-overview-panels";
 import { PlatformCommandCenter } from "@/components/platform-command-center";
+import { TeacherPortalHome } from "@/components/teacher-portal-workspace";
 
 const COPY: Record<PortalId,{ar:string;en:string;noteAr:string;noteEn:string}> = {
  platform:{ar:"مركز الحوكمة والإدارة المركزية لمنظومة رافين ومدارسها، مع فصل واضح بين إدارة المنصة وإدارة كل مدرسة.",en:"The central governance workspace for Raven OS and its schools, with a clear boundary between platform administration and each school.",noteAr:"هذه النسخة لا تتصل بعد بمصدر المدارس أو الهوية أو سجل التدقيق. لا توجد سجلات تشغيلية أو أرقام افتراضية.",noteEn:"This build is not yet connected to school, identity, or audit services. No operational records or fabricated metrics are shown."},
@@ -24,7 +25,7 @@ function Tile({to,ar,en,Icon,isAr}:{to:string;ar:string;en:string;Icon:LucideIco
 export function PortalDashboard({portal}:{portal:PortalId}) {
  const {isAr}=useLang(); const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
  return <PortalShell portal={portal}>
-  {portal === "platform" ? <PlatformCommandCenter /> : <>
+  {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
    <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
    <h1 className="text-2xl font-black md:text-3xl">{isAr?meta.ar:meta.en}</h1>
