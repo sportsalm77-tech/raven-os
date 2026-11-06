@@ -61,7 +61,7 @@ export function PlatformCommandCenter() {
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
           <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام إدارة المنصة":"Platform centers & administration"}</h2><p className="mt-1 text-xs leading-6 text-[#66736e]">{isAr?"التقسيم التشغيلي المعتمد لتطوير البوابة على مراحل مترابطة.":"The operating structure for phased, connected development of the platform portal."}</p></div>
-          <span className="shrink-0 rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-bold text-[#66736e]">09 {isAr?"مراكز":"centers"}</span>
+          <span className="shrink-0 rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-bold text-[#66736e]">09 {isAr?"وحدات إدارية":"governance units"}</span>
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {CENTERS.map(center=>{
