@@ -28,9 +28,9 @@ test.describe("Teacher portal browser acceptance", () => {
   });
 
   for (const route of teacherRoutes) {
-    test(\`loads the specialized teacher workspace: \${route}\`, async ({ page }) => {
+    test(`loads the specialized teacher workspace: ${route}`, async ({ page }) => {
       const response = await page.goto(route);
-      expect(response?.status(), \`Unexpected response for \${route}\`).toBe(200);
+      expect(response?.status(), `Unexpected response for ${route}`).toBe(200);
       await expect(page.getByText(/مصدر البيانات غير متصل|Data source not connected/).first()).toBeVisible();
       await expect(page.locator("body")).not.toContainText("Internal Server Error");
     });
@@ -47,14 +47,14 @@ test.describe("Teacher portal browser acceptance", () => {
   });
 
   for (const width of [320, 360, 390, 768, 1024, 1440]) {
-    test(\`avoids document-level horizontal overflow at \${width}px\`, async ({ page }) => {
+    test(`avoids document-level horizontal overflow at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/teacher");
       const dimensions = await page.evaluate(() => ({
         viewport: document.documentElement.clientWidth,
         scroll: document.documentElement.scrollWidth,
       }));
-      expect(dimensions.scroll, \`Horizontal overflow at \${width}px: \${JSON.stringify(dimensions)}\`).toBeLessThanOrEqual(dimensions.viewport + 1);
+      expect(dimensions.scroll, `Horizontal overflow at ${width}px: ${JSON.stringify(dimensions)}`).toBeLessThanOrEqual(dimensions.viewport + 1);
     });
   }
 
