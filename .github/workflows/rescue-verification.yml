@@ -28,6 +28,8 @@ jobs:
         run: npm run build
       - name: Lint
         run: npm run lint
+      - name: Run security policy unit tests
+        run: npm run test:security
       - name: Install Chromium for browser verification
         run: npx playwright install --with-deps chromium
       - name: Run Platform browser and responsive checks

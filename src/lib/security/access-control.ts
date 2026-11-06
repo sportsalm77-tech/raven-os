@@ -43,6 +43,7 @@ export type TrustedActor = Readonly<{
   subjectId: string;
   role: RavenRole;
   portal: RavenPortal;
+  /** Server-resolved active school context, not a browser-supplied selector. */
   schoolId: string | null;
   sessionId: string;
   authenticatedAt: string;
@@ -56,11 +57,12 @@ export type AuthorizationRequest = Readonly<{
 
 export type AuthorizationDecision =
   | Readonly<{ allowed: true; actor: TrustedActor; reason: "authorized" }>
-  | Readonly<{ allowed: false; reason: "unauthenticated" | "invalid_actor" | "role_denied" | "tenant_mismatch" | "scope_required" }>;
+  | Readonly<{ allowed: false; reason: "unauthenticated" | "invalid_actor" | "role_denied" | "tenant_mismatch" | "scope_required" | "relationship_denied" }>;
 
 const PLATFORM_ROLES: readonly RavenRole[] = ["platform_super_admin", "platform_system_admin"];
 const SCHOOL_ADMIN_ROLES: readonly RavenRole[] = ["school_admin", "principal"];
 const VICE_ROLES: readonly RavenRole[] = ["vice_principal"];
+const SAFE_ID = /^[a-zA-Z0-9:_./-]{1,160}$/;
 
 const ROLE_PERMISSIONS: Readonly<Record<RavenRole, readonly RavenPermission[]>> = {
   platform_super_admin: [
@@ -103,28 +105,30 @@ function validActor(actor: TrustedActor): boolean {
     actor.role === "family_guardian" ? actor.portal === "family" : false;
   return Boolean(
     portalMatchesRole &&
-    actor.subjectId.trim() &&
-    actor.sessionId.trim() &&
-    actor.authenticatedAt.trim() &&
+    SAFE_ID.test(actor.subjectId) &&
+    SAFE_ID.test(actor.sessionId) &&
+    Number.isFinite(Date.parse(actor.authenticatedAt)) &&
     (actor.role === "platform_super_admin" || actor.role === "platform_system_admin"
       ? actor.schoolId === null && actor.portal === "platform"
-      : Boolean(actor.schoolId?.trim()) && actor.portal !== "platform"),
+      : Boolean(actor.schoolId && SAFE_ID.test(actor.schoolId)) && actor.portal !== "platform"),
   );
 }
 
-/** Evaluate a permission. Missing or malformed identity is always denied. */
+/** Evaluate general role and active-tenant permission. Missing identity always denies. */
 export function authorize(request: AuthorizationRequest): AuthorizationDecision {
   const { actor, permission, targetSchoolId } = request;
   if (!actor) return { allowed: false, reason: "unauthenticated" };
   if (!validActor(actor)) return { allowed: false, reason: "invalid_actor" };
   if (!ROLE_PERMISSIONS[actor.role].includes(permission)) return { allowed: false, reason: "role_denied" };
 
+  // A family role cannot read children through a generic school permission check.
+  // Child-specific reads must use authorizeFamilyChildRead and a trusted relationship resolver.
+  if (actor.role === "family_guardian" && permission === "family:children:read") {
+    return { allowed: false, reason: "relationship_denied" };
+  }
+
   if (PLATFORM_ROLES.includes(actor.role)) {
-    // Platform administration is a separate portal authority, never a school-user session.
-    // Cross-domain administrative operations must use explicit platform permissions.
-    if (!permission.startsWith("platform:")) {
-      return { allowed: false, reason: "role_denied" };
-    }
+    if (!permission.startsWith("platform:")) return { allowed: false, reason: "role_denied" };
     if (permission === "platform:schools:password_reset" && !targetSchoolId) {
       return { allowed: false, reason: "scope_required" };
     }
@@ -138,6 +142,50 @@ export function authorize(request: AuthorizationRequest): AuthorizationDecision 
   }
 
   return { allowed: false, reason: "role_denied" };
+}
+
+export type GuardianRelationshipResolver = (input: Readonly<{
+  guardianSubjectId: string;
+  childId: string;
+  schoolId: string;
+}>) => Promise<boolean>;
+
+/**
+ * The only generic entry point for guardian child reads. The resolver must query
+ * the authoritative Raven relationship source on the server for this exact child
+ * and school. Missing, false, or failing resolvers deny access.
+ */
+export async function authorizeFamilyChildRead(
+  input: Readonly<{
+    actor: TrustedActor | null;
+    childId: string;
+    targetSchoolId: string | null;
+  }>,
+  resolveRelationship: GuardianRelationshipResolver | null,
+): Promise<AuthorizationDecision> {
+  const { actor, childId, targetSchoolId } = input;
+  if (!actor) return { allowed: false, reason: "unauthenticated" };
+  if (!validActor(actor) || actor.role !== "family_guardian") {
+    return { allowed: false, reason: "invalid_actor" };
+  }
+  if (!SAFE_ID.test(childId) || !targetSchoolId || !SAFE_ID.test(targetSchoolId)) {
+    return { allowed: false, reason: "scope_required" };
+  }
+  if (actor.schoolId !== targetSchoolId) return { allowed: false, reason: "tenant_mismatch" };
+  if (!resolveRelationship) return { allowed: false, reason: "relationship_denied" };
+
+  try {
+    const linked = await resolveRelationship({
+      guardianSubjectId: actor.subjectId,
+      childId,
+      schoolId: targetSchoolId,
+    });
+    return linked
+      ? { allowed: true, actor, reason: "authorized" }
+      : { allowed: false, reason: "relationship_denied" };
+  } catch {
+    return { allowed: false, reason: "relationship_denied" };
+  }
 }
 
 /** Throwing guard for server handlers; caller must translate to a safe HTTP response. */
