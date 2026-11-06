@@ -30,8 +30,8 @@ function Tile({to,ar,en,Icon,isAr}:{to:string;ar:string;en:string;Icon:LucideIco
 }
 export function PortalDashboard({portal}:{portal:PortalId}) {
  const {isAr}=useLang(); const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
- if (portal === "platform") return <PortalShell portal="platform"><PlatformCommandCenter /></PortalShell>;
  return <PortalShell portal={portal}>
+  {portal === "platform" ? <PlatformCommandCenter /> : <>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
    <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
    <h1 className="text-2xl font-black md:text-3xl">{isAr?meta.ar:meta.en}</h1>
