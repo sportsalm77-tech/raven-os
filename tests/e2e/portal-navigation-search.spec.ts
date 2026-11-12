@@ -5,7 +5,7 @@ for (const portal of ["platform", "principal", "teacher", "family"] as const) {
     await page.goto(`/${portal}`);
     const nav = page.getByRole("navigation", { name: "التنقل الرئيسي" });
     const search = nav.getByRole("textbox", { name: "البحث في أقسام البوابة" });
-    await search.fill(portal === "family" ? "الحضور" : portal === "teacher" ? "الدرجات" : portal === "principal" ? "المدرسة" : "المدارس");
+    await search.fill(portal === "family" ? "الحضور" : portal === "teacher" ? "الدرجات" : portal === "principal" ? "الخطة" : "المدارس");
     await expect(nav.getByRole("link").first()).toBeVisible();
     await search.fill("zz-no-matching-section-zz");
     await expect(nav.getByText("لا توجد أقسام مطابقة")).toBeVisible();
