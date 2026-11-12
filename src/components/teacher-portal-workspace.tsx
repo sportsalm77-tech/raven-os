@@ -199,7 +199,7 @@ export function TeacherPortalHome() {
         ].map((card) => {
           const Icon = card.icon;
           return (
-            <Link key={card.href} href={card.href} className="rounded-2xl border border-black/10 bg-white p-5 transition hover:border-[#08794F]/40 hover:shadow-sm">
+            <Link key={card.href} href={card.href} className="rf-card p-5 transition hover:border-[#08794F]/40 hover:shadow-sm">
               <span className="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={19} /></span>
               <strong className="block text-sm text-[#111A18]">{isAr ? card.titleAr : card.titleEn}</strong>
               <p className="mt-2 text-xs leading-6 text-[#66736e]">{isAr ? card.bodyAr : card.bodyEn}</p>
@@ -209,7 +209,7 @@ export function TeacherPortalHome() {
         })}
       </section>
 
-      <section className="rounded-2xl border border-black/10 bg-white p-5 md:p-6">
+      <section className="rf-card p-5 md:p-6">
         <div className="mb-4 flex items-center gap-2">
           <BookOpenCheck size={19} className="text-[#08794F]" />
           <h2 className="text-base font-black text-[#111A18]">{isAr ? "دورة عمل المعلم" : "Teacher work cycle"}</h2>
@@ -243,7 +243,7 @@ export function TeacherPortalHome() {
                 {group.items.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <Link key={item.to} href={item.to} className="flex min-h-28 items-start gap-3 rounded-2xl border border-black/10 bg-white p-4 transition hover:border-[#08794F]/40 hover:shadow-sm">
+                    <Link key={item.to} href={item.to} className="flex min-h-28 items-start gap-3 rf-card p-4 transition hover:border-[#08794F]/40 hover:shadow-sm">
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={18} /></span>
                       <span className="min-w-0">
                         <strong className="block text-sm text-[#111A18]">{isAr ? item.ar : item.en}</strong>
@@ -294,7 +294,7 @@ export function TeacherSectionWorkspace({ slug }: { slug: string }) {
       <StatusNotice isAr={isAr} />
 
       <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
-        <section className="rounded-2xl border border-black/10 bg-white p-5">
+        <section className="rf-card p-5">
           <div className="mb-4 flex items-center gap-2">
             <CheckCircle2 size={18} className="text-[#08794F]" />
             <h2 className="text-sm font-black text-[#111A18]">{isAr ? "مسار العمل المعتمد تصميميًا" : "Designed workflow"}</h2>
@@ -310,7 +310,7 @@ export function TeacherSectionWorkspace({ slug }: { slug: string }) {
         </section>
 
         <div className="space-y-4">
-          <section className="rounded-2xl border border-black/10 bg-white p-5">
+          <section className="rf-card p-5">
             <div className="mb-3 flex items-center gap-2">
               <FileText size={18} className="text-[#08794F]" />
               <h2 className="text-sm font-black text-[#111A18]">{isAr ? "المدخلات المطلوبة من مصدر موثوق" : "Required trusted inputs"}</h2>
@@ -336,7 +336,7 @@ export function TeacherSectionWorkspace({ slug }: { slug: string }) {
         <TeacherLocalDraft kind={slug} isAr={isAr} />
       )}
 
-      <section className="rounded-2xl border border-black/10 bg-white p-5">
+      <section className="rf-card p-5">
         <div className="mb-2 flex items-center gap-2">
           <ShieldCheck size={18} className="text-[#08794F]" />
           <h2 className="text-sm font-black text-[#111A18]">{isAr ? "متطلبات التفعيل التشغيلي" : "Operational activation requirements"}</h2>
@@ -349,7 +349,7 @@ export function TeacherSectionWorkspace({ slug }: { slug: string }) {
       </section>
 
       <div className="flex justify-start">
-        <Link href="/teacher" className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-bold text-[#08794F] hover:bg-[#F5F3EC]">
+        <Link href="/teacher" className="inline-flex items-center gap-2 rf-card px-4 py-2 text-sm font-bold text-[#08794F] hover:bg-[#F5F3EC]">
           <Arrow size={16} /> {isAr ? "العودة إلى مساحة المعلم" : "Back to teacher workspace"}
         </Link>
       </div>
