@@ -99,7 +99,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
   return <div className="min-h-screen bg-[#F5F3EC]" dir={direction}>
     <aside className="fixed inset-y-0 start-0 z-30 hidden w-[270px] flex-col bg-[#111A18] lg:flex">{navigation}</aside>
     {mobileOpen && <div className="fixed inset-0 z-50 lg:hidden">
-      <button aria-label={isAr ? "إغلاق القائمة" : "Close navigation"} className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+      <button aria-label="Close navigation" className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
       <aside className="absolute inset-y-0 start-0 w-[290px] bg-[#111A18] shadow-2xl">{navigation}
         <button aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="absolute end-3 top-3 rounded-lg p-2 text-white"><X size={19}/></button>
       </aside>
@@ -107,7 +107,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     <div className="min-h-screen lg:ms-[270px]">
       <header className="sticky top-0 z-20 flex min-h-[68px] items-center justify-between border-b border-black/10 bg-[#F5F3EC]/95 px-4 backdrop-blur md:px-7">
         <div className="flex items-center gap-3">
-          <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label={isAr ? "فتح القائمة" : "Open navigation"}><Menu size={19}/></button>
+          <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
           <div><div className="text-xs text-[#08794F]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold">{isAr ? meta.ar : meta.en}</div></div>
         </div>
         <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-bold" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
