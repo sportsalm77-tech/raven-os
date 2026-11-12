@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PortalCommandPalette } from "@/components/portal-command-palette";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
@@ -69,6 +70,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
             aria-label={isAr ? "البحث في أقسام البوابة" : "Search portal sections"}
             className="h-11 w-full rounded-xl border border-white/30 bg-white/10 ps-9 pe-3 text-sm font-semibold text-white outline-none placeholder:text-white/85 focus:border-[#D4AF37]/60 focus:bg-white/10" />
         </label>
+        <button type="button" onClick={()=>{setMobileOpen(false);window.dispatchEvent(new CustomEvent("raven:open-services"))}} className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-[#D4AF37]/50 bg-[#08794F] px-3 py-3 text-sm font-black text-white shadow-sm hover:bg-[#096b49]"><LayoutGrid size={18}/>{isAr?"عرض جميع المراكز والخدمات":"Browse all centers & services"}</button>
         {principalNav && <div className="mb-3 flex items-center justify-between gap-2 border-b border-[#D4AF37]/20 pb-3 px-2"><span className="text-xs font-black tracking-wide text-[#E8D6A5]">{isAr?"المراكز الإدارية":"ADMINISTRATIVE CENTERS"}</span><span className="rounded-full border border-[#D4AF37]/35 px-2 py-0.5 text-[10px] font-bold text-[#D4AF37]">{groups.length}</span></div>}
         {filteredGroups.length === 0 && <p className="rounded-lg px-3 py-4 text-center text-xs text-white/50">{isAr ? "لا توجد أقسام مطابقة" : "No matching sections"}</p>}
         {filteredGroups.map((group,groupIndex) => {
@@ -117,7 +119,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
           <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
           <div><div className="text-xs text-[#08794F]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold text-[#111A18]">{isAr ? meta.ar : meta.en}</div></div>
         </div>
-        <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-[#08794F]/30 px-3 py-2 text-sm font-bold text-[#08794F]" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
+        <div className="flex items-center gap-2"><PortalCommandPalette portal={portal}/><button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-[#08794F]/30 px-3 py-2 text-sm font-bold text-[#08794F]" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button></div>
       </header>
       <main id="portal-main-content" tabIndex={-1} className="raven-content px-4 pb-28 pt-6 md:px-7 md:py-9 lg:pb-9">
         <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
