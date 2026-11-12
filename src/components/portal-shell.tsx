@@ -79,12 +79,14 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
             : pathname === item.to || pathname.startsWith(item.to + "/"));
           const expanded = !!navQuery.trim() || expandedGroups.includes(group.ar) || (groupHasActive && !collapsedGroups.includes(group.ar));
           return <section key={group.ar} className={`rounded-2xl border transition-colors ${principalNav ? (groupHasActive ? "border-[#D4AF37]/50 bg-white/10" : "border-white/10 bg-white/[.035] hover:border-[#D4AF37]/25") : "border-transparent"}`}>
-            <button type="button" onClick={() => toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${encodeURIComponent(group.ar)}`}
-              className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-start text-sm font-extrabold transition-colors ${groupHasActive ? "text-[#F2D78E]" : "text-white hover:bg-white/10"}`}>
-              <span className="flex min-w-0 items-center gap-2.5">{principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}<span className="leading-5">{isAr ? group.ar.replace(/^\d+\.\s*/, "") : group.en.replace(/^\d+\.\s*/, "")}</span></span>
-              <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
-            </button>
-            <Link href={`/${portal}/centers/${groups.findIndex(g=>g.ar===group.ar)}`} onClick={()=>{setMobileOpen(false);setNavQuery("")}} className="mx-3 mb-2 flex items-center justify-between gap-2 rounded-lg border border-[#D4AF37]/25 bg-[#08794F]/35 px-3 py-2 text-xs font-bold text-white hover:bg-[#08794F]" aria-label={isAr?"فتح لوحة المركز":"Open center dashboard"}><span>{isAr?"لوحة المركز وبطاقات الخدمات":"Center dashboard & service cards"}</span><LayoutGrid size={16}/></Link>
+            <div className="flex items-center gap-1 rounded-xl px-1 py-1 transition-colors hover:bg-white/10">
+              <Link href={`/${portal}/centers/${groups.findIndex(g=>g.ar===group.ar)}`} onClick={()=>{setMobileOpen(false);setNavQuery("")}}
+                className={`flex min-w-0 flex-1 items-center gap-2.5 rounded-lg px-2 py-2 text-start text-sm font-extrabold ${groupHasActive?"text-[#F2D78E]":"text-white"}`}>
+                {principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}
+                <span className="leading-5">{isAr?group.ar.replace(/^\\d+\\.\\s*/,""):group.en.replace(/^\\d+\\.\\s*/,"")}</span>
+              </Link>
+              <button type="button" onClick={()=>toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${encodeURIComponent(group.ar)}`} aria-label={isAr?"عرض روابط المركز":"Show center links"} className="shrink-0 rounded-lg p-2 text-white hover:bg-white/10"><ChevronDown size={16} className={`transition-transform ${expanded?"rotate-180":""}`}/></button>
+            </div>
             {expanded && <div id={`portal-group-${portal}-${encodeURIComponent(group.ar)}`} className="mx-2 mb-2 mt-1 space-y-1 border-s border-[#D4AF37]/30 py-1 ps-2">
               {group.items.map(item => {
                 const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
