@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { PrincipalAreaConnections } from "@/components/principal-area-connections";
 import { EmptyState, PageHead, SectionCard } from "@/components/raven-ui";
 
 export type PrincipalOperationsArea =
@@ -191,6 +192,7 @@ export function PrincipalOperationsScreen({ area }: { area: PrincipalOperationsA
         </ul>
       </SectionCard>
 
+      <PrincipalAreaConnections area={area} />
       <SectionCard title={isAr ? "متطلبات التفعيل" : "Activation Requirements"}>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
