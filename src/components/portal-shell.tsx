@@ -13,7 +13,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
   const { isAr, toggleLang } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
   const groups = PORTAL_NAVS[portal];
-  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(() => portal === "principal" ? groups.map(group => group.ar) : []);
   const [collapsedGroups, setCollapsedGroups] = useState<string[]>([]);
   const [navQuery, setNavQuery] = useState("");
   const filteredGroups = useMemo(() => {
@@ -91,7 +91,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
         })}
       </nav>
       <div className="border-t border-white/10 px-5 py-4 text-[10px] leading-5 text-white/55">
-        <strong className="block text-[#D4AF37]">{isAr ? "مؤسسة رافيين للخدمات التعليمية" : "Rafeeen Foundation for Educational Services"}</strong>
+        <strong className="block text-[#D4AF37]">{isAr ? "مؤسسة رافين للخدمات التعليمية" : "Rafeeen Foundation for Educational Services"}</strong>
         {isAr ? "نحن نصنع الفرق" : "We Make the Difference"}
       </div>
     </div>
