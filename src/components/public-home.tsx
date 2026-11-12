@@ -18,12 +18,12 @@ const products=[["منصة رافين التعليمية","Raven OS education pl
 export function PublicHome(){
  const {isAr,toggleLang}=useLang();const [menu,setMenu]=useState(false);const t=(ar:string,en:string)=>isAr?ar:en;const Arrow=isAr?ArrowLeft:ArrowRight;
  const links=[["#about","المنصة","Platform"],["#services","الخدمات","Services"],["#library","المكتبة","Library"],["#audience","الفئات","Audiences"],["#products","المنتجات","Products"],["#contact","التواصل","Contact"]];
- return <div className="min-h-screen bg-[#F5F3EC] text-[#111A18]">
- <header className="sticky top-0 z-40 border-b border-[#111A18]/10 bg-[#F5F3EC]/95 backdrop-blur">
+ return <div className="raven-public min-h-screen bg-[#0B1412] text-[#F5F3EC]">
+ <header className="sticky top-0 z-40 border-b border-[#D4AF37]/25 bg-[#111A18]/95 backdrop-blur">
  <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-4">
  <Link href="/" className="flex items-center gap-3 font-black"><span className="grid h-11 w-11 place-items-center rounded-xl bg-[#08794F] text-xl text-white">ر</span><span>{t("رافين التعليمية","Raven Education")}</span></Link>
  <nav aria-label={t("التنقل الرئيسي","Main navigation")} className="hidden flex-wrap gap-5 text-sm font-bold lg:flex">{links.map(([href,ar,en])=><a key={href} href={href} className="hover:text-[#08794F]">{t(ar,en)}</a>)}</nav>
- <div className="flex items-center gap-2"><button type="button" onClick={toggleLang} aria-label={t("Switch to English","التبديل إلى العربية")} className="inline-flex items-center gap-2 rounded-xl border border-[#111A18]/20 px-3 py-2 text-sm font-bold"><Languages size={17}/>{isAr?"EN":"عربي"}</button><Link href="/login" className="rounded-xl bg-[#08794F] px-4 py-2.5 text-sm font-bold text-white">{t("تسجيل الدخول","Sign in")}</Link><button type="button" className="rounded-lg border p-2 lg:hidden" aria-label={t("فتح القائمة","Open menu")} aria-expanded={menu} onClick={()=>setMenu(!menu)}>{menu?<X size={20}/>:<Menu size={20}/>}</button></div>
+ <div className="flex items-center gap-2"><button type="button" onClick={toggleLang} aria-label={t("Switch to English","التبديل إلى العربية")} className="inline-flex items-center gap-2 rounded-xl border border-[#D4AF37]/40 px-3 py-2 text-sm font-bold text-[#D4AF37]"><Languages size={17}/>{isAr?"EN":"عربي"}</button><Link href="/login" className="rounded-xl bg-[#08794F] px-4 py-2.5 text-sm font-bold text-white">{t("تسجيل الدخول","Sign in")}</Link><button type="button" className="rounded-lg border p-2 lg:hidden" aria-label={t("فتح القائمة","Open menu")} aria-expanded={menu} onClick={()=>setMenu(!menu)}>{menu?<X size={20}/>:<Menu size={20}/>}</button></div>
  </div>{menu&&<nav className="grid gap-1 border-t px-5 py-3 lg:hidden" aria-label={t("قائمة الجوال","Mobile navigation")}>{links.map(([href,ar,en])=><a key={href} href={href} onClick={()=>setMenu(false)} className="rounded-lg px-3 py-2 hover:bg-white">{t(ar,en)}</a>)}</nav>}
  </header>
  <main>
