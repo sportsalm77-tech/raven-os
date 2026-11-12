@@ -1,13 +1,12 @@
-name: Raven rescue verification
+name: Raven main verification
 
 on:
   push:
     branches:
-      - rescue/unified-arena-integration-2026-11-03
+      - main
   pull_request:
     branches:
       - main
-      - rescue/unified-arena-integration-2026-11-03
 
 permissions:
   contents: read
@@ -16,7 +15,7 @@ jobs:
   next-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout rescue branch
+      - name: Checkout main branch
         uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
