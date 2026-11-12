@@ -24,7 +24,7 @@ export function verifyDemoSession(value: string | undefined, portal: RavenPortal
   if (i < 0) return false;
   const payload = value.slice(0, i), mac = value.slice(i + 1);
   const [role, expires, extra] = payload.split(":");
-  if (extra !== undefined || role !== portal || !/^\\d{10}$/.test(expires)) return false;
+  if (extra !== undefined || role !== portal || !/^[0-9]{10}$/.test(expires)) return false;
   const exp = Number(expires), now = Math.floor(Date.now() / 1000);
   if (exp < now || exp > now + 1800) return false;
   const expected = signature(payload);
