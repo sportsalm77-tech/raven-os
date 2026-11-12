@@ -5,7 +5,6 @@ import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
-import { PortalSandbox } from "@/components/portal-sandbox";
 import { PrincipalExecutiveDashboard } from "@/components/principal-executive-dashboard";
 import { PortalShell } from "@/components/portal-shell";
 import { PortalOverviewPanels } from "@/components/portal-overview-panels";
@@ -31,7 +30,6 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
  const visibleGroups=groups.map(group=>({...group,items:group.items.filter(item=>`${item.ar} ${item.en} ${group.ar} ${group.en}`.toLocaleLowerCase().includes(normalizedQuery))})).filter(group=>group.items.length>0);
  return <PortalShell portal={portal}>
   {portal === "principal" ? <PrincipalExecutiveDashboard /> : <>
-  {process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED === "true" && <PortalSandbox portal={portal} />}
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
    <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
