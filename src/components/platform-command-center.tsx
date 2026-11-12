@@ -68,18 +68,18 @@ export function PlatformCommandCenter() {
             const Icon=center.icon;
             const ready=center.state==="current";
             const content=<><div className="flex items-start justify-between gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={19}/></span><span className={ready?"rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800":"rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-900"}>{ready?(isAr?"مسار قائم — يحتاج تطويرًا":"Existing route — enhancement pending"):(isAr?"ضمن دفعات التطوير":"Planned development batch")}</span></div><h3 className="mt-4 text-sm font-black text-[#111A18]">{isAr?center.ar:center.en}</h3><p className="mt-2 min-h-12 text-xs leading-6 text-[#66736e]">{isAr?center.descAr:center.descEn}</p>{center.href&&<span className="mt-4 inline-flex items-center gap-2 text-xs font-extrabold text-[#08794F]">{isAr?"فتح المركز":"Open center"} <Arrow size={14}/></span>}</>;
-            return center.href?<Link key={center.id} href={center.href} className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#08794F]/40 hover:shadow-md">{content}</Link>:<article key={center.id} className="rounded-2xl border border-dashed border-black/15 bg-white p-5">{content}</article>;
+            return center.href?<Link key={center.id} href={center.href} className="rf-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#08794F]/40 hover:shadow-md">{content}</Link>:<article key={center.id} className="rounded-2xl border border-dashed border-black/15 bg-white p-5">{content}</article>;
           })}
         </div>
       </section>
 
       <section className="grid gap-4 xl:grid-cols-2">
-        <article className="rounded-2xl border border-black/10 bg-white p-5">
+        <article className="rf-card p-5">
           <div className="flex items-center gap-2"><Database size={18} className="text-[#08794F]"/><h2 className="font-black text-[#111A18]">{isAr?"مؤشرات المدارس والبيانات":"Schools & data indicators"}</h2></div>
           <p className="mt-2 text-xs leading-6 text-[#66736e]">{isAr?"لن تُعرض أعداد المدارس أو المستخدمين أو الحضور أو النشاط قبل ربط مستودع موثوق وتجميع آمن يحترم school_id.":"School, user, attendance, and activity counts remain hidden until a trusted repository and tenant-safe aggregation are connected."}</p>
           <div className="mt-4 rounded-xl bg-[#F5F3EC] p-3 text-xs leading-6 text-[#53615b]">{isAr?"قاعدة العرض: مؤشرات مجمعة على مستوى المؤسسة فقط، ولا تُكشف بيانات الطلاب الفردية في بوابة إدارة المنصة.":"Display rule: institution-level aggregates only. Individual student records are not exposed in Platform Management."}</div>
         </article>
-        <article className="rounded-2xl border border-black/10 bg-white p-5">
+        <article className="rf-card p-5">
           <div className="flex items-center gap-2"><LockKeyhole size={18} className="text-[#08794F]"/><h2 className="font-black text-[#111A18]">{isAr?"حدود الصلاحيات والتغيير":"Access & change boundaries"}</h2></div>
           <ul className="mt-3 space-y-2 text-xs leading-6 text-[#53615b]">
             <li className="flex gap-2"><ShieldCheck size={15} className="mt-1 shrink-0 text-[#08794F]"/>{isAr?"مالك المنصة ومسؤول التشغيل يظلان ضمن نموذج RBAC الحالي؛ لا تُنشأ أدوار جديدة قبل مراجعة السياسة.":"Platform ownership and operations remain within the current RBAC model; no new roles are introduced before policy review."}</li>
