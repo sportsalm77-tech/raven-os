@@ -76,3 +76,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .raven-workspace .raven-content .bg-\[\#111A18\] { background:#0B1412 !important; }
 .raven-workspace .raven-content .bg-\[\#08794F\] { background:#08794F !important; }
 .raven-workspace .raven-content .text-white { color:#fff; }
+
+/* Public homepage retains three public portals; its editorial surfaces use the same institutional palette. */
+.raven-public { background:#0B1412; color:#F5F3EC; }
+.raven-public :is(.bg-white,.bg-\[\#F5F3EC\],.bg-\[\#F5F3EC\]\/60,.bg-\[\#F5F3EC\]\/70) { background:#17231F !important; border-color:rgba(212,175,55,.30); }
+.raven-public :is(.text-\[\#111A18\],.text-\[\#53615b\],.text-\[\#66736e\]) { color:#F5F3EC !important; }
+.raven-public :is(.border-black\/10,.border-\[\#111A18\]\/10) { border-color:rgba(212,175,55,.28) !important; }
+.raven-public :is(a,button):focus-visible { outline:2px solid #D4AF37; outline-offset:3px; }
