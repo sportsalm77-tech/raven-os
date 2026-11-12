@@ -47,7 +47,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     <div className="flex h-full flex-col">
       <div className="border-b border-white/10 px-5 py-5">
         <Link href="/" className="flex items-center gap-3 text-white">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#08794F] font-black text-xl">ر</span>
+          <span className="rf-brand-mark font-black text-xl">ر</span>
           <span><strong className="block tracking-wide">RAVEN OS</strong><small className="text-white/60">{isAr ? "منصة رافين التعليمية" : "Raven Educational Platform"}</small></span>
         </Link>
         <div className="mt-5 rounded-xl border border-[#D4AF37]/30 bg-white/5 p-3">
@@ -96,17 +96,17 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     </div>
   );
 
-  return <div className="raven-workspace min-h-screen bg-[#F5F3EC]" dir={direction}>
-    <aside className="fixed inset-y-0 start-0 z-30 hidden w-[270px] flex-col bg-[#111A18] lg:flex">{navigation}</aside>
+  return <div className="raven-workspace rf-surface min-h-screen" dir={direction}>
+    <aside className="rf-portal-sidebar fixed inset-y-0 start-0 z-30 hidden w-[270px] flex-col lg:flex">{navigation}</aside>
     {mobileOpen && <div className="fixed inset-0 z-50 lg:hidden">
       <button aria-label="Close navigation" className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-      <aside className="absolute inset-y-0 start-0 w-[290px] bg-[#111A18] shadow-2xl">{navigation}
+      <aside className="rf-portal-sidebar absolute inset-y-0 start-0 w-[290px] shadow-2xl">{navigation}
         <button aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="absolute end-3 top-3 rounded-lg p-2 text-white"><X size={19}/></button>
       </aside>
     </div>}
     <div className="min-h-screen lg:ms-[270px]">
       <a href="#portal-main-content" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-[#08794F]">{isAr?"تخطي إلى المحتوى الرئيسي":"Skip to main content"}</a>
-      <header className="sticky top-0 z-20 flex min-h-[68px] items-center justify-between border-b border-[#111A18]/10 bg-[#F5F3EC]/95 px-4 backdrop-blur md:px-7">
+      <header className="rf-portal-top sticky top-0 z-20 flex min-h-[68px] items-center justify-between px-4 backdrop-blur md:px-7">
         <div className="flex items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
           <div><div className="text-xs text-[#08794F]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold text-[#111A18]">{isAr ? meta.ar : meta.en}</div></div>
@@ -114,7 +114,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
         <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-[#08794F]/30 px-3 py-2 text-sm font-bold text-[#08794F]" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
       </header>
       <main id="portal-main-content" tabIndex={-1} className="raven-content px-4 py-7 md:px-7 md:py-9">
-        <div className="mb-5 flex items-center gap-2 text-xs text-[#C1B489]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
+        <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
         {children}
 
       </main>
