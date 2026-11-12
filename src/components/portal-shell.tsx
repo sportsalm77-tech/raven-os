@@ -96,7 +96,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     </div>
   );
 
-  return <div className="min-h-screen bg-[#F5F3EC]" dir={direction}>
+  return <div className="raven-workspace min-h-screen bg-[#111A18]" dir={direction}>
     <aside className="fixed inset-y-0 start-0 z-30 hidden w-[270px] flex-col bg-[#111A18] lg:flex">{navigation}</aside>
     {mobileOpen && <div className="fixed inset-0 z-50 lg:hidden">
       <button aria-label="Close navigation" className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
@@ -106,15 +106,15 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     </div>}
     <div className="min-h-screen lg:ms-[270px]">
       <a href="#portal-main-content" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-[#08794F]">{isAr?"تخطي إلى المحتوى الرئيسي":"Skip to main content"}</a>
-      <header className="sticky top-0 z-20 flex min-h-[68px] items-center justify-between border-b border-black/10 bg-[#F5F3EC]/95 px-4 backdrop-blur md:px-7">
+      <header className="sticky top-0 z-20 flex min-h-[68px] items-center justify-between border-b border-[#D4AF37]/25 bg-[#111A18]/95 px-4 backdrop-blur md:px-7">
         <div className="flex items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
-          <div><div className="text-xs text-[#08794F]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold">{isAr ? meta.ar : meta.en}</div></div>
+          <div><div className="text-xs text-[#D4AF37]">{isAr ? "منظومة رافين التعليمية" : "Raven Educational System"}</div><div className="font-extrabold text-white">{isAr ? meta.ar : meta.en}</div></div>
         </div>
-        <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-bold" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
+        <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-[#D4AF37]/40 px-3 py-2 text-sm font-bold text-[#D4AF37]" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
       </header>
-      <main id="portal-main-content" tabIndex={-1} className="px-4 py-7 md:px-7 md:py-9">
-        <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
+      <main id="portal-main-content" tabIndex={-1} className="raven-content px-4 py-7 md:px-7 md:py-9">
+        <div className="mb-5 flex items-center gap-2 text-xs text-[#C1B489]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
         {children}
 
       </main>
