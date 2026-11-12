@@ -36,6 +36,7 @@ export default function LoginPage() {
     } catch { setMessage("تعذر الاتصال بخدمة الدخول."); }
     finally { setBusy(false); }
   }
+  if (process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED !== "true") return <main className="container" style={{ paddingBlock: 80 }}><div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}><h1>تسجيل الدخول</h1><p className="portal-notice">لا توجد مصادقة فعلية مفعّلة في نسخة المعاينة الحالية. لن يتم طلب كلمة المرور قبل استكمال التهيئة والاختبارات.</p><Link href="/">العودة إلى الصفحة الرئيسية</Link></div></main>;
   return <main className="container" style={{ paddingBlock: 80 }}>
     <div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}>
       <span className="eyebrow">RAVEN OS</span>
