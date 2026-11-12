@@ -6,6 +6,18 @@ import Link from "next/link";
 type Destination = { portal: string; school_id?: string; href: string };
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [demoBusy, setDemoBusy] = useState(false);
+  const [demoMessage, setDemoMessage] = useState("");
+  async function demo(role: string) {
+    if (demoBusy) return;
+    setDemoBusy(true); setDemoMessage("");
+    try {
+      const response = await fetch("/api/demo/enter", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({role}),credentials:"same-origin",cache:"no-store"});
+      if (!response.ok) {setDemoMessage("الدخول التجريبي غير متاح في هذه البيئة.");return;}
+      const result = await response.json();
+      if (typeof result.href === "string") window.location.assign(result.href);
+    } catch {setDemoMessage("تعذر بدء التجربة.");} finally {setDemoBusy(false);}
+  }
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -36,13 +48,14 @@ export default function LoginPage() {
     } catch { setMessage("تعذر الاتصال بخدمة الدخول."); }
     finally { setBusy(false); }
   }
-  if (process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED !== "true") return <main className="container" style={{ paddingBlock: 80 }}><div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}><h1>تسجيل الدخول</h1><p className="portal-notice">لا توجد مصادقة فعلية مفعّلة في نسخة المعاينة الحالية. لن يتم طلب كلمة المرور قبل استكمال التهيئة والاختبارات.</p><Link href="/">العودة إلى الصفحة الرئيسية</Link></div></main>;
+  if (process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED !== "true" && process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED !== "true") return <main className="container" style={{ paddingBlock: 80 }}><div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}><h1>تسجيل الدخول</h1><p className="portal-notice">لا توجد مصادقة فعلية مفعّلة في نسخة المعاينة الحالية. لن يتم طلب كلمة المرور قبل استكمال التهيئة والاختبارات.</p><Link href="/">العودة إلى الصفحة الرئيسية</Link></div></main>;
   return <main className="container" style={{ paddingBlock: 80 }}>
     <div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}>
       <span className="eyebrow">RAVEN OS</span>
       <h1>تسجيل الدخول الآمن</h1>
       <p className="section-intro">استخدم حسابك المعتمد في منظومة رافين التعليمية.</p>
-      <form onSubmit={submit} style={{ display: "grid", gap: 16 }}>
+      {process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED === "true" && <section aria-label="تجربة البوابات" style={{display:"grid",gap:12,marginBlock:24}}><h2>تجربة البوابات — بيانات توضيحية فقط</h2><p>تجربة واجهات محمية بجلسة مؤقتة خاصة بالمعاينة، ولا تمنح الوصول إلى بيانات المدارس الفعلية.</p><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{([["platform","إدارة المنصة"],["principal","قائد المدرسة"],["teacher","المعلم"],["family","الأسرة"]] as const).map(([role,label])=><button key={role} type="button" className="button" disabled={demoBusy} onClick={()=>demo(role)}>{label}</button>)}</div>{demoMessage && <p role="alert">{demoMessage}</p>}</section>}
+      {process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED === "true" && <form onSubmit={submit} style={{ display: "grid", gap: 16 }}>
         <label>البريد الإلكتروني
           <input style={{ display: "block", width: "100%", padding: 12 }} type="email" required
             autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} />
@@ -52,7 +65,7 @@ export default function LoginPage() {
             autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} />
         </label>
         <button className="button" type="submit" disabled={busy}>{busy ? "جارٍ التحقق..." : "تسجيل الدخول"}</button>
-      </form>
+      </form>}
       {message && <p role="alert" className="portal-notice" style={{ marginTop: 16 }}>{message}</p>}
       {destinations.length > 1 && <div style={{ marginTop: 24 }}>
         <h2>اختر بوابتك</h2>
