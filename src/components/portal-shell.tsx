@@ -84,6 +84,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
               <span className="flex min-w-0 items-center gap-2.5">{principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}<span className="leading-5">{isAr ? group.ar.replace(/^\d+\.\s*/, "") : group.en.replace(/^\d+\.\s*/, "")}</span></span>
               <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
             </button>
+            <Link href={`/${portal}/centers/${groups.findIndex(g=>g.ar===group.ar)}`} onClick={()=>{setMobileOpen(false);setNavQuery("")}} className="mx-3 mb-2 flex items-center justify-between gap-2 rounded-lg border border-[#D4AF37]/25 bg-[#08794F]/35 px-3 py-2 text-xs font-bold text-white hover:bg-[#08794F]" aria-label={isAr?"فتح لوحة المركز":"Open center dashboard"}><span>{isAr?"لوحة المركز وبطاقات الخدمات":"Center dashboard & service cards"}</span><LayoutGrid size={16}/></Link>
             {expanded && <div id={`portal-group-${portal}-${encodeURIComponent(group.ar)}`} className="mx-2 mb-2 mt-1 space-y-1 border-s border-[#D4AF37]/30 py-1 ps-2">
               {group.items.map(item => {
                 const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
