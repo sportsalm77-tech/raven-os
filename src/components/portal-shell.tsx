@@ -53,21 +53,21 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
       <div className="border-b border-white/20 px-5 py-5">
         <Link href={`/${portal}`} onClick={()=>setMobileOpen(false)} className="flex items-center gap-3 text-white">
           <span className="rf-brand-mark font-black text-xl">ر</span>
-          <span><strong className="block tracking-wide">RAVEN OS</strong><small className="text-white/60">{isAr ? "منصة رافين التعليمية" : "Raven Educational Platform"}</small></span>
+          <span><strong className="block tracking-wide text-white">RAVEN OS</strong><small className="text-white/90">{isAr ? "منصة رافين التعليمية" : "Raven Educational Platform"}</small></span>
         </Link>
         <div className="mt-5 rounded-2xl border border-[#D4AF37]/40 bg-white/10 p-4 shadow-inner">
-          <div className="text-xs text-[#D4AF37]">{isAr ? "البوابة الحالية" : "CURRENT PORTAL"}</div>
+          <div className="text-xs font-extrabold text-[#E8D6A5]">{isAr ? "البوابة الحالية" : "CURRENT PORTAL"}</div>
           <div className="mt-1 font-bold text-white">{isAr ? meta.ar : meta.en}</div>
-          <div className="text-xs text-white/55">{isAr ? meta.roleAr : meta.roleEn}</div>
+          <div className="text-xs text-white/90">{isAr ? meta.roleAr : meta.roleEn}</div>
         </div>
       </div>
       <nav className="rf-sidebar-nav flex-1 space-y-2 overflow-y-auto px-3 py-4" aria-label={isAr ? "التنقل الرئيسي" : "Main navigation"}>
         <label className="relative mb-3 block">
-          <Search size={16} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search size={16} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-white" />
           <input value={navQuery} onChange={event => setNavQuery(event.target.value)}
             placeholder={isAr ? "ابحث في أقسام البوابة..." : "Search portal sections..."}
             aria-label={isAr ? "البحث في أقسام البوابة" : "Search portal sections"}
-            className="h-10 w-full rounded-xl border border-white/10 bg-white/5 ps-9 pe-3 text-xs text-white outline-none placeholder:text-white/40 focus:border-[#D4AF37]/60 focus:bg-white/10" />
+            className="h-11 w-full rounded-xl border border-white/30 bg-white/10 ps-9 pe-3 text-sm font-semibold text-white outline-none placeholder:text-white/85 focus:border-[#D4AF37]/60 focus:bg-white/10" />
         </label>
         {principalNav && <div className="mb-3 flex items-center justify-between gap-2 border-b border-[#D4AF37]/20 pb-3 px-2"><span className="text-xs font-black tracking-wide text-[#E8D6A5]">{isAr?"المراكز الإدارية":"ADMINISTRATIVE CENTERS"}</span><span className="rounded-full border border-[#D4AF37]/35 px-2 py-0.5 text-[10px] font-bold text-[#D4AF37]">{groups.length}</span></div>}
         {filteredGroups.length === 0 && <p className="rounded-lg px-3 py-4 text-center text-xs text-white/50">{isAr ? "لا توجد أقسام مطابقة" : "No matching sections"}</p>}
@@ -78,7 +78,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
           const expanded = !!navQuery.trim() || expandedGroups.includes(group.ar) || (groupHasActive && !collapsedGroups.includes(group.ar));
           return <section key={group.ar} className={`rounded-2xl border transition-colors ${principalNav ? (groupHasActive ? "border-[#D4AF37]/50 bg-white/10" : "border-white/10 bg-white/[.035] hover:border-[#D4AF37]/25") : "border-transparent"}`}>
             <button type="button" onClick={() => toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${encodeURIComponent(group.ar)}`}
-              className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-start text-xs font-bold transition-colors ${groupHasActive ? "text-[#F2D78E]" : "text-white hover:bg-white/10"}`}>
+              className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-start text-sm font-extrabold transition-colors ${groupHasActive ? "text-[#F2D78E]" : "text-white hover:bg-white/10"}`}>
               <span className="flex min-w-0 items-center gap-2.5">{principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}<span className="leading-5">{isAr ? group.ar.replace(/^\d+\.\s*/, "") : group.en.replace(/^\d+\.\s*/, "")}</span></span>
               <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
             </button>
@@ -88,7 +88,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
                 const Icon = item.icon;
                 return <Link key={item.to} href={item.to} onClick={() => { setMobileOpen(false); setNavQuery(""); }} aria-current={active ? "page" : undefined}
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${active ? "border border-[#D4AF37]/45 bg-[#08794F] font-bold text-white shadow-sm" : "text-white hover:bg-[#08794F]/35"}`}>
-                  <Icon size={17} /><span className="font-semibold">{isAr ? item.ar : item.en}</span>
+                  <Icon size={19} className="shrink-0 text-white" /><span className="font-extrabold text-white">{isAr ? item.ar : item.en}</span>
                 </Link>;
               })}
             </div>}
