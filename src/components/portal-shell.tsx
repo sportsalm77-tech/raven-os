@@ -71,12 +71,12 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
             : pathname === item.to || pathname.startsWith(item.to + "/"));
           const expanded = !!navQuery.trim() || expandedGroups.includes(group.ar) || (groupHasActive && !collapsedGroups.includes(group.ar));
           return <section key={group.ar} className="rounded-xl">
-            <button type="button" onClick={() => toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${groups.indexOf(group)}`}
+            <button type="button" onClick={() => toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${encodeURIComponent(group.ar)}`}
               className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-3 text-start text-xs font-bold transition-colors ${groupHasActive ? "bg-white/10 text-white" : "text-[#C1B489] hover:bg-white/5 hover:text-white"}`}>
               <span>{isAr ? group.ar : group.en}</span>
               <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
             </button>
-            {expanded && <div id={`portal-group-${portal}-${groups.indexOf(group)}`} className="mt-1 space-y-1 border-s border-white/10 py-1 ps-2">
+            {expanded && <div id={`portal-group-${portal}-${encodeURIComponent(group.ar)}`} className="mt-1 space-y-1 border-s border-white/10 py-1 ps-2">
               {group.items.map(item => {
                 const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
                 const Icon = item.icon;
