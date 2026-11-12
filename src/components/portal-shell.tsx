@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { ChevronDown, ChevronLeft, ChevronRight, Languages, Menu, Search, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
+import { PortalReadinessPanel } from "@/components/portal-readiness-panel";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
   const pathname = usePathname();
@@ -105,6 +106,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
       </aside>
     </div>}
     <div className="min-h-screen lg:ms-[270px]">
+      <a href="#portal-main-content" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-[#08794F]">{isAr?"تخطي إلى المحتوى الرئيسي":"Skip to main content"}</a>
       <header className="sticky top-0 z-20 flex min-h-[68px] items-center justify-between border-b border-black/10 bg-[#F5F3EC]/95 px-4 backdrop-blur md:px-7">
         <div className="flex items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-black/10 p-2 lg:hidden" aria-label="Open navigation"><Menu size={19}/></button>
@@ -112,9 +114,10 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
         </div>
         <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-black/10 px-3 py-2 text-sm font-bold" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
       </header>
-      <main className="px-4 py-7 md:px-7 md:py-9">
+      <main id="portal-main-content" tabIndex={-1} className="px-4 py-7 md:px-7 md:py-9">
         <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
         {children}
+        <PortalReadinessPanel portal={portal} />
         <div className="mt-8 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-xs leading-6 text-amber-900">
           {isAr ? "نسخة إنقاذ تجريبية: هذه الواجهة لا تملك مصادقة أو صلاحيات خادمية أو اتصالًا ببيانات المدارس حتى الآن. لا تدخل بيانات حقيقية." : "Rescue preview: server authentication, authorization, and school data services are not connected. Do not enter real data."}
         </div>
