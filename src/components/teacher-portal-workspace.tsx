@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PortalExecutiveHome } from "@/components/portal-executive-home";
 import {
   ArrowLeft, ArrowRight, BookOpenCheck, CalendarDays, CheckCircle2, ClipboardCheck,
   FileText, GraduationCap, LockKeyhole, ShieldCheck, CircleAlert,
@@ -174,20 +175,8 @@ export function TeacherPortalHome() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
-        <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · TEACHER WORKSPACE</div>
-        <h1 className="text-2xl font-black md:text-3xl">{isAr ? "مساحة المعلم اليومية" : "Teacher Daily Workspace"}</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/75">
-          {isAr
-            ? "مساحة موحدة تربط الجدول والتحضير والتكليفات والفصول والتقييم والشواهد ضمن نطاق المدرسة وإسناد المعلم."
-            : "A unified workspace connecting timetable, lesson preparation, assignments, classes, assessment, and evidence within the teacher's school and assignment scope."}
-        </p>
-        <div className="mt-5 flex flex-wrap gap-2 text-xs">
-          <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1.5">{isAr ? "14 قسمًا ضمن البوابة" : "14 portal sections"}</span>
-          <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1.5">{isAr ? "عربي / English" : "Arabic / English"}</span>
-          <span className="rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 px-3 py-1.5 text-[#F0D98A]">{isAr ? "مصمم دون بيانات وهمية" : "Designed without fixture data"}</span>
-        </div>
-      </section>
+      <PortalExecutiveHome portal="teacher" />
+
 
       <StatusNotice isAr={isAr} />
 
