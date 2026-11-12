@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { ChevronDown, ChevronLeft, ChevronRight, Languages, Menu, Search, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, House, LayoutGrid, Languages, Menu, Search, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
@@ -26,6 +26,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
   const direction = isAr ? "rtl" : "ltr";
   const meta = PORTAL_META[portal];
   const BackIcon = isAr ? ChevronLeft : ChevronRight;
+  const mobilePrimary = groups.flatMap(group => group.items).filter(item => item.to !== `/${portal}`).slice(0, 2);
 
   const toggleGroup = (groupName: string) => {
     const isOpen = expandedGroups.includes(groupName) || (
@@ -113,11 +114,17 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
         </div>
         <button onClick={toggleLang} className="inline-flex items-center gap-2 rounded-lg border border-[#08794F]/30 px-3 py-2 text-sm font-bold text-[#08794F]" aria-label="Change language"><Languages size={16}/>{isAr ? "English" : "العربية"}</button>
       </header>
-      <main id="portal-main-content" tabIndex={-1} className="raven-content px-4 py-7 md:px-7 md:py-9">
+      <main id="portal-main-content" tabIndex={-1} className="raven-content px-4 pb-28 pt-6 md:px-7 md:py-9 lg:pb-9">
         <div className="mb-5 flex items-center gap-2 text-xs text-[#66736e]"><Link href="/" className="hover:text-[#08794F]">{isAr ? "الرئيسية" : "Home"}</Link><BackIcon size={13}/><span>{isAr ? meta.ar : meta.en}</span></div>
         {children}
 
       </main>
     </div>
+    <nav className="rf-mobile-nav fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 items-stretch gap-1 px-2 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 lg:hidden" aria-label={isAr?"تنقل التطبيق":"App navigation"}>
+      <Link href={`/${portal}`} aria-current={pathname===`/${portal}`?"page":undefined} className={`rf-mobile-tab ${pathname===`/${portal}`?"rf-mobile-tab-active":""}`}><House size={21}/><span>{isAr?"الرئيسية":"Home"}</span></Link>
+      {mobilePrimary.map((item,index)=>{const Icon=item.icon;const active=pathname===item.to||pathname.startsWith(item.to+"/");return <Link key={item.to} href={item.to} aria-current={active?"page":undefined} className={`rf-mobile-tab ${active?"rf-mobile-tab-active":""}`}><Icon size={21}/><span className="truncate max-w-full">{isAr?item.ar:item.en}</span></Link>})}
+      {mobilePrimary.length<2&&<Link href={`/${portal}`} className="rf-mobile-tab"><LayoutGrid size={21}/><span>{isAr?"الأقسام":"Sections"}</span></Link>}
+      <button type="button" onClick={()=>setMobileOpen(true)} aria-label={isAr?"جميع المراكز والأقسام":"All sections"} aria-expanded={mobileOpen} className="rf-mobile-tab"><Menu size={22}/><span>{isAr?"المزيد":"More"}</span></button>
+    </nav>
   </div>;
 }
