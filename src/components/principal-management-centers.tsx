@@ -6,6 +6,7 @@ import {
   Landmark, ListChecks, ShieldCheck, Sparkles, Target, Users, Workflow,
 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { PrincipalWorkflowReview } from "@/components/principal-workflow-review";
 import { EmptyState, PageHead, SectionCard } from "@/components/raven-ui";
 
 function useCopy() {
@@ -48,6 +49,7 @@ export function PrincipalDecisionCenter() {
         <CenterLink href="/principal/info-center" icon={FileText} ar="البيانات والشواهد المعتمدة" en="Approved Data & Evidence"/>
         <CenterLink href="/principal/impact" icon={Gauge} ar="قياس الأثر والتحسين" en="Impact Measurement & Improvement"/>
       </div>
+      <PrincipalWorkflowReview kind="decisions" />
       <SectionCard title={isAr ? "سجل القرارات والإجراءات" : "Decisions & Actions Register"} description={isAr ? "ستظهر السجلات الفعلية بعد ربط مصدر البيانات وخدمة الاعتماد وسجل التدقيق." : "Live records will appear after connecting the data source, approval service, and audit log."}>
         <EmptyState title={isAr ? "لا توجد سجلات متصلة" : "No connected records"} description={isAr ? "لا توجد بيانات أو قرارات تجريبية. إنشاء القرار أو إصداره أو اعتماده غير متاح حتى تتصل الهوية والصلاحيات والحفظ الخادمي." : "No sample records or demo decisions. Creating or approving actions remains unavailable until identity, permissions, and server persistence are connected."}/>
       </SectionCard>
@@ -92,6 +94,7 @@ export function PrincipalOperationalPlan() {
           </Link>
         ))}
       </div>
+      <PrincipalWorkflowReview kind="planning" />
       <SectionCard title={isAr ? "ضوابط سلامة البيانات" : "Data integrity rules"} description={isAr ? "لا توجد خطط أو نسب إنجاز افتراضية؛ كل فرع ينتظر مصدرًا موثوقًا واعتمادًا بشريًا قبل احتساب النتائج." : "No sample plans or completion rates. Each branch requires a trusted source and human approval before results are calculated."}>
         <ul className="space-y-2 text-sm leading-6 text-[var(--muted)]">
           <li>{isAr ? "لكل خطة معرف مرجعي وإصدار وحالة اعتماد." : "Each plan has a reference ID, version, and approval status."}</li>
@@ -114,6 +117,7 @@ export function PrincipalImpactCenter() {
           {(isAr ? ["تعريف المؤشر", "تحديد مصدر البيانات", "التحقق من الشواهد", "المراجعة والتحسين"] : ["Define indicator", "Identify data source", "Validate evidence", "Review and improve"]).map((label, i) => <div key={label} className="rounded-xl border border-[var(--border)] p-4"><span className="text-xs font-bold text-emerald-800">{String(i + 1).padStart(2, "0")}</span><p className="mt-2 text-sm font-semibold">{label}</p></div>)}
         </div>
       </SectionCard>
+      <PrincipalWorkflowReview kind="impact" />
       <SectionCard title={isAr ? "المؤشرات والنتائج" : "Indicators & Results"}>
         <EmptyState title={isAr ? "لا توجد مؤشرات مرتبطة" : "No connected indicators"} description={isAr ? "لن نعرض نسبًا أو رسومًا أو اتجاهات تجريبية. يلزم ربط مصدر موثوق وتعريف المؤشر والفترة قبل احتسابه." : "No sample percentages, charts, or trends are shown. A trusted source, indicator definition, and period are required before calculation."}/>
       </SectionCard>
