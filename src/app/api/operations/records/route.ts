@@ -47,7 +47,11 @@ export async function GET(request: NextRequest) {
     const key = process.env.RAVEN_SUPABASE_PUBLISHABLE_KEY;
     if (!base || !key || !auth) return respond({ error: "service_unavailable" }, 503);
     const endpoint = new URL(`/rest/v1/${RAVEN_OPERATION_MODULES[decision.moduleName].table}`, base);
-    endpoint.searchParams.set("select", "*");
+    // Explicit projection: document storage paths are internal metadata, not preview data.
+    const publicFields = RAVEN_OPERATION_MODULES[decision.moduleName].fields.filter(
+      field => field !== "storage_path"
+    );
+    endpoint.searchParams.set("select", ["id", ...publicFields, "created_at"].join(","));
     endpoint.searchParams.set("school_id", `eq.${decision.schoolId}`);
     endpoint.searchParams.set("order", "created_at.desc");
     endpoint.searchParams.set("limit", rawLimit);
