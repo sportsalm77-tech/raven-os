@@ -14,7 +14,7 @@ for (const portal of ["platform", "principal", "teacher", "family"] as const) {
 test("family navigation search works on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/family");
-  await page.getByRole("button", { name: "فتح القائمة" }).click();
+  await page.getByRole("button", { name: "Open navigation" }).click();
   const nav = page.getByRole("navigation", { name: "التنقل الرئيسي" });
   await nav.getByRole("textbox", { name: "البحث في أقسام البوابة" }).fill("الحضور");
   await expect(nav.getByRole("link", { name: "الحضور والغياب" })).toBeVisible();
