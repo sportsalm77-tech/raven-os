@@ -70,3 +70,36 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .raven-workspace .raven-content .portal-notice { background:#fff8e7; border-color:#ead9a5; color:#66521a; }
 .raven-public { background:#F5F3EC; color:#111A18; }
 .raven-public :is(a,button):focus-visible { outline:2px solid #08794F; outline-offset:3px; }
+
+
+/* Rafien design system v1 — derived from the supplied storefront reference.
+   These are reusable components, not blanket color overrides. */
+:root {
+  --rf-forest:#064b38;
+  --rf-forest-deep:#073b30;
+  --rf-gold:#c6a04b;
+  --rf-gold-light:#e8d6a5;
+  --rf-paper:#f8f6ef;
+  --rf-card:#fffefa;
+  --rf-ink:#143b31;
+  --rf-shadow:0 14px 38px -22px rgba(5,58,42,.32),0 3px 12px -6px rgba(5,58,42,.12);
+}
+.rf-surface { background:var(--rf-paper); color:var(--rf-ink); }
+.rf-header { background:rgba(255,254,250,.96); border-bottom:1px solid rgba(198,160,75,.30); box-shadow:0 4px 18px -14px rgba(5,58,42,.28); }
+.rf-brand-mark { display:grid;place-items:center; width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#076148,#053d30);color:#e8d6a5;border:2px solid var(--rf-gold);box-shadow:0 4px 12px rgba(5,58,42,.22);font-weight:900; }
+.rf-hero { background:radial-gradient(ellipse at 70% 10%,rgba(22,113,77,.6),transparent 55%),linear-gradient(125deg,#07392d 5%,#07513b 60%,#06382d 100%);color:#fff;position:relative;isolation:isolate;overflow:hidden; }
+.rf-hero::after { content:"";position:absolute;inset:auto -12% -92px -12%;height:145px;background:var(--rf-paper);border-radius:50% 50% 0 0/75% 75% 0 0;z-index:-1; }
+.rf-hero-gold { color:var(--rf-gold-light); }
+.rf-card { background:var(--rf-card);border:1px solid rgba(198,160,75,.24);border-radius:22px;box-shadow:var(--rf-shadow);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease; }
+a.rf-card:hover { transform:translateY(-3px);border-color:rgba(198,160,75,.75);box-shadow:0 20px 42px -20px rgba(5,58,42,.3); }
+.rf-icon { display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#eaf3eb;color:var(--rf-forest);border:1px solid rgba(198,160,75,.25); }
+.rf-button { display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:999px;background:linear-gradient(135deg,#075c43,#063e31);color:#fff;padding:.75rem 1.4rem;font-weight:800;box-shadow:0 7px 16px -10px #053a2a;transition:transform .2s ease; }
+.rf-button:hover { transform:translateY(-2px); }
+.rf-button-gold { background:linear-gradient(120deg,#d7b566,#b9923e);color:#17392f; }
+.rf-section-title { color:var(--rf-forest-deep);font-weight:900;letter-spacing:-.02em; }
+.rf-section-title::after {content:"";display:block;width:58px;height:3px;border-radius:999px;margin-top:12px;background:linear-gradient(90deg,var(--rf-gold),#ebd8a7); }
+.rf-panel { background:var(--rf-card);border:1px solid rgba(198,160,75,.26);border-radius:24px;box-shadow:var(--rf-shadow); }
+.rf-portal-sidebar { background:linear-gradient(180deg,#082e27,#101b19 72%);border-inline-end:1px solid rgba(198,160,75,.30); }
+.rf-portal-top { background:#fffefa;border-bottom:1px solid rgba(198,160,75,.3);box-shadow:0 3px 18px -14px rgba(5,58,42,.25); }
+.rf-metric-value { font-variant-numeric:tabular-nums; color:var(--rf-forest); }
+@media (prefers-reduced-motion:reduce) { .rf-card,.rf-button { transition:none; } }
