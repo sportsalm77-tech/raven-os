@@ -1,3 +1,4 @@
+import { PortalSandbox } from "@/components/portal-sandbox";
 import { notFound } from "next/navigation";
 import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
@@ -18,6 +19,8 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   // `end` marks an exact-match navigation entry, not a disabled route.
   // Reject only paths missing from the registered portal navigation.
   if (!item) notFound();
+
+  if (process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED === "true") return <PortalShell portal={portal}><PortalSandbox portal={portal} /><div className="rounded-xl border bg-white p-4"><h2 className="font-bold">{item.ar} / {item.en}</h2></div></PortalShell>;
 
   if (portal === "principal" && path === "/principal/info-center") {
     return <PortalShell portal="principal"><PrincipalInfoCenter /></PortalShell>;
