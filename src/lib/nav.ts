@@ -41,56 +41,74 @@ export const PLATFORM_NAV: NavGroup[] = [
 ];
 
 export const PRINCIPAL_NAV: NavGroup[] = [
- {ar:"1 · القيادة المدرسية",en:"1 · School Leadership",items:[
+ {ar:"1. القيادة المدرسية",en:"1. School Leadership",items:[
   {to:"/principal",ar:"المؤشرات التفاعلية",en:"Interactive Indicators",icon:BarChart3,end:true},
-  {to:"/principal/info-center",ar:"مركز البيانات المدرسية الموحد",en:"Unified School Data Center",icon:Info},
-  {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement",icon:Target},
-  {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs",icon:Landmark},
-  {to:"/principal/classes",ar:"مركز الفصول المدرسية",en:"Classes Center",icon:DoorOpen},
+  {to:"/principal/info-center",ar:"مركز المعلومات المدرسية",en:"School Information Center",icon:Info},
+  {to:"/principal/assignments",ar:"مركز التكليفات والمهام",en:"Assignments & Tasks Center",icon:ClipboardCheck},
+  {to:"/principal/operational-plan",ar:"مركز الخطة التشغيلية",en:"Operational Plan Center",icon:ListChecks},
+  {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement Center",icon:Target},
+  {to:"/principal/school-affairs",ar:"مركز الشؤون المدرسية",en:"School Affairs Center",icon:Landmark},
+  {to:"/principal/classes",ar:"مركز الفصول المدرسية",en:"School Classes Center",icon:DoorOpen},
  ]},
- {ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",items:[
-  {to:"/principal/decision-center",ar:"مركز القرارات والتكليفات الإدارية",en:"Administrative Decisions & Assignments Center",icon:Landmark,end:true},
-  {to:"/principal/assignments",ar:"سجل التكليفات ومتابعة تنفيذها",en:"Assignments Register & Follow-up",icon:ClipboardCheck},
- ]},
- {ar:"مركز الخطة التشغيلية الذكية",en:"Smart Operational Plan Center",items:[
-  {to:"/principal/operational-plan",ar:"نظرة عامة على الخطة التشغيلية",en:"Operational Plan Overview",icon:ListChecks,end:true},
-  {to:"/principal/operational-plan/management",ar:"إدارة الخطة التشغيلية",en:"Operational Plan Management",icon:Target},
-  {to:"/principal/operational-plan/follow-up",ar:"متابعة الخطة التشغيلية",en:"Operational Plan Follow-up",icon:ClipboardCheck},
-  {to:"/principal/operational-plan/development",ar:"الخطة التطويرية",en:"Development Plan",icon:Activity},
-  {to:"/principal/operational-plan/alternatives",ar:"الخطط البديلة",en:"Contingency Plans",icon:Workflow},
-  {to:"/principal/operational-plan/initiatives",ar:"مبادرات الخطة التشغيلية",en:"Operational Plan Initiatives",icon:Sparkles},
-  {to:"/principal/operational-plan/programs",ar:"برامج الخطة التشغيلية",en:"Operational Plan Programs",icon:BookOpenCheck},
- ]},
- {ar:"2 · شؤون المعلمين و3 · شؤون الطلاب",en:"2 · Teachers & Students",items:[
+ {ar:"2. شؤون المعلمين",en:"2. Teacher Affairs",items:[
   {to:"/principal/teachers",ar:"شؤون المعلمين",en:"Teacher Affairs",icon:UsersRound},
+ ]},
+ {ar:"3. شؤون الطلاب",en:"3. Student Affairs",items:[
   {to:"/principal/students",ar:"شؤون الطلاب",en:"Student Affairs",icon:GraduationCap},
  ]},
- {ar:"4 · الاختبارات",en:"4 · Exams",items:[
-  {to:"/principal/exams/grades",ar:"إدخال الدرجات وتحليلها",en:"Grades & Analysis",icon:PenLine},
-  {to:"/principal/exams/control",ar:"كنترول الاختبارات",en:"Exam Control",icon:ClipboardList},
+ {ar:"4. الاختبارات",en:"4. Examinations",items:[
+  {to:"/principal/exams/grades",ar:"إدخال الدرجات وتحليلها",en:"Grade Entry & Analysis",icon:PenLine},
+  {to:"/principal/exams/control",ar:"كنترول الاختبارات وإدارتها",en:"Examination Control & Management",icon:ClipboardList},
  ]},
- {ar:"5 · السلوك والمواظبة",en:"5 · Behavior & Attendance",items:[
-  {to:"/principal/behavior/absence",ar:"تسجيل الغياب اليدوي والصوتي",en:"Manual & Voice Absence",icon:Mic},
-  {to:"/principal/behavior/violations",ar:"المخالفات السلوكية",en:"Behavior Violations",icon:ShieldAlert},
-  {to:"/principal/behavior/positive",ar:"السلوك المتميز",en:"Positive Behavior",icon:Sparkles},
+ {ar:"5. السلوك والمواظبة",en:"5. Behavior & Attendance",items:[
+  {to:"/principal/behavior/absence",ar:"تسجيل الغياب اليدوي والصوتي",en:"Manual & Voice Absence Recording",icon:Mic},
+  {to:"/principal/behavior/violations",ar:"تسجيل المخالفات السلوكية",en:"Behavior Violation Recording",icon:ShieldAlert},
+  {to:"/principal/behavior/positive",ar:"تسجيل السلوك المتميز",en:"Distinguished Behavior Recording",icon:Sparkles},
  ]},
- {ar:"6 – 18 · التشغيل والدعم",en:"6 – 18 · Operations & Support",items:[
+ {ar:"6. التشغيل والدعم",en:"6. Operations & Support",items:[
+  {to:"/principal/operations",ar:"التشغيل والدعم",en:"Operations & Support",icon:Workflow},
+ ]},
+ {ar:"7. مكتبة رافين",en:"7. Raven Library",items:[
   {to:"/principal/library",ar:"مكتبة رافين",en:"Raven Library",icon:Library},
+ ]},
+ {ar:"8. الجدول المدرسي",en:"8. School Timetable",items:[
   {to:"/principal/timetable",ar:"الجدول المدرسي",en:"School Timetable",icon:CalendarDays},
+ ]},
+ {ar:"9. الصحة المدرسية",en:"9. School Health",items:[
   {to:"/principal/health",ar:"الصحة المدرسية",en:"School Health",icon:Stethoscope},
+ ]},
+ {ar:"10. النشاط الطلابي",en:"10. Student Activities",items:[
   {to:"/principal/activities",ar:"النشاط الطلابي",en:"Student Activities",icon:Trophy},
+ ]},
+ {ar:"11. الموهوبون",en:"11. Gifted Students",items:[
   {to:"/principal/talented",ar:"الموهوبون",en:"Gifted Students",icon:Star},
+ ]},
+ {ar:"12. التربية الخاصة",en:"12. Special Education",items:[
   {to:"/principal/special-ed",ar:"التربية الخاصة",en:"Special Education",icon:Accessibility},
+ ]},
+ {ar:"13. مصادر التعلم",en:"13. Learning Resources",items:[
   {to:"/principal/resources",ar:"مصادر التعلم",en:"Learning Resources",icon:MonitorPlay},
+ ]},
+ {ar:"14. المختبرات",en:"14. Laboratories",items:[
   {to:"/principal/labs",ar:"المختبرات",en:"Laboratories",icon:Building2},
+ ]},
+ {ar:"14. التعلم الإلكتروني والدعم",en:"14. E-learning & Support",items:[
   {to:"/principal/integrations/noor",ar:"الربط مع نور",en:"Noor Integration",icon:Plug},
-  {to:"/principal/integrations/madrasati",ar:"الربط مع مدرستي",en:"Madrasati Integration",icon:Plug},
-  {to:"/principal/integrations/hudori",ar:"الربط مع حضوري",en:"Hudori Integration",icon:Plug},
+  {to:"/principal/integrations/madrasati",ar:"الربط مع منصة مدرستي",en:"Madrasati Platform Integration",icon:Plug},
+  {to:"/principal/integrations/hudori",ar:"الربط مع برنامج حضوري",en:"Hudori Integration",icon:Plug},
+ ]},
+ {ar:"15. المساعد الذكي",en:"15. Smart Assistant",items:[
   {to:"/principal/assistant",ar:"المساعد الذكي",en:"Smart Assistant",icon:Bot},
+ ]},
+ {ar:"16. الصلاحيات",en:"16. Permissions",items:[
   {to:"/principal/permissions",ar:"الصلاحيات",en:"Permissions",icon:KeyRound},
-  {to:"/principal/settings",ar:"إعدادات المنصة",en:"Settings",icon:SlidersHorizontal},
+ ]},
+ {ar:"17. التقارير والمؤشرات",en:"17. Reports & Indicators",items:[
   {to:"/principal/reports",ar:"التقارير والمؤشرات",en:"Reports & Indicators",icon:FileBarChart2},
- ]}
+ ]},
+ {ar:"18. إعدادات المنصة",en:"18. Platform Settings",items:[
+  {to:"/principal/settings",ar:"إعدادات المنصة",en:"Platform Settings",icon:SlidersHorizontal},
+ ]},
 ];
 
 export const TEACHER_NAV: NavGroup[] = [
