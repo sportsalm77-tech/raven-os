@@ -113,3 +113,11 @@ a.rf-card:hover { transform:translateY(-3px);border-color:rgba(198,160,75,.75);b
 .rf-library { background:linear-gradient(130deg,#073e30 0%,#07563f 58%,#064332 100%);position:relative;overflow:hidden; }
 .rf-library::before { content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 10%,rgba(212,175,55,.18),transparent 36%); }
 .rf-library-icon { border:1px solid rgba(232,214,165,.55);box-shadow:inset 0 0 0 1px rgba(212,175,55,.15),0 12px 30px rgba(0,0,0,.12); }
+
+
+/* Rafien mobile drawer inspired by Nibras interaction, not its brand palette. */
+@media(max-width:1023px){
+ .rf-portal-sidebar { background:linear-gradient(155deg,#07583e 0%,#08794f 56%,#06432f 100%);border-inline-end:1px solid rgba(212,175,55,.55); }
+ .rf-sidebar-nav { scrollbar-color:rgba(232,214,165,.55) transparent; }
+ .rf-mobile-tab { font-size:11px; }
+}
