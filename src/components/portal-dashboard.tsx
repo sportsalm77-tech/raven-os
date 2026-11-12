@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
@@ -23,7 +24,9 @@ function Tile({to,ar,en,Icon,isAr}:{to:string;ar:string;en:string;Icon:LucideIco
  </Link>;
 }
 export function PortalDashboard({portal}:{portal:PortalId}) {
- const {isAr}=useLang(); const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
+ const {isAr}=useLang(); const [sectionQuery,setSectionQuery]=useState(""); const meta=PORTAL_META[portal]; const copy=COPY[portal]; const groups=PORTAL_NAVS[portal];
+ const normalizedQuery=sectionQuery.trim().toLocaleLowerCase();
+ const visibleGroups=groups.map(group=>({...group,items:group.items.filter(item=>`${item.ar} ${item.en} ${group.ar} ${group.en}`.toLocaleLowerCase().includes(normalizedQuery))})).filter(group=>group.items.length>0);
  return <PortalShell portal={portal}>
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
@@ -39,7 +42,9 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
    <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام البوابة":"Portal centers & sections"}</h2><p className="mt-1 text-xs text-[#66736e]">{isAr?"خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة":"Organized navigation — backend operations are not implied"}</p></div>
    <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[11px] font-bold text-[#66736e]">{groups.reduce((n,g)=>n+g.items.length,0)} {isAr?"قسم":"sections"}</span>
   </div>
-  <div className="space-y-7">{groups.map(group=><section key={group.ar}>
+  <label className="mb-5 block max-w-xl text-xs font-bold text-[#53615b]"><span className="mb-2 block">{isAr?"البحث في جميع أقسام البوابة":"Search all portal sections"}</span><input type="search" value={sectionQuery} onChange={event=>setSectionQuery(event.target.value)} aria-label={isAr?"البحث في جميع أقسام البوابة":"Search all portal sections"} placeholder={isAr?"اسم القسم أو المجموعة...":"Section or group name..."} className="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm outline-none focus:border-[#08794F]"/></label>
+  {visibleGroups.length===0&&<p role="status" className="mb-5 rounded-xl border border-black/10 bg-white p-4 text-sm text-[#53615b]">{isAr?"لا توجد أقسام مطابقة للبحث.":"No portal sections match your search."}</p>}
+  <div className="space-y-7">{visibleGroups.map(group=><section key={group.ar}>
    <div className="mb-3 flex items-center gap-3"><h3 className="text-sm font-extrabold text-[#08794F]">{isAr?group.ar:group.en}</h3><span className="h-px flex-1 bg-black/10"/></div>
    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{group.items.map(item=><Tile key={item.to} to={item.to} ar={item.ar} en={item.en} Icon={item.icon} isAr={isAr}/>)}</div>
   </section>)}</div>
