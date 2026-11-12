@@ -54,32 +54,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
 
 
-/* RAVEN OS institutional portal skin: dark charcoal, royal gold, educational green.
-   Scoped to authenticated portal surfaces; form inputs retain legible contrast. */
-.raven-workspace { background:#0B1412; color:#F5F3EC; }
-.raven-workspace .raven-content { color:#F5F3EC; }
-.raven-workspace .raven-content :is(.bg-white,.bg-\[\#F5F3EC\],.bg-\[\#F5F3EC\]\/60,.bg-\[\#F5F3EC\]\/70) {
- background-color:#17231F !important;
- border-color:rgba(212,175,55,.30);
- color:#F5F3EC;
-}
-.raven-workspace .raven-content :is(.text-\[\#111A18\],.text-\[\#53615b\],.text-\[\#66736e\],.text-\[\#64736d\]) { color:#E5E5D8 !important; }
-.raven-workspace .raven-content :is(.border-black\/10,.border-black\/15,.border-\[\#111A18\]\/10) { border-color:rgba(212,175,55,.28) !important; }
-.raven-workspace .raven-content :is(.bg-\[\#08794F\]\/10,.bg-\[\#D4AF37\]\/10) { background-color:rgba(8,121,79,.20) !important; }
-.raven-workspace .raven-content input,
-.raven-workspace .raven-content select,
-.raven-workspace .raven-content textarea { background:#111A18; color:#F5F3EC; border-color:rgba(212,175,55,.35); }
-.raven-workspace .raven-content input::placeholder { color:#B7C0B6; }
-.raven-workspace .raven-content :is(a,button):focus-visible { outline:2px solid #D4AF37; outline-offset:3px; }
-.raven-workspace .raven-content :is(.portal-panel,.portal-notice,.card) { background:#17231F; border-color:rgba(212,175,55,.3); color:#F5F3EC; }
-.raven-workspace .raven-content :is(.text-\[\#08794F\]) { color:#61D3A1 !important; }
-.raven-workspace .raven-content .bg-\[\#111A18\] { background:#0B1412 !important; }
-.raven-workspace .raven-content .bg-\[\#08794F\] { background:#08794F !important; }
+/* RAVEN — approved storefront identity, applied consistently across portals. */
+:root { --raven-ink:#111A18; --raven-green:#08794F; --raven-ivory:#F5F3EC; --raven-gold:#D4AF37; --raven-line:rgba(17,26,24,.12); }
+.raven-workspace { background:#F5F3EC; color:#111A18; }
+.raven-workspace .raven-content { background:#F5F3EC; color:#111A18; }
+.raven-workspace .raven-content :is(.bg-white,.portal-panel,.card) { background:#fff; border-color:rgba(17,26,24,.12); }
+.raven-workspace .raven-content :is(.border-black\\/10,.border-black\\/15) { border-color:rgba(17,26,24,.13); }
+.raven-workspace .raven-content :is(.text-\\[\\#111A18\\]) { color:#111A18; }
+.raven-workspace .raven-content :is(a,button):focus-visible { outline:2px solid #08794F; outline-offset:3px; }
+.raven-workspace .raven-content :is(input,textarea,select) { color:#111A18; background:#fff; border-color:rgba(17,26,24,.2); }
+.raven-workspace .raven-content :is(input,textarea)::placeholder { color:#66736e; }
+.raven-workspace .raven-content .bg-\\[\\#111A18\\] { background:#111A18; }
+.raven-workspace .raven-content .bg-\\[\\#08794F\\] { background:#08794F; }
 .raven-workspace .raven-content .text-white { color:#fff; }
-
-/* Public homepage retains three public portals; its editorial surfaces use the same institutional palette. */
-.raven-public { background:#0B1412; color:#F5F3EC; }
-.raven-public :is(.bg-white,.bg-\[\#F5F3EC\],.bg-\[\#F5F3EC\]\/60,.bg-\[\#F5F3EC\]\/70) { background:#17231F !important; border-color:rgba(212,175,55,.30); }
-.raven-public :is(.text-\[\#111A18\],.text-\[\#53615b\],.text-\[\#66736e\]) { color:#F5F3EC !important; }
-.raven-public :is(.border-black\/10,.border-\[\#111A18\]\/10) { border-color:rgba(212,175,55,.28) !important; }
-.raven-public :is(a,button):focus-visible { outline:2px solid #D4AF37; outline-offset:3px; }
+.raven-workspace .raven-content .portal-notice { background:#fff8e7; border-color:#ead9a5; color:#66521a; }
+.raven-public { background:#F5F3EC; color:#111A18; }
+.raven-public :is(a,button):focus-visible { outline:2px solid #08794F; outline-offset:3px; }
