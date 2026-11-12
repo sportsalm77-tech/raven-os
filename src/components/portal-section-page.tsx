@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { PortalCenterDashboard } from "@/components/portal-center-dashboard";
 import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
@@ -13,6 +14,11 @@ import { FamilySectionWorkspace } from "@/components/family-section-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: string[] }) {
+  if(slug.length===2 && slug[0]==="centers" && /^\\d+$/.test(slug[1])) {
+    const index=Number(slug[1]);
+    if(index<0||index>=PORTAL_NAVS[portal].length)notFound();
+    return <PortalShell portal={portal}><PortalCenterDashboard portal={portal} index={index}/></PortalShell>;
+  }
   const path = "/" + portal + "/" + slug.join("/");
   const item = PORTAL_NAVS[portal].flatMap(group => group.items).find(entry => entry.to === path);
   // `end` marks an exact-match navigation entry, not a disabled route.
