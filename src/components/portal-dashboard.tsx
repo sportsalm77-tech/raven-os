@@ -6,6 +6,7 @@ import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon } from "lucide-reac
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PrincipalExecutiveDashboard } from "@/components/principal-executive-dashboard";
+import { PortalExecutiveHome } from "@/components/portal-executive-home";
 import { PortalShell } from "@/components/portal-shell";
 import { PortalOverviewPanels } from "@/components/portal-overview-panels";
 import { PlatformCommandCenter } from "@/components/platform-command-center";
@@ -31,14 +32,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
  return <PortalShell portal={portal}>
   {portal === "principal" ? <PrincipalExecutiveDashboard /> : <>
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
-  <section className="rf-hero mb-7 rounded-3xl p-6 text-white md:p-8">
-   <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
-   <h1 className="text-2xl font-black md:text-3xl">{isAr?meta.ar:meta.en}</h1>
-   <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{isAr?copy.ar:copy.en}</p>
-   <div className="mt-5 inline-flex items-start gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs leading-6 text-white/80">
-    <AlertCircle size={16} className="mt-1 shrink-0 text-[#D4AF37]"/><span>{isAr?copy.noteAr:copy.noteEn}</span>
-   </div>
-  </section>
+  <PortalExecutiveHome portal="family" />
   <PortalOverviewPanels portal={portal} />
   <div className="mb-6 flex items-center justify-between gap-3">
    <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام البوابة":"Portal centers & sections"}</h2><p className="mt-1 text-xs text-[#66736e]">{isAr?"خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة":"Organized navigation — backend operations are not implied"}</p></div>
