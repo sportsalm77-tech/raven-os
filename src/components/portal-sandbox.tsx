@@ -43,7 +43,7 @@ export function PortalSandbox({portal}:{portal:PortalId}) {
  const [owner,setOwner]=useState("");
  const [notice,setNotice]=useState("");
  const tr=(ar:string,en:string)=>isAr?ar:en;
- useEffect(()=>{try{const raw=window.localStorage.getItem(key);if(raw){const parsed:unknown=JSON.parse(raw);if(Array.isArray(parsed)&&parsed.length<=100&&parsed.every(x=>x&&typeof x.id==="string"&&typeof x.title==="string"&&typeof x.owner==="string"&&["pending","approved","done"].includes(x.status)&&typeof x.date==="string"))setItems(parsed as RecordItem[]);}}catch{}setReady(true)},[key]);
+ useEffect(()=>{queueMicrotask(()=>{try{const raw=window.localStorage.getItem(key);if(raw){const parsed:unknown=JSON.parse(raw);if(Array.isArray(parsed)&&parsed.length<=100&&parsed.every(x=>x&&typeof x.id==="string"&&typeof x.title==="string"&&typeof x.owner==="string"&&["pending","approved","done"].includes(x.status)&&typeof x.date==="string"))setItems(parsed as RecordItem[]);}}catch{}setReady(true)})},[key]);
  useEffect(()=>{if(ready)try{window.localStorage.setItem(key,JSON.stringify(items))}catch{}},[items,key,ready]);
  const visible=useMemo(()=>items.filter(x=>(filter==="all"||x.status===filter)&&[x.title,x.owner].join(" ").toLowerCase().includes(search.toLowerCase())),[items,search,filter]);
  const counts={pending:items.filter(x=>x.status==="pending").length,approved:items.filter(x=>x.status==="approved").length,done:items.filter(x=>x.status==="done").length};
