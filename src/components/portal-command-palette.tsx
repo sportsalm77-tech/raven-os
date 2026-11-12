@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Search, X, ArrowUpLeft, LayoutGrid } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
@@ -12,7 +11,6 @@ function normalize(value:string) {
 }
 export function PortalCommandPalette({portal}:{portal:PortalId}) {
  const {isAr}=useLang();
- const pathname=usePathname();
  const [open,setOpen]=useState(false);
  const [query,setQuery]=useState("");
  const [center,setCenter]=useState<string|null>(null);
@@ -29,7 +27,6 @@ export function PortalCommandPalette({portal}:{portal:PortalId}) {
   return ()=>{window.removeEventListener("keydown",key);window.removeEventListener("raven:open-services",launch)};
  },[]);
  useEffect(()=>{if(open)input.current?.focus()},[open]);
- useEffect(()=>{setOpen(false)},[pathname]);
  const matches=useMemo(()=>{
   const q=normalize(query);
   return groups.flatMap(group=>group.items.map(item=>({item,group})))
