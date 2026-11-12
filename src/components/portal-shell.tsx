@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { ChevronDown, ChevronLeft, ChevronRight, House, LayoutGrid, Languages, Menu, Search, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, House, LayoutGrid, Languages, Menu, Search, Sparkles, X } from "lucide-react";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalShell({ portal, children }: { portal: PortalId; children: React.ReactNode }) {
@@ -26,8 +26,11 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
   const direction = isAr ? "rtl" : "ltr";
   const meta = PORTAL_META[portal];
   const BackIcon = isAr ? ChevronLeft : ChevronRight;
-  const mobilePrimary = groups.flatMap(group => group.items).filter(item => item.to !== `/${portal}`).slice(0, 2);
+  
   const principalNav = portal === "principal";
+  const assistantPath = `/${portal}/assistant`;
+  const hasAssistant = groups.some(group => group.items.some(item => item.to === assistantPath));
+  const mobileSections = groups.flatMap(group => group.items).filter(item => item.to !== `/${portal}` && item.to !== assistantPath).slice(0, 2);
 
   const toggleGroup = (groupName: string) => {
     const isOpen = expandedGroups.includes(groupName) || (
@@ -47,12 +50,12 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
 
   const navigation = (
     <div className="flex h-full flex-col">
-      <div className="border-b border-white/10 px-5 py-5">
-        <Link href="/" className="flex items-center gap-3 text-white">
+      <div className="border-b border-white/20 px-5 py-5">
+        <Link href={`/${portal}`} onClick={()=>setMobileOpen(false)} className="flex items-center gap-3 text-white">
           <span className="rf-brand-mark font-black text-xl">ر</span>
           <span><strong className="block tracking-wide">RAVEN OS</strong><small className="text-white/60">{isAr ? "منصة رافين التعليمية" : "Raven Educational Platform"}</small></span>
         </Link>
-        <div className="mt-5 rounded-2xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 p-4 shadow-inner">
+        <div className="mt-5 rounded-2xl border border-[#D4AF37]/40 bg-white/10 p-4 shadow-inner">
           <div className="text-xs text-[#D4AF37]">{isAr ? "البوابة الحالية" : "CURRENT PORTAL"}</div>
           <div className="mt-1 font-bold text-white">{isAr ? meta.ar : meta.en}</div>
           <div className="text-xs text-white/55">{isAr ? meta.roleAr : meta.roleEn}</div>
@@ -75,8 +78,8 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
           const expanded = !!navQuery.trim() || expandedGroups.includes(group.ar) || (groupHasActive && !collapsedGroups.includes(group.ar));
           return <section key={group.ar} className={`rounded-2xl border transition-colors ${principalNav ? (groupHasActive ? "border-[#D4AF37]/50 bg-white/10" : "border-white/10 bg-white/[.035] hover:border-[#D4AF37]/25") : "border-transparent"}`}>
             <button type="button" onClick={() => toggleGroup(group.ar)} aria-expanded={expanded} aria-controls={`portal-group-${portal}-${encodeURIComponent(group.ar)}`}
-              className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-start text-xs font-bold transition-colors ${groupHasActive ? "text-[#F2D78E]" : "text-[#E5E7DE] hover:bg-white/5 hover:text-white"}`}>
-              <span className="flex min-w-0 items-center gap-2.5">{principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}<span className="leading-5">{isAr ? group.ar : group.en}</span></span>
+              className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-start text-xs font-bold transition-colors ${groupHasActive ? "text-[#F2D78E]" : "text-white hover:bg-white/10"}`}>
+              <span className="flex min-w-0 items-center gap-2.5">{principalNav && <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[11px] font-black text-[#E8D6A5]">{String(groupIndex+1).padStart(2,"0")}</span>}<span className="leading-5">{isAr ? group.ar.replace(/^\d+\.\s*/, "") : group.en.replace(/^\d+\.\s*/, "")}</span></span>
               <ChevronDown size={16} className={`shrink-0 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
             </button>
             {expanded && <div id={`portal-group-${portal}-${encodeURIComponent(group.ar)}`} className="mx-2 mb-2 mt-1 space-y-1 border-s border-[#D4AF37]/30 py-1 ps-2">
@@ -84,15 +87,15 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
                 const active = item.end ? pathname === item.to : pathname === item.to || pathname.startsWith(item.to + "/");
                 const Icon = item.icon;
                 return <Link key={item.to} href={item.to} onClick={() => { setMobileOpen(false); setNavQuery(""); }} aria-current={active ? "page" : undefined}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${active ? "border border-[#D4AF37]/45 bg-[#08794F] font-bold text-white shadow-sm" : "text-white/75 hover:bg-[#08794F]/25 hover:text-white"}`}>
-                  <Icon size={17} /><span>{isAr ? item.ar : item.en}</span>
+                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${active ? "border border-[#D4AF37]/45 bg-[#08794F] font-bold text-white shadow-sm" : "text-white hover:bg-[#08794F]/35"}`}>
+                  <Icon size={17} /><span className="font-semibold">{isAr ? item.ar : item.en}</span>
                 </Link>;
               })}
             </div>}
           </section>;
         })}
       </nav>
-      <div className="border-t border-white/10 px-5 py-4 text-[10px] leading-5 text-white/55">
+      <div className="border-t border-white/20 px-5 py-4 text-[10px] leading-5 text-white/75">
         <strong className="block text-[#D4AF37]">{isAr ? "مؤسسة رافين للخدمات التعليمية" : "Rafeeen Foundation for Educational Services"}</strong>
         {isAr ? "نحن نصنع الفرق" : "We Make the Difference"}
       </div>
@@ -103,7 +106,7 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
     <aside className="rf-portal-sidebar fixed inset-y-0 start-0 z-30 hidden w-[300px] flex-col lg:flex">{navigation}</aside>
     {mobileOpen && <div className="fixed inset-0 z-50 lg:hidden">
       <button aria-label="Close navigation" className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-      <aside className="rf-portal-sidebar absolute inset-y-0 start-0 w-[290px] shadow-2xl">{navigation}
+      <aside className="rf-portal-sidebar absolute inset-y-0 start-0 w-[min(88vw,360px)] rounded-e-[28px] shadow-2xl">{navigation}
         <button aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="absolute end-3 top-3 rounded-lg p-2 text-white"><X size={19}/></button>
       </aside>
     </div>}
@@ -122,11 +125,12 @@ export function PortalShell({ portal, children }: { portal: PortalId; children: 
 
       </main>
     </div>
-    <nav className="rf-mobile-nav fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 items-stretch gap-1 px-2 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 lg:hidden" aria-label={isAr?"تنقل التطبيق":"App navigation"}>
+    <nav className="rf-mobile-nav fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 items-stretch gap-1 px-2 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 lg:hidden" aria-label={isAr?"تنقل التطبيق":"App navigation"}>
+      <button type="button" onClick={()=>setMobileOpen(true)} aria-label={isAr?"القائمة":"Menu"} aria-expanded={mobileOpen} className="rf-mobile-tab"><Menu size={22}/><span>{isAr?"القائمة":"Menu"}</span></button>
       <Link href={`/${portal}`} aria-current={pathname===`/${portal}`?"page":undefined} className={`rf-mobile-tab ${pathname===`/${portal}`?"rf-mobile-tab-active":""}`}><House size={21}/><span>{isAr?"الرئيسية":"Home"}</span></Link>
-      {mobilePrimary.map((item,index)=>{const Icon=item.icon;const active=pathname===item.to||pathname.startsWith(item.to+"/");return <Link key={item.to} href={item.to} aria-current={active?"page":undefined} className={`rf-mobile-tab ${active?"rf-mobile-tab-active":""}`}><Icon size={21}/><span className="truncate max-w-full">{isAr?item.ar:item.en}</span></Link>})}
-      {mobilePrimary.length<2&&<Link href={`/${portal}`} className="rf-mobile-tab"><LayoutGrid size={21}/><span>{isAr?"الأقسام":"Sections"}</span></Link>}
-      <button type="button" onClick={()=>setMobileOpen(true)} aria-label={isAr?"جميع المراكز والأقسام":"All sections"} aria-expanded={mobileOpen} className="rf-mobile-tab"><Menu size={22}/><span>{isAr?"المزيد":"More"}</span></button>
+      {mobileSections.map(item=>{const Icon=item.icon;const active=pathname===item.to||pathname.startsWith(item.to+"/");return <Link key={item.to} href={item.to} aria-current={active?"page":undefined} className={`rf-mobile-tab ${active?"rf-mobile-tab-active":""}`}><Icon size={21}/><span className="max-w-full truncate">{isAr?item.ar:item.en}</span></Link>})}
+      {mobileSections.length<2&&<button type="button" onClick={()=>setMobileOpen(true)} className="rf-mobile-tab"><LayoutGrid size={21}/><span>{isAr?"الأقسام":"Sections"}</span></button>}
+      {hasAssistant?<Link href={assistantPath} aria-current={pathname===assistantPath?"page":undefined} className={`rf-mobile-tab ${pathname===assistantPath?"rf-mobile-tab-active":""}`}><Sparkles size={21}/><span>{isAr?"كيان":"Kayan"}</span></Link>:<button type="button" onClick={()=>setMobileOpen(true)} className="rf-mobile-tab"><LayoutGrid size={21}/><span>{isAr?"المزيد":"More"}</span></button>}
     </nav>
   </div>;
 }
