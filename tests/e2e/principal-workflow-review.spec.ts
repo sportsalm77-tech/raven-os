@@ -8,6 +8,7 @@ for (const [path, heading, linked] of [
   test(`principal review workflow ${path}`, async ({page})=>{
     await page.goto(path);
     const section=page.locator("section[aria-label]").filter({hasText:heading});
+    if (await section.count() === 0) console.log(`DIAGNOSTIC ${path}: ${((await page.locator("main").innerText()).slice(0,1200))}`);
     await expect(section).toBeVisible();
     await expect(section.getByRole("checkbox")).toHaveCount(4);
     await section.getByRole("checkbox").first().check();
