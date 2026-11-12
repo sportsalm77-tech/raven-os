@@ -18,8 +18,8 @@ const COPY: Record<PortalId,{ar:string;en:string;noteAr:string;noteEn:string}> =
  family:{ar:"قناة واضحة وآمنة لمتابعة الأبناء والتواصل مع المدرسة.",en:"A clear, secure channel for following up with children and communicating with school.",noteAr:"لن تظهر بيانات أبناء قبل تفعيل ربط ولي الأمر والتحقق من العلاقة.",noteEn:"Child records remain hidden until guardian linking and relationship verification are active."},
 };
 function Tile({to,ar,en,Icon,isAr}:{to:string;ar:string;en:string;Icon:LucideIcon;isAr:boolean}) {
- return <Link href={to} className="group flex min-h-36 flex-col rounded-2xl border border-black/10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#08794F]/40 hover:shadow-md">
-  <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={19}/></span>
+ return <Link href={to} className="rf-card group flex min-h-36 flex-col p-5">
+  <span className="rf-icon mb-4"><Icon size={19}/></span>
   <strong className="text-sm text-[#111A18]">{isAr?ar:en}</strong>
   <span className="mt-auto flex items-center gap-2 pt-4 text-xs font-bold text-[#08794F]">{isAr?"فتح القسم":"Open section"} {isAr?<ArrowLeft size={14}/>:<ArrowRight size={14}/>}</span>
  </Link>;
@@ -31,7 +31,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
  return <PortalShell portal={portal}>
   {portal === "principal" ? <PrincipalExecutiveDashboard /> : <>
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
-  <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
+  <section className="rf-hero mb-7 rounded-3xl p-6 text-white md:p-8">
    <div className="mb-3 text-xs font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · {portal.toUpperCase()}</div>
    <h1 className="text-2xl font-black md:text-3xl">{isAr?meta.ar:meta.en}</h1>
    <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{isAr?copy.ar:copy.en}</p>
