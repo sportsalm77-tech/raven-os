@@ -1,13 +1,14 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { verifyDemoSession, DEMO_COOKIE } from "@/lib/security/demo-preview";
+import { verifyDemoSession, demoEnabled, DEMO_COOKIE } from "@/lib/security/demo-preview";
 import { lookupIdentity } from "@/lib/security/identity-lookup";
 import { activeSchoolIds, canEnterPortal, type RavenPortal } from "@/lib/security/portal-authorization";
 
 /** Deny-by-default when real authentication is enabled; preview remains non-operational. */
 export async function requirePortalAccess(portal: RavenPortal) {
   if (verifyDemoSession((await cookies()).get(DEMO_COOKIE)?.value, portal)) return;
+  if (demoEnabled()) redirect("/login");
   if (process.env.RAVEN_AUTH_ENABLED !== "true") return;
   const session = (await cookies()).get("raven_session")?.value;
   if (!session) redirect("/login");
