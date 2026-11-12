@@ -6,6 +6,7 @@ import { AlertCircle, ArrowLeft, ArrowRight, type LucideIcon } from "lucide-reac
 import { useLang } from "@/lib/i18n";
 import { PORTAL_META, PORTAL_NAVS, type PortalId } from "@/lib/nav";
 import { PortalSandbox } from "@/components/portal-sandbox";
+import { PrincipalExecutiveDashboard } from "@/components/principal-executive-dashboard";
 import { PortalShell } from "@/components/portal-shell";
 import { PortalOverviewPanels } from "@/components/portal-overview-panels";
 import { PlatformCommandCenter } from "@/components/platform-command-center";
@@ -29,6 +30,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
  const normalizedQuery=sectionQuery.trim().toLocaleLowerCase();
  const visibleGroups=groups.map(group=>({...group,items:group.items.filter(item=>`${item.ar} ${item.en} ${group.ar} ${group.en}`.toLocaleLowerCase().includes(normalizedQuery))})).filter(group=>group.items.length>0);
  return <PortalShell portal={portal}>
+  {portal === "principal" ? <PrincipalExecutiveDashboard /> : <>
   {process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED === "true" && <PortalSandbox portal={portal} />}
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
   <section className="mb-7 rounded-3xl bg-[#111A18] p-6 text-white md:p-8">
@@ -50,6 +52,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
    <div className="mb-3 flex items-center gap-3"><h3 className="text-sm font-extrabold text-[#08794F]">{isAr?group.ar:group.en}</h3><span className="h-px flex-1 bg-black/10"/></div>
    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{group.items.map(item=><Tile key={item.to} to={item.to} ar={item.ar} en={item.en} Icon={item.icon} isAr={isAr}/>)}</div>
   </section>)}</div>
+  </>}
   </>}
  </PortalShell>;
 }
