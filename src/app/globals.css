@@ -103,3 +103,13 @@ a.rf-card:hover { transform:translateY(-3px);border-color:rgba(198,160,75,.75);b
 .rf-portal-top { background:#fffefa;border-bottom:1px solid rgba(198,160,75,.3);box-shadow:0 3px 18px -14px rgba(5,58,42,.25); }
 .rf-metric-value { font-variant-numeric:tabular-nums; color:var(--rf-forest); }
 @media (prefers-reduced-motion:reduce) { .rf-card,.rf-button { transition:none; } }
+
+
+/* App-like mobile navigation: dedicated experience below desktop breakpoint. */
+.rf-mobile-nav { background:rgba(255,254,250,.98);border-top:1px solid rgba(198,160,75,.45);box-shadow:0 -9px 28px rgba(6,55,42,.13);backdrop-filter:blur(18px); }
+.rf-mobile-tab { min-width:0;min-height:56px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;border-radius:14px;color:#4b655a;font-size:10px;font-weight:800;padding:6px 2px; }
+.rf-mobile-tab-active { background:linear-gradient(140deg,#076047,#06402f);color:#fff;box-shadow:0 4px 10px rgba(6,55,42,.18); }
+.rf-mobile-tab:focus-visible { outline:2px solid #c6a04b;outline-offset:2px; }
+.rf-library { background:linear-gradient(130deg,#073e30 0%,#07563f 58%,#064332 100%);position:relative;overflow:hidden; }
+.rf-library::before { content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 10%,rgba(212,175,55,.18),transparent 36%); }
+.rf-library-icon { border:1px solid rgba(232,214,165,.55);box-shadow:inset 0 0 0 1px rgba(212,175,55,.15),0 12px 30px rgba(0,0,0,.12); }
