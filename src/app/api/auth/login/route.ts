@@ -9,6 +9,7 @@ function error(code: string, status: number) {
   return NextResponse.json({ error: code }, { status, headers: { "Cache-Control": "no-store" } });
 }
 export async function POST(request: NextRequest) {
+  if (process.env.RAVEN_AUTH_ENABLED !== "true") return error("service_unavailable", 503);
   const origin = request.headers.get("origin");
   if (!origin || origin !== request.nextUrl.origin) return error("forbidden_origin", 403);
   if (!request.headers.get("content-type")?.startsWith("application/json")) return error("invalid_request", 415);
