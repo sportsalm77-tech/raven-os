@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { PrincipalAreaConnections } from "@/components/principal-area-connections";
 import { EmptyState, PageHead, SectionCard } from "@/components/raven-ui";
 
 export type PrincipalSupportArea =
@@ -214,6 +215,7 @@ export function PrincipalSupportServicesScreen({ area }: { area: PrincipalSuppor
           ))}
         </ul>
       </SectionCard>
+      <PrincipalAreaConnections area={area} />
       <EmptyState title={isAr ? screen.emptyAr : screen.emptyEn}
         description={isAr ? screen.detailAr : screen.detailEn} />
     </div>
