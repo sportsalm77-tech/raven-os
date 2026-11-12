@@ -9,6 +9,7 @@ import { PrincipalSupportServicesScreen, type PrincipalSupportArea } from "@/com
 import { PrincipalGovernanceScreen, type PrincipalGovernanceArea } from "@/components/principal-governance-screen";
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { TeacherSectionWorkspace } from "@/components/teacher-portal-workspace";
+import { FamilySectionWorkspace } from "@/components/family-section-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: string[] }) {
@@ -79,6 +80,10 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   const operationsArea = portal === "principal" ? principalOperations[path] : undefined;
   if (operationsArea) {
     return <PortalShell portal="principal"><PrincipalOperationsScreen area={operationsArea} /></PortalShell>;
+  }
+
+  if (portal === "family") {
+    return <PortalShell portal="family"><FamilySectionWorkspace slug={slug[0] ?? ""} /></PortalShell>;
   }
 
   if (portal === "teacher") {
