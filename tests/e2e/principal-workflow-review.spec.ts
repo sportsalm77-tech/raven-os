@@ -7,7 +7,7 @@ for (const [path, heading, linked] of [
 ] as const) {
   test(`principal review workflow ${path}`, async ({page})=>{
     await page.goto(path);
-    const section=page.getByRole("region",{name:heading});
+    const section=page.locator("section[aria-label]").filter({has:page.getByRole("heading",{name:heading})});
     await expect(section).toBeVisible();
     await expect(section.getByRole("checkbox")).toHaveCount(4);
     await section.getByRole("checkbox").first().check();
