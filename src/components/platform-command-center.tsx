@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PortalExecutiveHome } from "@/components/portal-executive-home";
 import {
   Activity, ArrowLeft, ArrowRight, BellRing, Building2, ChartNoAxesCombined,
   ClipboardCheck, Cpu, Database, FileCheck2, Headset, LockKeyhole,
@@ -33,30 +34,7 @@ export function PlatformCommandCenter() {
   const Arrow = isAr ? ArrowLeft : ArrowRight;
   return (
     <main className="space-y-7">
-      <section className="overflow-hidden rounded-3xl bg-[#111A18] text-white">
-        <div className="border-b border-white/10 px-6 py-5 md:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#D4AF37] text-[#111A18]"><Network size={22}/></span>
-              <div><div className="text-[11px] font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · PLATFORM CONTROL PLANE</div><div className="mt-1 text-sm font-bold">{isAr?"مؤسسة رافيين للخدمات التعليمية":"Rafeeen Foundation for Educational Services"}</div></div>
-            </div>
-            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 text-[11px] font-bold text-amber-100">{isAr?"سياق الهوية غير متصل":"Identity context not connected"}</span>
-          </div>
-          <h1 className="mt-6 text-2xl font-black md:text-3xl">{isAr?"مركز القيادة التنفيذي":"Executive Command Center"}</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{isAr?"مركز موحد لإدارة منظومة رافين ومدارسها. يعرض ما ثبت اتصاله فقط، ويفصل بوضوح بين الواجهة الجاهزة والخدمات التي تنتظر البناء أو الربط.":"A unified control plane for Raven OS and its schools. It shows only verified connections and clearly separates interface foundations from services still awaiting implementation or integration."}</p>
-          <div className="mt-5 flex flex-wrap gap-2 text-[11px]">
-            <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-2">{isAr?"أربع بوابات تشغيلية":"Four operational portals"} · /platform · /principal · /teacher · /family</span>
-            <span className="rounded-lg border border-white/15 bg-white/5 px-3 py-2">{isAr?"عزل متعدد المدارس":"Multi-tenant isolation"} · school_id</span>
-          </div>
-        </div>
-        <div className="grid gap-px bg-white/10 sm:grid-cols-2 xl:grid-cols-5">
-          {HEALTH_LAYERS.map(layer=><div key={layer.id} className="bg-[#18231F] p-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-white/85"><span className="h-2 w-2 rounded-full bg-amber-400"/>{isAr?layer.ar:layer.en}</div>
-            <div className="mt-2 text-[11px] leading-5 text-white/55">{isAr?layer.detailAr:layer.detailEn}</div>
-            <div className="mt-3 text-[10px] font-extrabold text-amber-200">{isAr?"بانتظار مصدر موثوق":"Awaiting trusted source"}</div>
-          </div>)}
-        </div>
-      </section>
+      <PortalExecutiveHome portal="platform" />
 
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
