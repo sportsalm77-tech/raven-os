@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { CalendarDays, ClipboardCheck, FileCheck2, GraduationCap, HeartHandshake, ShieldCheck, UsersRound } from "lucide-react";
 import { ArenaEmptyState, ArenaPanel } from "@/components/arena-visual-primitives";
 import type { PortalId } from "@/lib/nav";
@@ -31,8 +32,10 @@ const WORKSPACES: Partial<Record<Exclude<PortalId, "platform">, PanelItem[]>> = 
 
 export function PortalOverviewPanels({ portal }: { portal: PortalId }) {
   const { isAr } = useLang();
+  const [query, setQuery] = useState("");
   if (portal === "platform") return null;
   const items = WORKSPACES[portal] ?? [];
+  const filtered = items.filter(item => `${item.ar} ${item.en} ${item.noteAr} ${item.noteEn}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
   return (
     <section className="mb-8" aria-labelledby="portal-workspace-heading">
       <div className="mb-3">
@@ -43,8 +46,13 @@ export function PortalOverviewPanels({ portal }: { portal: PortalId }) {
           {isAr ? "أقسام العمل المرتبطة بدور البوابة، دون سجلات أو مؤشرات افتراضية." : "Role-aligned work areas without seeded records or fabricated metrics."}
         </p>
       </div>
+      <label className="mb-4 block max-w-lg text-xs font-bold text-[#53615b]">
+        <span className="mb-2 block">{isAr ? "البحث في مساحات العمل" : "Search workspaces"}</span>
+        <input value={query} onChange={event => setQuery(event.target.value)} type="search" aria-label={isAr ? "البحث في مساحات العمل" : "Search workspaces"} placeholder={isAr ? "ابحث باسم القسم أو وصفه..." : "Search by section or description..."} className="w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm outline-none focus:border-[#08794F]" />
+      </label>
+      {filtered.length === 0 && <p role="status" className="mb-4 rounded-xl border border-black/10 bg-white p-4 text-sm text-[#53615b]">{isAr ? "لا توجد مساحات عمل مطابقة للبحث." : "No workspaces match your search."}</p>}
       <div className="grid gap-4 md:grid-cols-2">
-        {items.map(({ ar, en, to, icon: Icon, noteAr, noteEn }) => (
+        {filtered.map(({ ar, en, to, icon: Icon, noteAr, noteEn }) => (
           <ArenaPanel key={to} title={isAr ? ar : en} description={isAr ? noteAr : noteEn}>
             <div className="flex items-center justify-between gap-3">
               <ArenaEmptyState
