@@ -63,7 +63,22 @@ export async function GET(request: NextRequest) {
     if (!response.ok) return respond({ error: "data_service_unavailable" }, 503);
     const records: unknown = await response.json();
     if (!Array.isArray(records)) return respond({ error: "data_service_unavailable" }, 503);
-    return respond({ module: decision.moduleName, school_id: decision.schoolId, records }, 200);
+    // Fail closed on malformed upstream rows; never forward unreviewed fields.
+    const allowedFields = ["id", ...publicFields, "created_at"];
+    const safeRecords: Record<string, unknown>[] = [];
+    for (const record of records) {
+      if (!record || typeof record !== "object" || Array.isArray(record) ||
+          (record as Record<string, unknown>).school_id !== decision.schoolId) {
+        return respond({ error: "data_service_unavailable" }, 503);
+      }
+      const row = record as Record<string, unknown>;
+      const safeRow: Record<string, unknown> = {};
+      for (const field of allowedFields) {
+        if (Object.prototype.hasOwnProperty.call(row, field)) safeRow[field] = row[field];
+      }
+      safeRecords.push(safeRow);
+    }
+    return respond({ module: decision.moduleName, school_id: decision.schoolId, records: safeRecords }, 200);
   } catch (error) {
     if (error instanceof IdentityLookupError) {
       return respond({ error: error.statusCode === 401 ? "unauthorized" : "service_unavailable" }, error.statusCode);
