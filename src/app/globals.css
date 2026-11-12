@@ -121,3 +121,27 @@ a.rf-card:hover { transform:translateY(-3px);border-color:rgba(198,160,75,.75);b
  .rf-sidebar-nav { scrollbar-color:rgba(232,214,165,.55) transparent; }
  .rf-mobile-tab { font-size:11px; }
 }
+
+
+/* Sidebar contrast correction: global a {color:inherit} was overriding Tailwind
+   text-white on navigation links. Scope explicit text colors to the drawer. */
+.raven-workspace .rf-portal-sidebar { color:#fff; }
+.raven-workspace .rf-portal-sidebar a,
+.raven-workspace .rf-portal-sidebar nav a,
+.raven-workspace .rf-portal-sidebar nav button { color:#fff; opacity:1; }
+.raven-workspace .rf-portal-sidebar nav a svg,
+.raven-workspace .rf-portal-sidebar nav button svg { color:#fff; opacity:1; stroke-width:2.2; }
+.raven-workspace .rf-portal-sidebar nav a[aria-current="page"] { color:#fff; background:#08794f; border:1px solid #d4af37; box-shadow:0 0 0 1px rgba(212,175,55,.2),0 4px 16px rgba(0,0,0,.12); }
+.raven-workspace .rf-portal-sidebar nav a[aria-current="page"] svg { color:#fff; }
+.raven-workspace .rf-portal-sidebar nav input { color:#fff; background:rgba(255,255,255,.08); }
+.raven-workspace .rf-portal-sidebar nav input::placeholder { color:rgba(255,255,255,.82);opacity:1; }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section { overflow:hidden; }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section > button { font-size:14px; font-weight:800; }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section a { font-size:14px;font-weight:800;line-height:1.7;min-height:48px; }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section a:hover { background:rgba(255,255,255,.14); }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section a:focus-visible { outline:2px solid #d4af37;outline-offset:1px; }
+.raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section a:not(:last-child) { border-bottom:1px solid rgba(255,255,255,.12); }
+@media(max-width:1023px) {
+ .raven-workspace .rf-portal-sidebar { background:linear-gradient(150deg,#056244,#08794f 58%,#064b36); }
+ .raven-workspace .rf-portal-sidebar .rf-sidebar-nav > section a { font-size:15px; }
+}
