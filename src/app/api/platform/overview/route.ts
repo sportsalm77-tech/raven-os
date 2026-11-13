@@ -26,14 +26,14 @@ export async function GET() {
    if(!total||total==="*"||!/^\d+$/.test(total))throw new Error("count_unavailable");
    return Number(total);
   };
-  const [schools,activeSchools,schoolMemberships,platformMemberships,plans,tickets]=await Promise.all([
+  const [schools,activeSchools,schoolMemberships,plans,tickets]=await Promise.all([
    count("raven_schools"),count("raven_schools","eq.active"),
-   count("raven_school_memberships"),count("raven_platform_memberships"),
+   count("raven_school_memberships"),
    count("raven_platform_plans"),count("raven_support_tickets"),
   ]);
   return NextResponse.json({source:"supabase",metrics:{
-   schools,activeSchools,schoolMemberships,platformMemberships,plans,tickets,
+   schools,activeSchools,schoolMemberships,platformMemberships:null,plans,tickets,
    users:null,classes:null,students:null,
-  },unavailable:["users","classes","students"]},{headers});
+  },unavailable:["users","platformMemberships","classes","students"]},{headers});
  }catch{return NextResponse.json({error:"service_unavailable"},{status:503,headers});}
 }
