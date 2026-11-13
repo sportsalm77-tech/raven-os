@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { PortalExecutiveHome } from "@/components/portal-executive-home";
+import { PlatformLiveMetrics } from "@/components/platform-live-metrics";
 import {
   Activity, ArrowLeft, ArrowRight, BellRing, Building2, ChartNoAxesCombined,
   ClipboardCheck, Cpu, Database, FileCheck2, Headset, LockKeyhole,
@@ -35,6 +36,7 @@ export function PlatformCommandCenter() {
   return (
     <main className="space-y-7">
       <PortalExecutiveHome portal="platform" />
+      <PlatformLiveMetrics />
 
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
