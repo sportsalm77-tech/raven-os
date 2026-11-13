@@ -27,26 +27,26 @@ async function context() {
  if(!url||!key)return null;
  return {token,key,url,user:identity.user.id};
 }
-async function proxy(c:NonNullable<Awaited<ReturnType<typeof context>>>,module:Module,method:"GET"|"POST"|"PATCH",body?:Record<string,unknown>,id?:string) {
- const config=tables[module];
+async function proxy(c:NonNullable<Awaited<ReturnType<typeof context>>>,sectionKey:Module,method:"GET"|"POST"|"PATCH",body?:Record<string,unknown>,id?:string) {
+ const config=tables[sectionKey];
  const url=new URL(`/rest/v1/${config.table}`,c.url);
  url.searchParams.set("select",config.select);
- if(id)url.searchParams.set(module==="settings"?"key":"id",`eq.${id}`);
- if(method==="GET"){url.searchParams.set("order",module==="settings"?"key.asc":module==="audit"?"occurred_at.desc":"created_at.desc");url.searchParams.set("limit","100");}
+ if(id)url.searchParams.set(sectionKey==="settings"?"key":"id",`eq.${id}`);
+ if(method==="GET"){url.searchParams.set("order",sectionKey==="settings"?"key.asc":sectionKey==="audit"?"occurred_at.desc":"created_at.desc");url.searchParams.set("limit","100");}
  const result=await fetch(url,{method,headers:{"apikey":c.key,"Authorization":`Bearer ${c.token}`,"Accept":"application/json",...(method==="GET"?{}:{"Content-Type":"application/json","Prefer":"return=representation"})},body:body?JSON.stringify(body):undefined,cache:"no-store",signal:AbortSignal.timeout(8000)});
  if(!result.ok)return response({error:"database_operation_failed"},result.status===401?401:result.status===403?403:result.status===409?409:503);
  const records=await result.json() as unknown;
  return response({records},method==="POST"?201:200);
 }
 export async function GET(req:NextRequest) {
- const module=req.nextUrl.searchParams.get("module");
- if(!validModule(module))return response({error:"unknown_module"},400);
- try {const c=await context();if(!c)return response({error:"unauthorized"},401);return await proxy(c,module,"GET");}
+ const sectionKey=req.nextUrl.searchParams.get("module");
+ if(!validModule(sectionKey))return response({error:"unknown_module"},400);
+ try {const c=await context();if(!c)return response({error:"unauthorized"},401);return await proxy(c,sectionKey,"GET");}
  catch{return response({error:"service_unavailable"},503);}
 }
 async function write(req:NextRequest,method:"POST"|"PATCH") {
- const module=req.nextUrl.searchParams.get("module");
- if(!validModule(module)||module==="audit")return response({error:"unknown_or_read_only_module"},400);
+ const sectionKey=req.nextUrl.searchParams.get("module");
+ if(!validModule(sectionKey)||sectionKey==="audit")return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
  if(Number(req.headers.get("content-length")||"0")>16384)return response({error:"payload_too_large"},413);
  try {
@@ -54,30 +54,30 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
   const raw:unknown=await req.json();
   if(!raw||typeof raw!=="object"||Array.isArray(raw))return response({error:"invalid_payload"},400);
   const input=raw as Record<string,unknown>;
-  const config=tables[module];
+  const config=tables[sectionKey];
   const fields=config.fields as readonly string[];
   const required=config.required as readonly string[];
   const id=method==="PATCH"?req.nextUrl.searchParams.get("id"):null;
-  if(method==="PATCH"&&(!id||(module!=="settings"&&!uuid.test(id))||(module==="settings"&&(!/^[a-z][a-z0-9_.-]{1,99}$/.test(id)))))return response({error:"invalid_id"},400);
+  if(method==="PATCH"&&(!id||(sectionKey!=="settings"&&!uuid.test(id))||(sectionKey==="settings"&&(!/^[a-z][a-z0-9_.-]{1,99}$/.test(id)))))return response({error:"invalid_id"},400);
   if(!Object.keys(input).length||Object.keys(input).some(k=>!fields.includes(k))||method==="POST"&&required.some(k=>input[k]===undefined))return response({error:"invalid_fields"},400);
   for(const [key,value] of Object.entries(input)) {
    if(typeof value==="string"&&(value.length>10000||!value.trim()))return response({error:"invalid_field_value",field:key},400);
    if((key.endsWith("_id")||key==="ticket_id")&&value!==null&&(typeof value!=="string"||!uuid.test(value)))return response({error:"invalid_uuid",field:key},400);
   }
-  if(module==="schools"&&input.status!==undefined&&!["active","inactive","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
-  if(module==="subscriptions"&&input.status!==undefined&&!["active","paused","cancelled"].includes(String(input.status)))return response({error:"invalid_status"},400);
-  if(module==="tickets"&&input.status!==undefined&&!["open","in_progress","resolved","closed"].includes(String(input.status)))return response({error:"invalid_status"},400);
-  if(module==="plans"&&((input.duration_days!==undefined&&(!Number.isInteger(input.duration_days)||Number(input.duration_days)<1||Number(input.duration_days)>3650))||(input.price_sar!==undefined&&(typeof input.price_sar!=="number"||input.price_sar<0))))return response({error:"invalid_plan"},400);
-  if(module==="settings"&&(typeof input.key!=="string"&&method==="POST"||input.value===undefined&&method==="POST"))return response({error:"invalid_setting"},400);
-  if(module==="settings"&&method==="PATCH"&&input.key!==undefined)return response({error:"immutable_setting_key"},400);
-  if(module==="subscriptions"&&input.starts_at&&input.ends_at&&Date.parse(String(input.starts_at))>=Date.parse(String(input.ends_at)))return response({error:"invalid_subscription_dates"},400);
+  if(sectionKey==="schools"&&input.status!==undefined&&!["active","inactive","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
+  if(sectionKey==="subscriptions"&&input.status!==undefined&&!["active","paused","cancelled"].includes(String(input.status)))return response({error:"invalid_status"},400);
+  if(sectionKey==="tickets"&&input.status!==undefined&&!["open","in_progress","resolved","closed"].includes(String(input.status)))return response({error:"invalid_status"},400);
+  if(sectionKey==="plans"&&((input.duration_days!==undefined&&(!Number.isInteger(input.duration_days)||Number(input.duration_days)<1||Number(input.duration_days)>3650))||(input.price_sar!==undefined&&(typeof input.price_sar!=="number"||input.price_sar<0))))return response({error:"invalid_plan"},400);
+  if(sectionKey==="settings"&&(typeof input.key!=="string"&&method==="POST"||input.value===undefined&&method==="POST"))return response({error:"invalid_setting"},400);
+  if(sectionKey==="settings"&&method==="PATCH"&&input.key!==undefined)return response({error:"immutable_setting_key"},400);
+  if(sectionKey==="subscriptions"&&input.starts_at&&input.ends_at&&Date.parse(String(input.starts_at))>=Date.parse(String(input.ends_at)))return response({error:"invalid_subscription_dates"},400);
   const payload:Record<string,unknown>={...input};
-  if(method==="POST"&&(module==="notices"||module==="tickets"||module==="replies"))payload[module==="notices"?"author_id":"created_by"]=c.user;
-  if(method==="POST"&&module==="replies"){delete payload.created_by;payload.author_id=c.user;}
-  if(module==="settings"){payload.updated_by=c.user;payload.updated_at=new Date().toISOString();}
-  if(module==="tickets"&&method==="PATCH")payload.updated_at=new Date().toISOString();
-  if(method==="POST"&&module==="schools"&&!payload.status)payload.status="active";
-  return await proxy(c,module,method,payload,id||undefined);
+  if(method==="POST"&&(sectionKey==="notices"||sectionKey==="tickets"||sectionKey==="replies"))payload[sectionKey==="notices"?"author_id":"created_by"]=c.user;
+  if(method==="POST"&&sectionKey==="replies"){delete payload.created_by;payload.author_id=c.user;}
+  if(sectionKey==="settings"){payload.updated_by=c.user;payload.updated_at=new Date().toISOString();}
+  if(sectionKey==="tickets"&&method==="PATCH")payload.updated_at=new Date().toISOString();
+  if(method==="POST"&&sectionKey==="schools"&&!payload.status)payload.status="active";
+  return await proxy(c,sectionKey,method,payload,id||undefined);
  }catch{return response({error:"invalid_request_or_service_unavailable"},503);}
 }
 export async function POST(req:NextRequest){return write(req,"POST");}
