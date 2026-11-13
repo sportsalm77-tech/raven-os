@@ -5,7 +5,7 @@ import { useLang } from "@/lib/i18n";
 type Field={key:string;ar:string;en:string;kind?:"select"|"number"|"date"|"textarea"|"checkbox"|"json";options?:string[]};
 const modules={
  memberships:{ar:"عضويات المدارس",en:"School memberships",fields:[]},
- schools:{ar:"إدارة المدارس",en:"Schools",fields:[{key:"name",ar:"اسم المدرسة",en:"School name"},{key:"status",ar:"الحالة",en:"Status",kind:"select",options:["active","inactive","suspended"]}]},
+ schools:{ar:"إدارة المدارس",en:"Schools",fields:[{key:"name",ar:"اسم المدرسة",en:"School name"},{key:"status",ar:"الحالة",en:"Status",kind:"select",options:["active","pending","suspended"]}]},
  plans:{ar:"الباقات",en:"Plans",fields:[{key:"code",ar:"رمز الباقة",en:"Plan code"},{key:"name",ar:"اسم الباقة",en:"Plan name"},{key:"price_sar",ar:"السعر بالريال",en:"Price (SAR)",kind:"number"},{key:"duration_days",ar:"المدة بالأيام",en:"Duration (days)",kind:"number"},{key:"active",ar:"مفعلة",en:"Active",kind:"checkbox"}]},
  subscriptions:{ar:"اشتراكات المدارس",en:"School subscriptions",fields:[{key:"school_id",ar:"معرف المدرسة",en:"School ID"},{key:"plan_id",ar:"معرف الباقة",en:"Plan ID"},{key:"starts_at",ar:"تاريخ البدء",en:"Starts at",kind:"date"},{key:"ends_at",ar:"تاريخ الانتهاء",en:"Ends at",kind:"date"},{key:"status",ar:"الحالة",en:"Status",kind:"select",options:["active","paused","cancelled"]}]},
  notices:{ar:"التعاميم والإشعارات",en:"Notices",fields:[{key:"title",ar:"العنوان",en:"Title"},{key:"body",ar:"نص التعميم",en:"Message",kind:"textarea"},{key:"school_id",ar:"معرف المدرسة (اختياري)",en:"School ID (optional)"}]},
