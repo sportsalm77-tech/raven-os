@@ -67,7 +67,7 @@ test.describe("Platform portal browser acceptance", () => {
     await page.goto("/platform/communications");
     await expect(page.getByRole("region", { name: /إدارة السجلات الفعلية|Live administration records/ })).toBeVisible();
     await expect(page.getByText(/العمليات المتصلة بقاعدة البيانات|Database-backed operations/)).toBeVisible();
-    await expect(page.getByRole("alert")).toContainText(/يلزم تسجيل الدخول|Sign in with an authorized platform admin account/);
+    await expect(page.getByRole("alert").filter({ hasText: /يلزم تسجيل الدخول|Sign in with an authorized platform admin account/ })).toContainText(/يلزم تسجيل الدخول|Sign in with an authorized platform admin account/);
     await expect(page.getByText(/تم الحفظ بنجاح|Saved successfully/)).toHaveCount(0);
   });
 });
