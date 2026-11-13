@@ -37,6 +37,16 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
     <AlertCircle size={16} className="mt-1 shrink-0 text-[#D4AF37]"/><span>{isAr?copy.noteAr:copy.noteEn}</span>
    </div>
   </section>
+  {portal === "principal" && <section className="mb-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label={isAr?"مراكز العمل الرئيسية":"Principal work centers"}>{[
+    {to:"/principal/info-center",ar:"مركز البيانات المدرسية",en:"School Data Center"},
+    {to:"/principal/decision-center",ar:"القرارات والتكليفات",en:"Decisions & Assignments"},
+    {to:"/principal/operational-plan",ar:"الخطة التشغيلية الذكية",en:"Smart Operational Plan"},
+    {to:"/principal/impact",ar:"مركز قياس الأثر",en:"Impact Measurement"},
+    {to:"/principal/school-affairs",ar:"الشؤون المدرسية",en:"School Affairs"},
+    {to:"/principal/classes",ar:"الفصول المدرسية",en:"Classes Center"},
+    {to:"/principal/teachers",ar:"شؤون المعلمين",en:"Teacher Affairs"},
+    {to:"/principal/students",ar:"شؤون الطلاب",en:"Student Affairs"},
+  ].map(center=><Link key={center.to} href={center.to} className="flex items-center justify-between rounded-2xl border border-[#08794F]/20 bg-white p-4 text-sm font-extrabold text-[#075c3e] shadow-sm transition hover:border-[#08794F] hover:shadow-md"><span>{isAr?center.ar:center.en}</span>{isAr?<ArrowLeft size={16}/>:<ArrowRight size={16}/>}</Link>)}</section>}
   <PortalOverviewPanels portal={portal} />
   <div className="mb-6 flex items-center justify-between gap-3">
    <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام البوابة":"Portal centers & sections"}</h2><p className="mt-1 text-xs text-[#66736e]">{isAr?"خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة":"Organized navigation — backend operations are not implied"}</p></div>
