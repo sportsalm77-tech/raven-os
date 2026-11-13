@@ -46,6 +46,8 @@ export async function GET(req:NextRequest) {
  catch{return response({error:"service_unavailable"},503);}
 }
 async function write(req:NextRequest,method:"POST"|"PATCH") {
+ const origin=req.headers.get("origin");
+ if(!origin||origin!==req.nextUrl.origin)return response({error:"forbidden_origin"},403);
  const sectionKey=req.nextUrl.searchParams.get("module");
  if(!validModule(sectionKey)||sectionKey==="audit")return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
@@ -53,6 +55,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
  try {
   const c=await context();if(!c)return response({error:"unauthorized"},401);
   const raw:unknown=await req.json();
+  if(JSON.stringify(raw).length>16384)return response({error:"payload_too_large"},413);
   if(!raw||typeof raw!=="object"||Array.isArray(raw))return response({error:"invalid_payload"},400);
   const input=raw as Record<string,unknown>;
   const config=tables[sectionKey];
@@ -81,6 +84,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
   if(sectionKey==="tickets"&&method==="PATCH")payload.updated_at=new Date().toISOString();
   if(method==="POST"&&sectionKey==="schools"&&!payload.status)payload.status="active";
   if(method==="POST"&&sectionKey==="memberships"&&!payload.status)payload.status="invited";
+  if(method==="PATCH"&&sectionKey==="memberships"&&(payload.user_id!==undefined||payload.school_id!==undefined))return response({error:"immutable_membership_identity"},400);
   return await proxy(c,sectionKey,method,payload,id||undefined);
  }catch{return response({error:"invalid_request_or_service_unavailable"},503);}
 }
