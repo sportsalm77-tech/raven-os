@@ -63,9 +63,11 @@ test.describe("Platform portal browser acceptance", () => {
     await expect(page.getByRole("button", { name: "Open navigation" })).toBeVisible();
   });
 
-  test("does not expose real operational forms or pretend backend success", async ({ page }) => {
+  test("shows the real administration interface without claiming unauthenticated success", async ({ page }) => {
     await page.goto("/platform/communications");
-    await expect(page.getByText(/غير متصل بخدمة خلفية|Backend not connected/).first()).toBeVisible();
-    await expect(page.getByText(/لا توجد خدمة رسائل أو قناة إرسال متصلة|No messaging service or delivery channel is connected/).first()).toBeVisible();
+    await expect(page.getByRole("region", { name: /إدارة السجلات الفعلية|Live administration records/ })).toBeVisible();
+    await expect(page.getByText(/العمليات المتصلة بقاعدة البيانات|Database-backed operations/)).toBeVisible();
+    await expect(page.getByRole("alert")).toContainText(/يلزم تسجيل الدخول|Sign in with an authorized platform admin account/);
+    await expect(page.getByText(/تم الحفظ بنجاح|Saved successfully/)).toHaveCount(0);
   });
 });
