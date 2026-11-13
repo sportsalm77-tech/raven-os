@@ -33,7 +33,7 @@ export function PlatformAdminRecords({path}:{path:string}){
  const load=useCallback(async()=>{
   setBusy(true);setError("");setLoaded(false);
   try{
-   const r=await fetch(`/api/platform/records?sectionKey=${sectionKey}`,{credentials:"same-origin",cache:"no-store"});
+   const r=await fetch(`/api/platform/records?module=${sectionKey}`,{credentials:"same-origin",cache:"no-store"});
    const j=await r.json();
    if(!r.ok||!Array.isArray(j.records))throw Error(r.status===401?t("يلزم تسجيل الدخول بحساب مدير منصة معتمد.","Sign in with an authorized platform admin account."):String(j.error||"Load failed"));
    setRecords(j.records);setLoaded(true);
