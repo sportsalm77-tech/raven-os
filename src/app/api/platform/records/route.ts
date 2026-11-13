@@ -65,7 +65,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
    if(typeof value==="string"&&(value.length>10000||!value.trim()))return response({error:"invalid_field_value",field:key},400);
    if((key.endsWith("_id")||key==="ticket_id")&&value!==null&&(typeof value!=="string"||!uuid.test(value)))return response({error:"invalid_uuid",field:key},400);
   }
-  if(sectionKey==="schools"&&input.status!==undefined&&!["active","inactive","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
+  if(sectionKey==="schools"&&input.status!==undefined&&!["active","pending","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
   if(sectionKey==="subscriptions"&&input.status!==undefined&&!["active","paused","cancelled"].includes(String(input.status)))return response({error:"invalid_status"},400);
   if(sectionKey==="tickets"&&input.status!==undefined&&!["open","in_progress","resolved","closed"].includes(String(input.status)))return response({error:"invalid_status"},400);
   if(sectionKey==="plans"&&((input.duration_days!==undefined&&(!Number.isInteger(input.duration_days)||Number(input.duration_days)<1||Number(input.duration_days)>3650))||(input.price_sar!==undefined&&(typeof input.price_sar!=="number"||input.price_sar<0))))return response({error:"invalid_plan"},400);
