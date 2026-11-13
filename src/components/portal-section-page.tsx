@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { PlatformAdminRecords } from "@/components/platform-admin-records";
+
 import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
@@ -82,6 +84,10 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   const operationsArea = portal === "principal" ? principalOperations[path] : undefined;
   if (operationsArea) {
     return <PortalShell portal="principal"><PrincipalOperationsScreen area={operationsArea} /></PortalShell>;
+  }
+
+  if (portal === "platform" && ["/platform/schools","/platform/users","/platform/subscriptions","/platform/communications","/platform/support","/platform/settings","/platform/roles","/platform/security"].includes(path)) {
+    return <PortalShell portal="platform"><PlatformAdminRecords path={path}/></PortalShell>;
   }
 
   if (portal === "family") {
