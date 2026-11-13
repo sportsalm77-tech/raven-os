@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { PortalCenterDashboard } from "@/components/portal-center-dashboard";
+import { PlatformAdminRecords } from "@/components/platform-admin-records";
 import { PortalShell } from "@/components/portal-shell";
 import { PrincipalInfoCenter } from "@/components/principal-info-center";
 import { PrincipalAssignmentsCenter } from "@/components/principal-assignments-center";
@@ -98,5 +99,8 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
     return <PortalShell portal="teacher"><TeacherSectionWorkspace slug={slug[0] ?? ""} /></PortalShell>;
   }
 
+  if (portal === "platform" && ["/platform/schools","/platform/subscriptions","/platform/communications","/platform/support","/platform/settings","/platform/roles"].includes(path)) {
+    return <PortalShell portal="platform"><PlatformAdminRecords path={path}/></PortalShell>;
+  }
   return <PortalModuleWorkspace portal={portal} item={{ ar: item.ar, en: item.en }} path={path} />;
 }
