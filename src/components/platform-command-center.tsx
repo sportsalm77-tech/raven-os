@@ -68,7 +68,7 @@ export function PlatformCommandCenter() {
             const Icon=center.icon;
             const ready=center.state==="current";
             const content=<><div className="flex items-start justify-between gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#08794F]/10 text-[#08794F]"><Icon size={19}/></span><span className={ready?"rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800":"rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-900"}>{ready?(isAr?"واجهة متاحة — الربط قيد التطوير":"Interface available — integration pending"):(isAr?"ضمن دفعات التطوير":"Planned development batch")}</span></div><h3 className="mt-4 text-sm font-black text-[#111A18]">{isAr?center.ar:center.en}</h3><p className="mt-2 min-h-12 text-xs leading-6 text-[#66736e]">{isAr?center.descAr:center.descEn}</p>{center.href&&<span className="mt-4 inline-flex items-center gap-2 text-xs font-extrabold text-[#08794F]">{isAr?"فتح المركز":"Open center"} <Arrow size={14}/></span>}</>;
-            return center.href?<Link key={center.id} href={center.href} className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#08794F]/40 hover:shadow-md">{content}</Link>:<article key={center.id} className="rounded-2xl border border-dashed border-black/15 bg-white p-5">{content}</article>;
+            return <Link key={center.id} href={center.href} className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#08794F]/40 hover:shadow-md">{content}</Link>;
           })}
         </div>
       </section>
