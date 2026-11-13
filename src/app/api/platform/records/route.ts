@@ -5,7 +5,7 @@ import { canEnterPortal } from "@/lib/security/portal-authorization";
 
 export const dynamic = "force-dynamic";
 const tables = {
- memberships: { table:"raven_school_memberships", fields:[], required:[], select:"id,user_id,school_id,role,status,created_at" },
+ memberships: { table:"raven_school_memberships", fields:["user_id","school_id","role","status"], required:["user_id","school_id","role"], select:"id,user_id,school_id,role,status,created_at" },
  schools: { table:"raven_schools", fields:["name","status"], required:["name"], select:"id,name,status,created_at" },
  plans: { table:"raven_platform_plans", fields:["code","name","price_sar","duration_days","active"], required:["code","name","duration_days"], select:"id,code,name,price_sar,duration_days,active,created_at" },
  subscriptions: { table:"raven_school_subscriptions", fields:["school_id","plan_id","starts_at","ends_at","status"], required:["school_id","plan_id","starts_at","ends_at"], select:"id,school_id,plan_id,starts_at,ends_at,status,created_at" },
@@ -47,7 +47,7 @@ export async function GET(req:NextRequest) {
 }
 async function write(req:NextRequest,method:"POST"|"PATCH") {
  const sectionKey=req.nextUrl.searchParams.get("module");
- if(!validModule(sectionKey)||sectionKey==="audit"||sectionKey==="memberships")return response({error:"unknown_or_read_only_module"},400);
+ if(!validModule(sectionKey)||sectionKey==="audit")return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
  if(Number(req.headers.get("content-length")||"0")>16384)return response({error:"payload_too_large"},413);
  try {
@@ -65,6 +65,8 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
    if(typeof value==="string"&&(value.length>10000||!value.trim()))return response({error:"invalid_field_value",field:key},400);
    if((key.endsWith("_id")||key==="ticket_id")&&value!==null&&(typeof value!=="string"||!uuid.test(value)))return response({error:"invalid_uuid",field:key},400);
   }
+  if(sectionKey==="memberships"&&input.role!==undefined&&!["school_admin","principal","vice_principal","teacher","family_guardian"].includes(String(input.role)))return response({error:"invalid_role"},400);
+  if(sectionKey==="memberships"&&input.status!==undefined&&!["invited","active","suspended","revoked"].includes(String(input.status)))return response({error:"invalid_membership_status"},400);
   if(sectionKey==="schools"&&input.status!==undefined&&!["active","pending","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
   if(sectionKey==="subscriptions"&&input.status!==undefined&&!["active","paused","cancelled"].includes(String(input.status)))return response({error:"invalid_status"},400);
   if(sectionKey==="tickets"&&input.status!==undefined&&!["open","in_progress","resolved","closed"].includes(String(input.status)))return response({error:"invalid_status"},400);
@@ -78,6 +80,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
   if(sectionKey==="settings"){payload.updated_by=c.user;payload.updated_at=new Date().toISOString();}
   if(sectionKey==="tickets"&&method==="PATCH")payload.updated_at=new Date().toISOString();
   if(method==="POST"&&sectionKey==="schools"&&!payload.status)payload.status="active";
+  if(method==="POST"&&sectionKey==="memberships"&&!payload.status)payload.status="invited";
   return await proxy(c,sectionKey,method,payload,id||undefined);
  }catch{return response({error:"invalid_request_or_service_unavailable"},503);}
 }
