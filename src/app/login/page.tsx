@@ -36,7 +36,7 @@ export default function LoginPage() {
     } catch { setMessage("تعذر الاتصال بخدمة الدخول."); }
     finally { setBusy(false); }
   }
-  if (process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED !== "true") return <main className="container" style={{ paddingBlock: 80 }}><div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}><h1>تسجيل الدخول</h1><p className="portal-notice">لا توجد مصادقة فعلية مفعّلة في نسخة المعاينة الحالية. لن يتم طلب كلمة المرور قبل استكمال التهيئة والاختبارات.</p><Link href="/">العودة إلى الصفحة الرئيسية</Link></div></main>;
+  if (process.env.NEXT_PUBLIC_RAVEN_AUTH_ENABLED !== "true") return <main className="container" style={{ paddingBlock: 80 }}><div className="portal-panel" style={{ maxWidth: 680, marginInline: "auto" }}><span className="eyebrow">RAVEN OS · PREVIEW</span><h1>معاينة بوابات رافيين</h1><p className="portal-notice">هذه معاينة للواجهات فقط، وليست دخولًا إلى حساب حقيقي. خدمات البيانات والصلاحيات والتغييرات التشغيلية غير مفعّلة هنا.</p><div style={{ display: "grid", gap: 12, marginBlock: 24 }}><Link className="button" href="/platform">معاينة بوابة مدير المنصة</Link><Link className="button" href="/principal">معاينة بوابة قائد المدرسة</Link><Link className="button" href="/teacher">معاينة بوابة المعلم</Link><Link className="button" href="/family">معاينة بوابة الأسرة</Link></div><p><Link href="/">العودة إلى الصفحة الرئيسية</Link></p></div></main>;
   return <main className="container" style={{ paddingBlock: 80 }}>
     <div className="portal-panel" style={{ maxWidth: 620, marginInline: "auto" }}>
       <span className="eyebrow">RAVEN OS</span>
