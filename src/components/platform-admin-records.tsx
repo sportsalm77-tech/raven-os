@@ -22,7 +22,7 @@ const routes:Record<string,Module[]>={
 };
 export function PlatformAdminRecords({path}:{path:string}){
  const {isAr}=useLang();
- const [module,setModule]=useState<Module>((routes[path]||["schools"])[0]);
+ const [sectionKey,setModule]=useState<Module>((routes[path]||["schools"])[0]);
  const [records,setRecords]=useState<Record<string,unknown>[]>([]);
  const [form,setForm]=useState<Record<string,string|boolean>>({});
  const [editing,setEditing]=useState<string|null>(null);
@@ -33,28 +33,28 @@ export function PlatformAdminRecords({path}:{path:string}){
  const load=useCallback(async()=>{
   setBusy(true);setError("");setLoaded(false);
   try{
-   const r=await fetch(`/api/platform/records?module=${module}`,{credentials:"same-origin",cache:"no-store"});
+   const r=await fetch(`/api/platform/records?sectionKey=${sectionKey}`,{credentials:"same-origin",cache:"no-store"});
    const j=await r.json();
    if(!r.ok||!Array.isArray(j.records))throw Error(r.status===401?t("يلزم تسجيل الدخول بحساب مدير منصة معتمد.","Sign in with an authorized platform admin account."):String(j.error||"Load failed"));
    setRecords(j.records);setLoaded(true);
   }catch(e){setError(e instanceof Error?e.message:String(e));setRecords([]);}
   finally{setBusy(false);}
- },[module,isAr]);
+ },[sectionKey,isAr]);
  useEffect(()=>{void load()},[load]);
- const config=modules[module];const fields=config.fields as Field[];
+ const config=modules[sectionKey];const fields=config.fields as Field[];
  function startEdit(item:Record<string,unknown>){
-  setEditing(String(item[module==="settings"?"key":"id"]));
+  setEditing(String(item[sectionKey==="settings"?"key":"id"]));
   const next:Record<string,string|boolean>={};
-  for(const field of fields){if(field.key==="key"&&module==="settings")continue;const value=item[field.key];next[field.key]=field.kind==="json"?JSON.stringify(value):typeof value==="boolean"?value:String(value??"");}
+  for(const field of fields){if(field.key==="key"&&sectionKey==="settings")continue;const value=item[field.key];next[field.key]=field.kind==="json"?JSON.stringify(value):typeof value==="boolean"?value:String(value??"");}
   setForm(next);setError("");
  }
  async function save(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");
   try{
    const payload:Record<string,unknown>={};
-   for(const field of fields){if(editing&&module==="settings"&&field.key==="key")continue;const v=form[field.key];if(v===undefined||v===""&&field.key==="school_id"&&module==="notices")continue;if(v===undefined||v==="")continue;
+   for(const field of fields){if(editing&&sectionKey==="settings"&&field.key==="key")continue;const v=form[field.key];if(v===undefined||v===""&&field.key==="school_id"&&sectionKey==="notices")continue;if(v===undefined||v==="")continue;
     payload[field.key]=field.kind==="number"?Number(v):field.kind==="json"?JSON.parse(String(v)):field.kind==="date"?new Date(String(v)).toISOString():v;
    }
-   const qs=new URLSearchParams({module});if(editing)qs.set("id",editing);
+   const qs=new URLSearchParams({module:sectionKey});if(editing)qs.set("id",editing);
    const r=await fetch(`/api/platform/records?${qs}`,{method:editing?"PATCH":"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify(payload)});
    const j=await r.json();if(!r.ok)throw Error(String(j.error||"Save failed"));
    setForm({});setEditing(null);await load();
@@ -63,9 +63,9 @@ export function PlatformAdminRecords({path}:{path:string}){
  const allowed=routes[path]||["schools"];
  return <section className="space-y-5 rounded-3xl border border-[#08794F]/15 bg-white p-5 md:p-7" aria-label={t("إدارة السجلات الفعلية","Live administration records")}>
   <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="text-xl font-black text-[#111A18]">{t("العمليات المتصلة بقاعدة البيانات","Database-backed operations")}</h2><p className="mt-1 text-xs text-[#66736e]">{t("البيانات الحقيقية فقط، وفق صلاحيات مدير المنصة.","Live records only, subject to platform administrator authorization.")}</p></div><button type="button" onClick={()=>void load()} disabled={busy} className="rounded-xl border border-[#08794F]/30 px-4 py-2 text-sm font-bold text-[#08794F]">{t("تحديث","Refresh")}</button></div>
-  {allowed.length>1&&<div className="flex flex-wrap gap-2">{allowed.map(m=><button key={m} type="button" onClick={()=>{setModule(m);setForm({});setEditing(null)}} className={`rounded-xl px-4 py-2 text-sm font-bold ${m===module?"bg-[#08794F] text-white":"bg-[#F5F3EC] text-[#111A18]"}`}>{t(modules[m].ar,modules[m].en)}</button>)}</div>}
+  {allowed.length>1&&<div className="flex flex-wrap gap-2">{allowed.map(m=><button key={m} type="button" onClick={()=>{setModule(m);setForm({});setEditing(null)}} className={`rounded-xl px-4 py-2 text-sm font-bold ${m===sectionKey?"bg-[#08794F] text-white":"bg-[#F5F3EC] text-[#111A18]"}`}>{t(modules[m].ar,modules[m].en)}</button>)}</div>}
   {error&&<p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-  {loaded&&<div className="overflow-x-auto rounded-xl border border-[#08794F]/10"><table className="min-w-full text-start text-xs"><thead className="bg-[#F5F3EC]"><tr>{(fields.length?fields.slice(0,4):[{key:"event_type",ar:"الحدث",en:"Event"},{key:"occurred_at",ar:"الوقت",en:"Time"}]).map(f=><th key={f.key} className="p-3 text-start">{t(f.ar,f.en)}</th>)}<th className="p-3">{t("الإجراء","Action")}</th></tr></thead><tbody>{records.map((row,i)=><tr key={String(row.id||row.key||i)} className="border-t border-[#08794F]/10">{(fields.length?fields.slice(0,4):[{key:"event_type"},{key:"occurred_at"}]).map(f=><td key={f.key} className="max-w-52 truncate p-3" title={String(row[f.key]??"")}>{typeof row[f.key]==="object"?JSON.stringify(row[f.key]):String(row[f.key]??"—")}</td>)}<td className="p-3">{module!=="audit"&&module!=="replies"&&<button type="button" onClick={()=>startEdit(row)} className="font-bold text-[#08794F]">{t("تعديل","Edit")}</button>}</td></tr>)}</tbody></table>{!records.length&&<p className="p-5 text-sm text-[#66736e]">{t("لا توجد سجلات حتى الآن.","No records yet.")}</p>}</div>}
-  {module!=="audit"&&module!=="replies"&&<form onSubmit={save} className="space-y-4 rounded-2xl bg-[#F5F3EC] p-4"><h3 className="font-black text-[#111A18]">{editing?t("تعديل السجل","Edit record"):t("إضافة سجل","Create record")}</h3><div className="grid gap-3 md:grid-cols-2">{fields.filter(f=>!(editing&&module==="settings"&&f.key==="key")).map(field=><label key={field.key} className="space-y-1 text-xs font-bold text-[#111A18]"><span>{t(field.ar,field.en)}</span>{field.kind==="select"?<select className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}><option value="">{t("اختر","Choose")}</option>{field.options?.map(o=><option key={o}>{o}</option>)}</select>:field.kind==="checkbox"?<input type="checkbox" checked={Boolean(form[field.key])} onChange={e=>setForm(v=>({...v,[field.key]:e.target.checked}))}/>:field.kind==="textarea"||field.kind==="json"?<textarea rows={3} className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}/>:<input type={field.kind==="number"?"number":field.kind==="date"?"datetime-local":"text"} step={field.kind==="number"?"any":undefined} className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}/>}</label>)}</div><div className="flex gap-3"><button type="submit" disabled={busy} className="rounded-xl bg-[#08794F] px-5 py-3 text-sm font-bold text-white disabled:opacity-50">{busy?t("جارٍ الحفظ","Saving"):t("حفظ في قاعدة البيانات","Save to database")}</button>{editing&&<button type="button" onClick={()=>{setEditing(null);setForm({})}} className="rounded-xl border px-5 py-3 text-sm">{t("إلغاء","Cancel")}</button>}</div></form>}
+  {loaded&&<div className="overflow-x-auto rounded-xl border border-[#08794F]/10"><table className="min-w-full text-start text-xs"><thead className="bg-[#F5F3EC]"><tr>{(fields.length?fields.slice(0,4):[{key:"event_type",ar:"الحدث",en:"Event"},{key:"occurred_at",ar:"الوقت",en:"Time"}]).map(f=><th key={f.key} className="p-3 text-start">{t(f.ar,f.en)}</th>)}<th className="p-3">{t("الإجراء","Action")}</th></tr></thead><tbody>{records.map((row,i)=><tr key={String(row.id||row.key||i)} className="border-t border-[#08794F]/10">{(fields.length?fields.slice(0,4):[{key:"event_type"},{key:"occurred_at"}]).map(f=><td key={f.key} className="max-w-52 truncate p-3" title={String(row[f.key]??"")}>{typeof row[f.key]==="object"?JSON.stringify(row[f.key]):String(row[f.key]??"—")}</td>)}<td className="p-3">{sectionKey!=="audit"&&sectionKey!=="replies"&&<button type="button" onClick={()=>startEdit(row)} className="font-bold text-[#08794F]">{t("تعديل","Edit")}</button>}</td></tr>)}</tbody></table>{!records.length&&<p className="p-5 text-sm text-[#66736e]">{t("لا توجد سجلات حتى الآن.","No records yet.")}</p>}</div>}
+  {sectionKey!=="audit"&&sectionKey!=="replies"&&<form onSubmit={save} className="space-y-4 rounded-2xl bg-[#F5F3EC] p-4"><h3 className="font-black text-[#111A18]">{editing?t("تعديل السجل","Edit record"):t("إضافة سجل","Create record")}</h3><div className="grid gap-3 md:grid-cols-2">{fields.filter(f=>!(editing&&sectionKey==="settings"&&f.key==="key")).map(field=><label key={field.key} className="space-y-1 text-xs font-bold text-[#111A18]"><span>{t(field.ar,field.en)}</span>{field.kind==="select"?<select className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}><option value="">{t("اختر","Choose")}</option>{field.options?.map(o=><option key={o}>{o}</option>)}</select>:field.kind==="checkbox"?<input type="checkbox" checked={Boolean(form[field.key])} onChange={e=>setForm(v=>({...v,[field.key]:e.target.checked}))}/>:field.kind==="textarea"||field.kind==="json"?<textarea rows={3} className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}/>:<input type={field.kind==="number"?"number":field.kind==="date"?"datetime-local":"text"} step={field.kind==="number"?"any":undefined} className="w-full rounded-lg border p-3" value={String(form[field.key]??"")} onChange={e=>setForm(v=>({...v,[field.key]:e.target.value}))}/>}</label>)}</div><div className="flex gap-3"><button type="submit" disabled={busy} className="rounded-xl bg-[#08794F] px-5 py-3 text-sm font-bold text-white disabled:opacity-50">{busy?t("جارٍ الحفظ","Saving"):t("حفظ في قاعدة البيانات","Save to database")}</button>{editing&&<button type="button" onClick={()=>{setEditing(null);setForm({})}} className="rounded-xl border px-5 py-3 text-sm">{t("إلغاء","Cancel")}</button>}</div></form>}
  </section>;
 }
