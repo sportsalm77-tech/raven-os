@@ -35,12 +35,12 @@ export function PlatformAdminRecords({path}:{path:string}){
   try{
    const r=await fetch(`/api/platform/records?module=${sectionKey}`,{credentials:"same-origin",cache:"no-store"});
    const j=await r.json();
-   if(!r.ok||!Array.isArray(j.records))throw Error(r.status===401?t("يلزم تسجيل الدخول بحساب مدير منصة معتمد.","Sign in with an authorized platform admin account."):String(j.error||"Load failed"));
+   if(!r.ok||!Array.isArray(j.records))throw Error(r.status===401?(isAr?"يلزم تسجيل الدخول بحساب مدير منصة معتمد.":"Sign in with an authorized platform admin account."):String(j.error||"Load failed"));
    setRecords(j.records);setLoaded(true);
   }catch(e){setError(e instanceof Error?e.message:String(e));setRecords([]);}
   finally{setBusy(false);}
  },[sectionKey,isAr]);
- useEffect(()=>{void load()},[load]);
+ useEffect(()=>{void Promise.resolve().then(load)},[load]);
  const config=modules[sectionKey];const fields=config.fields as Field[];
  function startEdit(item:Record<string,unknown>){
   setEditing(String(item[sectionKey==="settings"?"key":"id"]));
