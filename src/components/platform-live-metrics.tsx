@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
-type Metrics={schools:number;activeSchools:number;schoolMemberships:number;platformMemberships:number;plans:number;tickets:number;users:null;classes:null;students:null};
+type Metrics={schools:number;activeSchools:number;schoolMemberships:number;platformMemberships:null;plans:number;tickets:number;users:null;classes:null;students:null};
 export function PlatformLiveMetrics(){
  const {isAr}=useLang();
  const [metrics,setMetrics]=useState<Metrics|null>(null);
