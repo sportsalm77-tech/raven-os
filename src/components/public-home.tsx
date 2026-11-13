@@ -19,9 +19,9 @@ const rafedServices=[["برامج تدريبية معتمدة","Accredited train
 const audience=[["القيادات المدرسية","School leaders"],["المعلمون","Teachers"],["الأسر","Families"]];
 const products=[
 ["منصة رافيين لإدارة المدارس الذكية","Rafien Smart School Management","/principal","منظومة القيادة والإدارة المدرسية","School leadership and management"],
-["منصة نبراس لإدارة الروضات الذكية","Nibras Smart Nursery Management",null,"إدارة الروضات والحضانات","Nursery and kindergarten management"],
-["متجر رافيين","Rafien Store",null,"منتجات وحلول تعليمية","Educational products and solutions"],
-["أكاديمية رافيين للتدريب والتطوير المهني","Rafien Academy for Professional Development",null,"التدريب والتعليم والتطوير المهني","Training, education and professional development"]
+["منصة نبراس لإدارة الروضات الذكية","Nibras Smart Nursery Management","","إدارة الروضات والحضانات","Nursery and kindergarten management"],
+["متجر رافيين","Rafien Store","","منتجات وحلول تعليمية","Educational products and solutions"],
+["أكاديمية رافيين للتدريب والتطوير المهني","Rafien Academy for Professional Development","","التدريب والتعليم والتطوير المهني","Training, education and professional development"]
 ];
 export function PublicHome(){
  const {isAr,toggleLang}=useLang();const [menu,setMenu]=useState(false);const t=(ar:string,en:string)=>isAr?ar:en;const Arrow=isAr?ArrowLeft:ArrowRight;
