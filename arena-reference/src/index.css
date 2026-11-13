@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-charcoal: #111A18;
+  --color-ink: #1C2723;
+  --color-green: #08794F;
+  --color-green-deep: #065F3E;
+  --color-green-soft: #E9EFEA;
+  --color-green-mist: #F3F6F1;
+  --color-ivory: #F5F3EC;
+  --color-gold: #D4AF37;
+  --color-gold-deep: #B8932A;
+  --color-gold-soft: #F8EFD2;
+  --color-sand: #C1B489;
+  --color-sand-soft: #EDE9DC;
+  --color-deepblue: #15445A;
+  --color-blue-soft: #E3EBEF;
+  --font-sans: "Cairo", system-ui, sans-serif;
+  --font-en: "Manrope", "Cairo", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  body {
+    background: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: "Cairo", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #D4AF37; color: #111A18; }
+}
+
+@layer components {
+  .raven-card {
+    @apply bg-white rounded-2xl border border-sand-soft shadow-[0_1px_2px_rgba(17,26,24,0.05),0_8px_24px_-12px_rgba(17,26,24,0.12)];
+  }
+  .raven-input {
+    @apply w-full h-10 px-3.5 rounded-xl border border-sand-soft bg-ivory/60 text-sm text-charcoal placeholder:text-charcoal/35 outline-none focus:border-green focus:bg-white focus:ring-2 focus:ring-green/15 transition-all;
+  }
+  .raven-label {
+    @apply text-[11px] font-bold text-charcoal/55 tracking-wide mb-1.5 block;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 h-10 px-4 rounded-xl text-[13px] font-bold transition-all select-none cursor-pointer whitespace-nowrap;
+  }
+  .btn-primary { @apply bg-green text-white hover:bg-green-deep shadow-[0_6px_16px_-6px_rgba(8,121,79,0.55)]; }
+  .btn-dark { @apply bg-charcoal text-ivory hover:bg-ink; }
+  .btn-gold { @apply bg-gold text-charcoal hover:bg-gold-deep hover:text-white shadow-[0_6px_16px_-6px_rgba(212,175,55,0.6)]; }
+  .btn-outline { @apply border border-sand bg-white text-charcoal hover:border-green hover:text-green-deep; }
+  .btn-ghost { @apply text-charcoal/70 hover:bg-sand-soft/60 hover:text-charcoal; }
+  .icon-btn { @apply relative h-10 w-10 inline-flex items-center justify-center rounded-xl text-charcoal/70 hover:bg-sand-soft/70 hover:text-charcoal transition-colors cursor-pointer; }
+  .chip { @apply inline-flex items-center gap-1.5 h-6 px-2.5 rounded-full text-[10.5px] font-bold whitespace-nowrap; }
+  .chip-green { @apply bg-green-soft text-green-deep; }
+  .chip-gold { @apply bg-gold-soft text-gold-deep; }
+  .chip-red { @apply bg-red-50 text-red-700; }
+  .chip-blue { @apply bg-blue-soft text-deepblue; }
+  .chip-sand { @apply bg-sand-soft text-charcoal/70; }
+  .th { @apply text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-charcoal/45 text-start px-4 py-2.5 border-b border-sand-soft bg-ivory/70 font-en; }
+  .td { @apply px-4 py-3 text-[12.5px] text-charcoal/90 border-b border-sand-soft/70 align-middle; }
+  .side-link { @apply relative flex items-center gap-2.5 h-9 px-3 rounded-xl text-[12.5px] font-semibold text-ivory/65 hover:text-ivory hover:bg-white/5 transition-all cursor-pointer w-full text-start; }
+  .side-link-active { @apply text-charcoal bg-gold hover:bg-gold font-extrabold shadow-[0_8px_20px_-8px_rgba(212,175,55,0.5)]; }
+  .kpi-label { @apply text-[10.5px] font-extrabold uppercase tracking-[0.1em] text-charcoal/45 font-en; }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #C1B489 transparent;
+}
+.scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #C1B489; border-radius: 99px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes wavebar { 0%,100% { transform: scaleY(0.25);} 50% { transform: scaleY(1);} }
+.wavebar { transform-origin: center; animation: wavebar 0.9s ease-in-out infinite; }
+
+@keyframes ping-soft { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,0.45);} 100% { box-shadow: 0 0 0 14px rgba(212,175,55,0);} }
+.ping-soft { animation: ping-soft 1.6s cubic-bezier(0,0,0.2,1) infinite; }
+
+@keyframes shimmer-line { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.shimmer { background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.5) 50%, transparent 80%); background-size: 200% 100%; animation: shimmer-line 2.4s infinite; }
