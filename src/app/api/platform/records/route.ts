@@ -5,6 +5,7 @@ import { canEnterPortal } from "@/lib/security/portal-authorization";
 
 export const dynamic = "force-dynamic";
 const tables = {
+ memberships: { table:"raven_school_memberships", fields:[], required:[], select:"id,user_id,school_id,role,status,created_at" },
  schools: { table:"raven_schools", fields:["name","status"], required:["name"], select:"id,name,status,created_at" },
  plans: { table:"raven_platform_plans", fields:["code","name","price_sar","duration_days","active"], required:["code","name","duration_days"], select:"id,code,name,price_sar,duration_days,active,created_at" },
  subscriptions: { table:"raven_school_subscriptions", fields:["school_id","plan_id","starts_at","ends_at","status"], required:["school_id","plan_id","starts_at","ends_at"], select:"id,school_id,plan_id,starts_at,ends_at,status,created_at" },
@@ -46,7 +47,7 @@ export async function GET(req:NextRequest) {
 }
 async function write(req:NextRequest,method:"POST"|"PATCH") {
  const sectionKey=req.nextUrl.searchParams.get("module");
- if(!validModule(sectionKey)||sectionKey==="audit")return response({error:"unknown_or_read_only_module"},400);
+ if(!validModule(sectionKey)||sectionKey==="audit"||sectionKey==="memberships")return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
  if(Number(req.headers.get("content-length")||"0")>16384)return response({error:"payload_too_large"},413);
  try {
