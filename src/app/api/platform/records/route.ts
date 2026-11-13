@@ -5,6 +5,7 @@ import { canEnterPortal } from "@/lib/security/portal-authorization";
 
 export const dynamic = "force-dynamic";
 const tables = {
+ deliveries: { table:"raven_notice_deliveries", fields:[], required:[], select:"id,notice_id,school_id,delivered_at" },
  memberships: { table:"raven_school_memberships", fields:["user_id","school_id","role","status"], required:["user_id","school_id","role"], select:"id,user_id,school_id,role,status,created_at" },
  schools: { table:"raven_schools", fields:["name","status"], required:["name"], select:"id,name,status,created_at" },
  plans: { table:"raven_platform_plans", fields:["code","name","price_sar","duration_days","active"], required:["code","name","duration_days"], select:"id,code,name,price_sar,duration_days,active,created_at" },
@@ -33,7 +34,7 @@ async function proxy(c:NonNullable<Awaited<ReturnType<typeof context>>>,sectionK
  const url=new URL(`/rest/v1/${config.table}`,c.url);
  url.searchParams.set("select",config.select);
  if(id)url.searchParams.set(sectionKey==="settings"?"key":"id",`eq.${id}`);
- if(method==="GET"){url.searchParams.set("order",sectionKey==="settings"?"key.asc":sectionKey==="audit"?"occurred_at.desc":"created_at.desc");url.searchParams.set("limit","100");}
+ if(method==="GET"){url.searchParams.set("order",sectionKey==="settings"?"key.asc":sectionKey==="audit"?"occurred_at.desc":sectionKey==="deliveries"?"delivered_at.desc":"created_at.desc");url.searchParams.set("limit","100");}
  const result=await fetch(url,{method,headers:{"apikey":c.key,"Authorization":`Bearer ${c.token}`,"Accept":"application/json",...(method==="GET"?{}:{"Content-Type":"application/json","Prefer":"return=representation"})},body:body?JSON.stringify(body):undefined,cache:"no-store",signal:AbortSignal.timeout(8000)});
  if(!result.ok)return response({error:"database_operation_failed"},result.status===401?401:result.status===403?403:result.status===409?409:503);
  const records=await result.json() as unknown;
@@ -49,7 +50,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
  const origin=req.headers.get("origin");
  if(!origin||origin!==req.nextUrl.origin)return response({error:"forbidden_origin"},403);
  const sectionKey=req.nextUrl.searchParams.get("module");
- if(!validModule(sectionKey)||sectionKey==="audit")return response({error:"unknown_or_read_only_module"},400);
+ if(!validModule(sectionKey)||(sectionKey==="audit"||sectionKey==="deliveries"))return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
  if(Number(req.headers.get("content-length")||"0")>16384)return response({error:"payload_too_large"},413);
  try {
