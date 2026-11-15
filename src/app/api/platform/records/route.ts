@@ -72,8 +72,8 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
   if(sectionKey==="schools"){
    if(input.name!==undefined){
     if(typeof input.name!=="string")return response({error:"invalid_school_name"},400);
-    const normalized=input.name.trim().replace(/\\s+/g," ");
-    if(normalized.length<2||normalized.length>160||/[\\u0000-\\u001f\\u007f]/.test(normalized))return response({error:"invalid_school_name"},400);
+    const normalized=input.name.trim().replace(/\s+/g," ");
+    if(normalized.length<2||normalized.length>160||/[\u0000-\u001f\u007f]/.test(normalized))return response({error:"invalid_school_name"},400);
     input.name=normalized;
    }
    if(input.status!==undefined&&typeof input.status!=="string")return response({error:"invalid_status"},400);
