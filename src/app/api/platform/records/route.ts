@@ -69,6 +69,15 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
    if(typeof value==="string"&&(value.length>10000||!value.trim()))return response({error:"invalid_field_value",field:key},400);
    if((key.endsWith("_id")||key==="ticket_id")&&value!==null&&(typeof value!=="string"||!uuid.test(value)))return response({error:"invalid_uuid",field:key},400);
   }
+  if(sectionKey==="schools"){
+   if(input.name!==undefined){
+    if(typeof input.name!=="string")return response({error:"invalid_school_name"},400);
+    const normalized=input.name.trim().replace(/\\s+/g," ");
+    if(normalized.length<2||normalized.length>160||/[\\u0000-\\u001f\\u007f]/.test(normalized))return response({error:"invalid_school_name"},400);
+    input.name=normalized;
+   }
+   if(input.status!==undefined&&typeof input.status!=="string")return response({error:"invalid_status"},400);
+  }
   if(sectionKey==="memberships"&&input.role!==undefined&&!["school_admin","principal","vice_principal","teacher","family_guardian"].includes(String(input.role)))return response({error:"invalid_role"},400);
   if(sectionKey==="memberships"&&input.status!==undefined&&!["invited","active","suspended","revoked"].includes(String(input.status)))return response({error:"invalid_membership_status"},400);
   if(sectionKey==="schools"&&input.status!==undefined&&!["active","pending","suspended"].includes(String(input.status)))return response({error:"invalid_status"},400);
@@ -86,7 +95,8 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
   if(method==="POST"&&sectionKey==="schools"&&!payload.status)payload.status="active";
   if(method==="POST"&&sectionKey==="memberships"&&!payload.status)payload.status="invited";
   if(method==="PATCH"&&sectionKey==="memberships"&&(payload.user_id!==undefined||payload.school_id!==undefined))return response({error:"immutable_membership_identity"},400);
-  return await proxy(c,sectionKey,method,payload,id||undefined);
+  const result=await proxy(c,sectionKey,method,payload,id||undefined);
+  return result;
  }catch{return response({error:"invalid_request_or_service_unavailable"},503);}
 }
 export async function POST(req:NextRequest){return write(req,"POST");}
