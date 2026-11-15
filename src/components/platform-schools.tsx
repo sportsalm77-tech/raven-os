@@ -31,7 +31,7 @@ export function PlatformSchools(){
   catch(e){setError(e instanceof Error?e.message:"تعذر تحميل المدارس");setLoaded(false);}
   finally{setBusy(false);}
  },[]);
- useEffect(()=>{void load();},[load]);
+ useEffect(()=>{const timer=setTimeout(()=>{void load();},0);return ()=>clearTimeout(timer);},[load]);
  const visible=useMemo(()=>schools.filter(s=>s.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())||s.id.includes(search.trim())),[schools,search]);
  function reset(){setEditing(null);setName("");setStatus("pending");}
  function edit(s:School){setEditing(s.id);setName(s.name);setStatus(s.status);setNotice("");setError("");}
