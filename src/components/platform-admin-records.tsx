@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n";
+import { PlatformSchools } from "@/components/platform-schools";
 
 type Field={key:string;ar:string;en:string;kind?:"select"|"number"|"date"|"textarea"|"checkbox"|"json";options?:string[]};
 const modules={
@@ -23,6 +24,10 @@ const routes:Record<string,Module[]>={
  "/platform/roles":["audit"],"/platform/security":["audit"],
 };
 export function PlatformAdminRecords({path}:{path:string}){
+ if(path==="/platform/schools")return <PlatformSchools/>;
+ return <GenericPlatformAdminRecords path={path}/>;
+}
+function GenericPlatformAdminRecords({path}:{path:string}){
  const {isAr}=useLang();
  const [sectionKey,setModule]=useState<Module>((routes[path]||["schools"])[0]);
  const [records,setRecords]=useState<Record<string,unknown>[]>([]);
