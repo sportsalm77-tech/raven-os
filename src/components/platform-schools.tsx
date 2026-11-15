@@ -28,10 +28,10 @@ export function PlatformSchools(){
  const load=useCallback(async()=>{
   setBusy(true);setError("");
   try{const j=await request("/api/platform/records?module=schools");if(!Array.isArray(j.records))throw new Error("استجابة غير صالحة");setSchools(j.records);setLoaded(true);setSelected(prev=>prev?j.records.find(s=>s.id===prev.id)||null:null);}
-  catch(e){setError(e instanceof Error?e.message:"تعذر تحميل المدارس");setLoaded(false);}
+  catch(e){setError(e instanceof Error?e.message:"تعذر تحميل المدارس");setLoaded(false);throw e;}
   finally{setBusy(false);}
  },[]);
- useEffect(()=>{const timer=setTimeout(()=>{void load();},0);return ()=>clearTimeout(timer);},[load]);
+ useEffect(()=>{const timer=setTimeout(()=>{void load().catch(()=>{});},0);return ()=>clearTimeout(timer);},[load]);
  const visible=useMemo(()=>schools.filter(s=>s.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())||s.id.includes(search.trim())),[schools,search]);
  function reset(){setEditing(null);setName("");setStatus("pending");}
  function edit(s:School){setEditing(s.id);setName(s.name);setStatus(s.status);setNotice("");setError("");}
@@ -51,7 +51,7 @@ export function PlatformSchools(){
   }catch(e){setError(e instanceof Error?e.message:"تعذر الحفظ");}finally{setBusy(false);}
  }
  return <section className="space-y-5 rounded-3xl border border-[#08794F]/15 bg-white p-5 md:p-7" aria-label={t("إدارة المدارس","School management")}>
-  <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="text-xl font-black text-[#111A18]">{t("إدارة المدارس","School management")}</h2><p className="text-sm text-[#66736e]">{t("المدارس المسجلة في قاعدة البيانات الفعلية وفق صلاحيات مدير المنصة.","Live schools subject to platform administrator permissions.")}</p></div><button type="button" onClick={()=>void load()} disabled={busy} className="rounded-xl border px-4 py-2">{t("تحديث","Refresh")}</button></div>
+  <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="text-xl font-black text-[#111A18]">{t("إدارة المدارس","School management")}</h2><p className="text-sm text-[#66736e]">{t("المدارس المسجلة في قاعدة البيانات الفعلية وفق صلاحيات مدير المنصة.","Live schools subject to platform administrator permissions.")}</p></div><button type="button" onClick={()=>void load().catch(()=>{})} disabled={busy} className="rounded-xl border px-4 py-2">{t("تحديث","Refresh")}</button></div>
   {error&&<p role="alert" className="rounded-xl bg-red-50 p-3 text-red-800">{error}</p>}
   {notice&&<p role="status" className="rounded-xl bg-green-50 p-3 text-green-900">{notice}</p>}
   <label className="block space-y-1"><span>{t("البحث بالاسم أو المعرف","Search by name or ID")}</span><input aria-label={t("البحث عن مدرسة","Search schools")} className="w-full rounded-xl border p-3" value={search} onChange={e=>setSearch(e.target.value)}/></label>
