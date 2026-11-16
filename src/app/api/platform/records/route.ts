@@ -53,7 +53,7 @@ async function write(req:NextRequest,method:"POST"|"PATCH") {
  try {
   const source=origin?new URL(origin):null;
   const expectedHost=host||req.nextUrl.host;
-  sameOrigin=!!source && source.host===expectedHost && (source.protocol==="https:" || (source.protocol==="http:" && /^(localhost|127\\.0\\.0\\.1)(:\\d+)?$/.test(expectedHost)));
+  sameOrigin=!!source && source.host===expectedHost && (source.protocol==="https:" || (source.protocol==="http:" && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(expectedHost)));
  } catch { /* invalid Origin is forbidden */ }
  if(!sameOrigin)return response({error:"forbidden_origin"},403);
  const sectionKey=req.nextUrl.searchParams.get("module");
