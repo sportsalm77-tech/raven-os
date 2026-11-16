@@ -48,7 +48,14 @@ export async function GET(req:NextRequest) {
 }
 async function write(req:NextRequest,method:"POST"|"PATCH") {
  const origin=req.headers.get("origin");
- if(!origin||origin!==req.nextUrl.origin)return response({error:"forbidden_origin"},403);
+ const host=req.headers.get("host");
+ let sameOrigin=false;
+ try {
+  const source=origin?new URL(origin):null;
+  const expectedHost=host||req.nextUrl.host;
+  sameOrigin=!!source && source.host===expectedHost && (source.protocol==="https:" || (source.protocol==="http:" && /^(localhost|127\\.0\\.0\\.1)(:\\d+)?$/.test(expectedHost)));
+ } catch { /* invalid Origin is forbidden */ }
+ if(!sameOrigin)return response({error:"forbidden_origin"},403);
  const sectionKey=req.nextUrl.searchParams.get("module");
  if(!validModule(sectionKey)||(sectionKey==="audit"||sectionKey==="deliveries"))return response({error:"unknown_or_read_only_module"},400);
  if(!/^application\/json(?:;|$)/i.test(req.headers.get("content-type")||""))return response({error:"json_required"},415);
