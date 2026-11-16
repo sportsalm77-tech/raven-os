@@ -27,7 +27,7 @@ export function PlatformSchools(){
  const t=(ar:string,en:string)=>isAr?ar:en;
  const load=useCallback(async()=>{
   setBusy(true);setError("");
-  try{const j=await request("/api/platform/records?module=schools");if(!Array.isArray(j.records))throw new Error("استجابة غير صالحة");setSchools(j.records);setLoaded(true);setSelected(prev=>prev?j.records.find(s=>s.id===prev.id)||null:null);}
+  try{const j=await request("/api/platform/records?module=schools");if(!Array.isArray(j.records))throw new Error("استجابة غير صالحة");setSchools(j.records);setLoaded(true);setSelected(prev=>prev?j.records.find(s=>s.id===prev.id)||null:null);return j.records;}
   catch(e){setError(e instanceof Error?e.message:"تعذر تحميل المدارس");setLoaded(false);throw e;}
   finally{setBusy(false);}
  },[]);
@@ -45,8 +45,11 @@ export function PlatformSchools(){
    const j=await request("/api/platform/records?"+qs,{method:editing?"PATCH":"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:normalized,status})});
    if(!Array.isArray(j.records)||j.records.length!==1)throw new Error("لم يؤكد الخادم حفظ السجل");
    const saved=j.records[0];const wasEditing=Boolean(editing);
-   await load();
-   setSelected(saved);reset();
+   if(!saved||typeof saved.id!=="string"||saved.name!==normalized||saved.status!==status)throw new Error("لم يؤكد الخادم البيانات المحفوظة");
+   const persisted=await load();
+   const verified=persisted.find(s=>s.id===saved.id);
+   if(!verified||verified.name!==saved.name||verified.status!==saved.status)throw new Error("لم يتم التحقق من بقاء التعديل بعد إعادة القراءة؛ لم يُعتمد الحفظ");
+   setSelected(verified);reset();
    setNotice(wasEditing?t("تم تعديل المدرسة وحفظها في قاعدة البيانات.","School updated and saved."):t("تمت إضافة المدرسة وحفظها في قاعدة البيانات.","School created and saved."));
   }catch(e){setError(e instanceof Error?e.message:"تعذر الحفظ");}finally{setBusy(false);}
  }
