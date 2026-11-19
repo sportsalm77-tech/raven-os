@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   Activity, ArrowLeft, ArrowRight, BellRing, Building2, ChartNoAxesCombined,
   ClipboardCheck, Cpu, Database, FileCheck2, Headset, LockKeyhole,
@@ -28,9 +29,45 @@ const HEALTH_LAYERS = [
   { id:"audit", ar:"سجل التدقيق", en:"Audit trail", detailAr:"عقد سجل التدقيق موجود؛ مخزن دائم غير موصول.", detailEn:"The audit event contract exists; durable storage is not connected." },
 ] as const;
 
+type OverviewState = "checking" | "verified" | "unauthorized" | "unverified";
+
+function useOverviewState(): OverviewState {
+  const [state, setState] = useState<OverviewState>("checking");
+  useEffect(() => {
+    const controller = new AbortController();
+    async function check() {
+      try {
+        const response = await fetch("/api/platform/overview", {
+          credentials: "same-origin", cache: "no-store", signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (response.status === 401 || response.status === 403) {
+          setState("unauthorized");
+          return;
+        }
+        if (!response.ok) { setState("unverified"); return; }
+        const payload: unknown = await response.json();
+        if (controller.signal.aborted) return;
+        const result = payload as { source?: unknown; metrics?: { schools?: unknown } } | null;
+        const schools = result?.metrics?.schools;
+        setState(result?.source === "supabase" &&
+          typeof schools === "number" && Number.isSafeInteger(schools) && schools >= 0
+          ? "verified" : "unverified");
+      } catch {
+        if (!controller.signal.aborted) setState("unverified");
+      }
+    }
+    void check();
+    return () => controller.abort();
+  }, []);
+  return state;
+}
+
 export function PlatformCommandCenter() {
   const { isAr } = useLang();
   const Arrow = isAr ? ArrowLeft : ArrowRight;
+  const overviewState = useOverviewState();
+  const statusLabel = overviewState === "verified" ? (isAr ? "قراءة مجمعة موثقة" : "Aggregate read verified") : overviewState === "checking" ? (isAr ? "جارٍ التحقق" : "Checking") : overviewState === "unauthorized" ? (isAr ? "غير مصرح" : "Unauthorized") : (isAr ? "غير متحقق" : "Unverified");
   return (
     <main className="space-y-7">
       <section className="overflow-hidden rounded-3xl bg-[#111A18] text-white">
@@ -40,7 +77,7 @@ export function PlatformCommandCenter() {
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#D4AF37] text-[#111A18]"><Network size={22}/></span>
               <div><div className="text-[11px] font-extrabold tracking-widest text-[#D4AF37]">RAVEN OS · PLATFORM CONTROL PLANE</div><div className="mt-1 text-sm font-bold">{isAr?"مؤسسة رافيين للخدمات التعليمية":"Rafeeen Foundation for Educational Services"}</div></div>
             </div>
-            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 text-[11px] font-bold text-amber-100">{isAr?"سياق الهوية غير متصل":"Identity context not connected"}</span>
+            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 text-[11px] font-bold text-amber-100">{overviewState === "verified" ? (isAr ? "جلسة مدير المنصة مُتحقق منها لهذا الطلب" : "Platform session verified for this request") : statusLabel}</span>
           </div>
           <h1 className="mt-6 text-2xl font-black md:text-3xl">{isAr?"مركز القيادة التنفيذي":"Executive Command Center"}</h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-white/70">{isAr?"مركز موحد لإدارة منظومة رافين ومدارسها. يعرض ما ثبت اتصاله فقط، ويفصل بوضوح بين الواجهة الجاهزة والخدمات التي تنتظر البناء أو الربط.":"A unified control plane for Raven OS and its schools. It shows only verified connections and clearly separates interface foundations from services still awaiting implementation or integration."}</p>
@@ -50,11 +87,22 @@ export function PlatformCommandCenter() {
           </div>
         </div>
         <div className="grid gap-px bg-white/10 sm:grid-cols-2 xl:grid-cols-5">
-          {HEALTH_LAYERS.map(layer=><div key={layer.id} className="bg-[#18231F] p-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-white/85"><span className="h-2 w-2 rounded-full bg-amber-400"/>{isAr?layer.ar:layer.en}</div>
-            <div className="mt-2 text-[11px] leading-5 text-white/55">{isAr?layer.detailAr:layer.detailEn}</div>
-            <div className="mt-3 text-[10px] font-extrabold text-amber-200">{isAr?"بانتظار مصدر موثوق":"Awaiting trusted source"}</div>
-          </div>)}
+          {HEALTH_LAYERS.map(layer => {
+            const hasEvidence = overviewState === "verified";
+            const isProbedLayer = layer.id === "identity" || layer.id === "data";
+            const detail = isProbedLayer && hasEvidence
+              ? layer.id === "identity"
+                ? (isAr ? "تحقق الخادم من جلسة مدير المنصة وصلاحيته لهذا الطلب فقط." : "The server verified the platform session and role for this request only.")
+                : (isAr ? "نجحت قراءة مؤشرات مجمعة؛ لم يُختبر عزل المدارس أو بقية الجداول." : "An aggregate read succeeded; tenant isolation and other tables were not tested.")
+              : isProbedLayer
+                ? (isAr ? "لا يوجد دليل خادمي كافٍ في هذه الجلسة." : "No sufficient server-side evidence for this session.")
+                : (isAr ? layer.detailAr : layer.detailEn);
+            return <div key={layer.id} className="bg-[#18231F] p-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-white/85"><span className="h-2 w-2 rounded-full bg-amber-400"/>{isAr?layer.ar:layer.en}</div>
+              <div className="mt-2 text-[11px] leading-5 text-white/55">{detail}</div>
+              <div className="mt-3 text-[10px] font-extrabold text-amber-200">{isProbedLayer ? statusLabel : (isAr ? "غير متحقق" : "Unverified")}</div>
+            </div>;
+          })}
         </div>
       </section>
 
