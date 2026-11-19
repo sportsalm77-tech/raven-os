@@ -26,10 +26,11 @@ jobs:
       # Temporary lockfile bootstrap: remove these two steps once the
       # generated and npm-ci-verified package-lock.json is committed.
       - name: Generate candidate lockfile when missing
+        id: bootstrap_lock
         if: ${{ hashFiles('package-lock.json') == '' }}
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Upload candidate lockfile for review
-        if: ${{ hashFiles('package-lock.json') == '' }}
+        if: ${{ steps.bootstrap_lock.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: raven-package-lock-candidate
