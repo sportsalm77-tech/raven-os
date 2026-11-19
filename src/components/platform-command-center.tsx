@@ -29,10 +29,44 @@ const HEALTH_LAYERS = [
   { id:"audit", ar:"سجل التدقيق", en:"Audit trail", detailAr:"عقد سجل التدقيق موجود؛ مخزن دائم غير موصول.", detailEn:"The audit event contract exists; durable storage is not connected." },
 ] as const;
 
+type MetricKey = "schools" | "activeSchools" | "schoolMemberships" | "plans" | "tickets" | "users" | "platformMemberships" | "classes" | "students";
+type MetricStatus = "loading" | "available" | "empty" | "unavailable" | "unauthorized" | "error";
+type MetricResult = { status: MetricStatus; value: number | null };
 type OverviewState = "checking" | "verified" | "unauthorized" | "unverified";
-
-function useOverviewState(): OverviewState {
+const METRICS: { key: MetricKey; ar: string; en: string }[] = [
+  { key: "schools", ar: "إجمالي المدارس", en: "Total schools" },
+  { key: "activeSchools", ar: "المدارس النشطة", en: "Active schools" },
+  { key: "schoolMemberships", ar: "عضويات المدارس", en: "School memberships" },
+  { key: "plans", ar: "الخطط", en: "Plans" },
+  { key: "tickets", ar: "التذاكر", en: "Tickets" },
+  { key: "users", ar: "المستخدمون", en: "Users" },
+  { key: "platformMemberships", ar: "عضويات المنصة", en: "Platform memberships" },
+  { key: "classes", ar: "الفصول", en: "Classes" },
+  { key: "students", ar: "الطلاب", en: "Students" },
+];
+const UNAVAILABLE_KEYS = new Set<MetricKey>(["users", "platformMemberships", "classes", "students"]);
+function makeMetrics(status: MetricStatus): Record<MetricKey, MetricResult> {
+  return Object.fromEntries(METRICS.map(({ key }) => [key, { status, value: null }])) as Record<MetricKey, MetricResult>;
+}
+function readMetrics(payload: unknown): Record<MetricKey, MetricResult> | null {
+  if (!payload || typeof payload !== "object") return null;
+  const data = payload as { source?: unknown; metrics?: unknown; unavailable?: unknown };
+  if (data.source !== "supabase" || !data.metrics || typeof data.metrics !== "object") return null;
+  const raw = data.metrics as Record<string, unknown>;
+  const unavailable = Array.isArray(data.unavailable) ? data.unavailable : [];
+  return Object.fromEntries(METRICS.map(({ key }) => {
+    const value = raw[key];
+    const status: MetricStatus = unavailable.includes(key) || UNAVAILABLE_KEYS.has(key) || value === null
+      ? "unavailable"
+      : typeof value === "number" && Number.isSafeInteger(value) && value >= 0
+        ? (value === 0 ? "empty" : "available") : "error";
+    return [key, { status, value: status === "available" || status === "empty" ? value as number : null }];
+  })) as Record<MetricKey, MetricResult>;
+}
+function usePlatformMetrics() {
   const [state, setState] = useState<OverviewState>("checking");
+  const [metrics, setMetrics] = useState<Record<MetricKey, MetricResult>>(() => makeMetrics("loading"));
+  const [lastSuccess, setLastSuccess] = useState<Date | null>(null);
   useEffect(() => {
     const controller = new AbortController();
     async function check() {
@@ -42,31 +76,30 @@ function useOverviewState(): OverviewState {
         });
         if (controller.signal.aborted) return;
         if (response.status === 401 || response.status === 403) {
-          setState("unauthorized");
-          return;
+          setState("unauthorized"); setMetrics(makeMetrics("unauthorized")); return;
         }
-        if (!response.ok) { setState("unverified"); return; }
-        const payload: unknown = await response.json();
+        if (!response.ok) { setState("unverified"); setMetrics(makeMetrics("error")); return; }
+        const parsed = readMetrics(await response.json());
         if (controller.signal.aborted) return;
-        const result = payload as { source?: unknown; metrics?: { schools?: unknown } } | null;
-        const schools = result?.metrics?.schools;
-        setState(result?.source === "supabase" &&
-          typeof schools === "number" && Number.isSafeInteger(schools) && schools >= 0
-          ? "verified" : "unverified");
+        if (!parsed) { setState("unverified"); setMetrics(makeMetrics("error")); return; }
+        setMetrics(parsed);
+        const hasError = METRICS.some(({ key }) => !UNAVAILABLE_KEYS.has(key) && parsed[key].status === "error");
+        setState(hasError ? "unverified" : "verified");
+        if (!hasError) setLastSuccess(new Date());
       } catch {
-        if (!controller.signal.aborted) setState("unverified");
+        if (!controller.signal.aborted) { setState("unverified"); setMetrics(makeMetrics("error")); }
       }
     }
     void check();
     return () => controller.abort();
   }, []);
-  return state;
+  return { state, metrics, lastSuccess };
 }
 
 export function PlatformCommandCenter() {
   const { isAr } = useLang();
   const Arrow = isAr ? ArrowLeft : ArrowRight;
-  const overviewState = useOverviewState();
+  const { state: overviewState, metrics, lastSuccess } = usePlatformMetrics();
   const statusLabel = overviewState === "verified" ? (isAr ? "قراءة مجمعة موثقة" : "Aggregate read verified") : overviewState === "checking" ? (isAr ? "جارٍ التحقق" : "Checking") : overviewState === "unauthorized" ? (isAr ? "غير مصرح" : "Unauthorized") : (isAr ? "غير متحقق" : "Unverified");
   return (
     <main className="space-y-7">
@@ -106,6 +139,33 @@ export function PlatformCommandCenter() {
         </div>
       </section>
 
+      <section aria-label={isAr ? "مؤشرات المنصة" : "Platform metrics"} className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-lg font-black text-[#111A18]">{isAr ? "مؤشرات المنصة" : "Platform metrics"}</h2>
+          <div className="text-xs text-[#53615b]">
+            {isAr ? "المصدر: واجهة مؤشرات المنصة المحمية" : "Source: protected platform overview API"}
+            {" · "}{lastSuccess ? (isAr ? "آخر قراءة ناجحة: " : "Last successful read: ") + lastSuccess.toLocaleString(isAr ? "ar-SA" : "en-US") : (isAr ? "لا توجد قراءة ناجحة بعد" : "No successful read yet")}
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {METRICS.map(({ key, ar, en }) => {
+            const metric = metrics[key];
+            const statusText = metric.status === "loading" ? (isAr ? "جارٍ التحميل" : "Loading")
+              : metric.status === "available" ? (isAr ? "بيانات متاحة" : "Available")
+              : metric.status === "empty" ? (isAr ? "صفر حقيقي" : "Verified zero")
+              : metric.status === "unavailable" ? (isAr ? "غير متاح من المصدر" : "Unavailable from source")
+              : metric.status === "unauthorized" ? (isAr ? "غير مصرح" : "Unauthorized")
+              : (isAr ? "تعذر جلب البيانات" : "Read failed");
+            return <article key={key} className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm" aria-live="polite">
+              <h3 className="text-sm font-bold text-[#53615b]">{isAr ? ar : en}</h3>
+              <div className="mt-3 text-3xl font-black tabular-nums text-[#111A18]">{metric.value === null ? "—" : metric.value.toLocaleString(isAr ? "ar-SA" : "en-US")}</div>
+              <p className="mt-2 text-xs text-[#66736e]">{statusText}</p>
+            </article>;
+          })}
+        </div>
+        <p className="text-xs leading-6 text-[#66736e]">{isAr ? "نجاح قراءة المؤشرات لا يثبت سلامة عزل المدارس أو سياسات RLS." : "Successful metric reads do not certify tenant isolation or RLS policies."}</p>
+      </section>
+
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
           <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام إدارة المنصة":"Platform centers & administration"}</h2><p className="mt-1 text-xs leading-6 text-[#66736e]">{isAr?"المراكز التسعة المعتمدة؛ توفر المسار لا يعني اتصال الخدمة بقاعدة البيانات.":"The nine approved centers; a working route does not imply a connected backend service."}</p></div>
@@ -124,7 +184,7 @@ export function PlatformCommandCenter() {
       <section className="grid gap-4 xl:grid-cols-2">
         <article className="rounded-2xl border border-black/10 bg-white p-5">
           <div className="flex items-center gap-2"><Database size={18} className="text-[#08794F]"/><h2 className="font-black text-[#111A18]">{isAr?"مؤشرات المدارس والبيانات":"Schools & data indicators"}</h2></div>
-          <p className="mt-2 text-xs leading-6 text-[#66736e]">{isAr?"لن تُعرض أعداد المدارس أو المستخدمين أو الحضور أو النشاط قبل ربط مستودع موثوق وتجميع آمن يحترم school_id.":"School, user, attendance, and activity counts remain hidden until a trusted repository and tenant-safe aggregation are connected."}</p>
+          <p className="mt-2 text-xs leading-6 text-[#66736e]">{isAr?"تعرض البطاقات أعلاه القراءات المتاحة من المصدر المحمي، وتبقى المؤشرات غير المتاحة دون قيمة رقمية.":"Cards above display available readings from the protected source; unavailable metrics have no numeric value."}</p>
           <div className="mt-4 rounded-xl bg-[#F5F3EC] p-3 text-xs leading-6 text-[#53615b]">{isAr?"قاعدة العرض: مؤشرات مجمعة على مستوى المؤسسة فقط، ولا تُكشف بيانات الطلاب الفردية في بوابة إدارة المنصة.":"Display rule: institution-level aggregates only. Individual student records are not exposed in Platform Management."}</div>
         </article>
         <article className="rounded-2xl border border-black/10 bg-white p-5">
