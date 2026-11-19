@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - rescue/unified-arena-integration-2026-11-03
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,12 +23,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Build Next.js application
-        run: npm run build
+      # Temporary lockfile bootstrap: remove these two steps once the
+      # generated and npm-ci-verified package-lock.json is committed.
+      - name: Generate candidate lockfile when missing
+        if: ${{ hashFiles('package-lock.json') == '' }}
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Upload candidate lockfile for review
+        if: ${{ hashFiles('package-lock.json') == '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: raven-package-lock-candidate
+          path: package-lock.json
+          if-no-files-found: error
+      - name: Install exact locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: TypeScript
+        run: npx tsc --noEmit --pretty false
       - name: Lint
         run: npm run lint
+      - name: Build Next.js application
+        run: npm run build
       - name: Run security policy unit tests
         run: npm run test:security
       - name: Install Chromium for browser verification
