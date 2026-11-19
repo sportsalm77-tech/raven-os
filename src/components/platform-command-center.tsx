@@ -146,7 +146,7 @@ export function PlatformCommandCenter() {
           <h2 className="text-lg font-black text-[#111A18]">{isAr ? "مؤشرات المنصة" : "Platform metrics"}</h2>
           <div className="text-xs text-[#53615b]">
             {isAr ? "المصدر: واجهة مؤشرات المنصة المحمية" : "Source: protected platform overview API"}
-            {" · "}{lastSuccess ? (isAr ? "آخر قراءة ناجحة: " : "Last successful read: ") + lastSuccess.toLocaleString(isAr ? "ar-SA" : "en-US") : (isAr ? "لا توجد قراءة ناجحة بعد" : "No successful read yet")}
+            {" · "}{lastSuccess ? (isAr ? "آخر قراءة مكتملة ناجحة: " : "Last fully successful read: ") + lastSuccess.toLocaleString(isAr ? "ar-SA" : "en-US") : (isAr ? "لا توجد قراءة ناجحة بعد" : "No successful read yet")}
           </div>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
