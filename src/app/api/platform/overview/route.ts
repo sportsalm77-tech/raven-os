@@ -26,14 +26,31 @@ export async function GET() {
    if(!total||total==="*"||!/^\d+$/.test(total))throw new Error("count_unavailable");
    return Number(total);
   };
-  const [schools,activeSchools,schoolMemberships,plans,tickets]=await Promise.all([
+  const keys=["schools","activeSchools","schoolMemberships","plans","tickets"] as const;
+  const settled=await Promise.allSettled([
    count("raven_schools"),count("raven_schools","eq.active"),
-   count("raven_school_memberships"),
-   count("raven_platform_plans"),count("raven_support_tickets"),
+   count("raven_school_memberships"),count("raven_platform_plans"),count("raven_support_tickets"),
   ]);
-  return NextResponse.json({source:"supabase",metrics:{
-   schools,activeSchools,schoolMemberships,platformMemberships:null,plans,tickets,
-   users:null,classes:null,students:null,
-  },unavailable:["users","platformMemberships","classes","students"]},{headers});
+  const metrics:Record<string,number|null>={
+   schools:null,activeSchools:null,schoolMemberships:null,plans:null,tickets:null,
+   users:null,platformMemberships:null,classes:null,students:null,
+  };
+  const failed:string[]=[];
+  for(let i=0;i<settled.length;i++){
+   const result=settled[i];
+   const key=keys[i];
+   if(result.status==="fulfilled" && Number.isSafeInteger(result.value) && result.value>=0){
+    metrics[key]=result.value;
+   }else{
+    failed.push(key);
+   }
+  }
+  if(failed.length===keys.length)return NextResponse.json({error:"service_unavailable"},{status:503,headers});
+  return NextResponse.json({
+   source:"supabase",metrics,
+   unavailable:["users","platformMemberships","classes","students"],
+   failed,
+  },{headers});
+
  }catch{return NextResponse.json({error:"service_unavailable"},{status:503,headers});}
 }
