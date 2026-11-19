@@ -50,14 +50,15 @@ function makeMetrics(status: MetricStatus): Record<MetricKey, MetricResult> {
 }
 function readMetrics(payload: unknown): Record<MetricKey, MetricResult> | null {
   if (!payload || typeof payload !== "object") return null;
-  const data = payload as { source?: unknown; metrics?: unknown; unavailable?: unknown };
+  const data = payload as { source?: unknown; metrics?: unknown; unavailable?: unknown; failed?: unknown };
   if (data.source !== "supabase" || !data.metrics || typeof data.metrics !== "object") return null;
   const raw = data.metrics as Record<string, unknown>;
   const unavailable = Array.isArray(data.unavailable) ? data.unavailable : [];
+  const failed = Array.isArray(data.failed) ? data.failed : [];
   return Object.fromEntries(METRICS.map(({ key }) => {
     const value = raw[key];
-    const status: MetricStatus = unavailable.includes(key) || UNAVAILABLE_KEYS.has(key) || value === null
-      ? "unavailable"
+    const status: MetricStatus = failed.includes(key) ? "error"
+      : unavailable.includes(key) || UNAVAILABLE_KEYS.has(key) ? "unavailable"
       : typeof value === "number" && Number.isSafeInteger(value) && value >= 0
         ? (value === 0 ? "empty" : "available") : "error";
     return [key, { status, value: status === "available" || status === "empty" ? value as number : null }];
@@ -84,8 +85,9 @@ function usePlatformMetrics() {
         if (!parsed) { setState("unverified"); setMetrics(makeMetrics("error")); return; }
         setMetrics(parsed);
         const hasError = METRICS.some(({ key }) => !UNAVAILABLE_KEYS.has(key) && parsed[key].status === "error");
-        setState(hasError ? "unverified" : "verified");
-        if (!hasError) setLastSuccess(new Date());
+        const hasSuccess = METRICS.some(({ key }) => !UNAVAILABLE_KEYS.has(key) && (parsed[key].status === "available" || parsed[key].status === "empty"));
+        setState(hasSuccess ? "verified" : "unverified");
+        if (hasSuccess && !hasError) setLastSuccess(new Date());
       } catch {
         if (!controller.signal.aborted) { setState("unverified"); setMetrics(makeMetrics("error")); }
       }
@@ -100,7 +102,7 @@ export function PlatformCommandCenter() {
   const { isAr } = useLang();
   const Arrow = isAr ? ArrowLeft : ArrowRight;
   const { state: overviewState, metrics, lastSuccess } = usePlatformMetrics();
-  const statusLabel = overviewState === "verified" ? (isAr ? "قراءة مجمعة موثقة" : "Aggregate read verified") : overviewState === "checking" ? (isAr ? "جارٍ التحقق" : "Checking") : overviewState === "unauthorized" ? (isAr ? "غير مصرح" : "Unauthorized") : (isAr ? "غير متحقق" : "Unverified");
+  const statusLabel = overviewState === "verified" ? (isAr ? "قراءة جزئية أو كاملة من المصدر" : "Partial or complete source read") : overviewState === "checking" ? (isAr ? "جارٍ التحقق" : "Checking") : overviewState === "unauthorized" ? (isAr ? "غير مصرح" : "Unauthorized") : (isAr ? "غير متحقق" : "Unverified");
   return (
     <main className="space-y-7">
       <section className="overflow-hidden rounded-3xl bg-[#111A18] text-white">
@@ -126,7 +128,7 @@ export function PlatformCommandCenter() {
             const detail = isProbedLayer && hasEvidence
               ? layer.id === "identity"
                 ? (isAr ? "تحقق الخادم من جلسة مدير المنصة وصلاحيته لهذا الطلب فقط." : "The server verified the platform session and role for this request only.")
-                : (isAr ? "نجحت قراءة مؤشرات مجمعة؛ لم يُختبر عزل المدارس أو بقية الجداول." : "An aggregate read succeeded; tenant isolation and other tables were not tested.")
+                : (isAr ? "نجحت قراءة مؤشر مجمع واحد على الأقل؛ لم يُختبر عزل المدارس أو بقية الجداول." : "At least one aggregate read succeeded; tenant isolation and other tables were not tested.")
               : isProbedLayer
                 ? (isAr ? "لا يوجد دليل خادمي كافٍ في هذه الجلسة." : "No sufficient server-side evidence for this session.")
                 : (isAr ? layer.detailAr : layer.detailEn);
