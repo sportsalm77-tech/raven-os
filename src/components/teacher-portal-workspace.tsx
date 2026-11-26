@@ -9,6 +9,7 @@ import {
 import { useLang } from "@/lib/i18n";
 import { PORTAL_NAVS } from "@/lib/nav";
 import { TeacherLocalDraft } from "@/components/teacher-local-draft";
+import { RavenSmartLifeWorkspace } from "@/components/raven-smart-life-workspace";
 
 type SectionDetail = {
   purposeAr: string;
@@ -176,6 +177,7 @@ export function TeacherPortalHome() {
   return (
     <div className="space-y-6">
       <PortalExecutiveHome portal="teacher" />
+      <div className="rf-panel p-4 md:p-5"><RavenSmartLifeWorkspace portal="teacher" compact /></div>
 
 
       <StatusNotice isAr={isAr} />
