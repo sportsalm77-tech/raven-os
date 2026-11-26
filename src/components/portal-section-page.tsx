@@ -12,6 +12,7 @@ import { PrincipalGovernanceScreen, type PrincipalGovernanceArea } from "@/compo
 import { PortalModuleWorkspace } from "@/components/portal-module-workspace";
 import { TeacherSectionWorkspace } from "@/components/teacher-portal-workspace";
 import { FamilySectionWorkspace } from "@/components/family-section-workspace";
+import { RavenSmartLifeWorkspace } from "@/components/raven-smart-life-workspace";
 import { PORTAL_NAVS, type PortalId } from "@/lib/nav";
 
 export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: string[] }) {
@@ -25,6 +26,10 @@ export function PortalSectionPage({ portal, slug }: { portal: PortalId; slug: st
   // `end` marks an exact-match navigation entry, not a disabled route.
   // Reject only paths missing from the registered portal navigation.
   if (!item) notFound();
+
+  if (path === "/platform/smart-life" || path === "/principal/smart-life" || path === "/principal/timetable" || path === "/teacher/smart-life" || path === "/teacher/timetable" || path === "/family/smart-life" || path === "/family/timetable") {
+    return <PortalShell portal={portal}><RavenSmartLifeWorkspace portal={portal} /></PortalShell>;
+  }
 
   if (portal === "principal" && path === "/principal/info-center") {
     return <PortalShell portal="principal"><PrincipalInfoCenter /></PortalShell>;
