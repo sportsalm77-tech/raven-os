@@ -127,7 +127,7 @@ export async function POST(request:NextRequest){
    const url=meeting(mode,provider,string(body.meeting_url));
    if(!time||title.length<3||title.length>180||class_code.length<2||class_code.length>80||
       details.length>1400||!["lesson","activity","duty"].includes(kind)||url===false)return response({error:"invalid_session"},400);
-   let teacher_id=ctx.role==="teacher"?ctx.userId:string(body.teacher_id)||null;
+   const teacher_id=ctx.role==="teacher"?ctx.userId:string(body.teacher_id)||null;
    if(teacher_id&&!uuid.test(teacher_id))return response({error:"invalid_teacher"},400);
    const standard=string(body.standard_code)||null;
    if(standard&&!/^[a-z][a-z0-9_-]{2,39}$/.test(standard))return response({error:"invalid_standard"},400);
