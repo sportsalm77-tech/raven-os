@@ -63,7 +63,6 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
  const [showWeek,setShowWeek]=useState(false);
  const today=now?dateR(now):"";
  const date=selectedDate||today;
- const preview=process.env.NEXT_PUBLIC_RAVEN_DEMO_ENABLED==="true";
  useEffect(()=>{const tick=()=>setNow(new Date());tick();const id=window.setInterval(tick,1000);return()=>window.clearInterval(id);},[]);
  useEffect(()=>{let cancelled=false;
   async function refresh(){
@@ -79,9 +78,9 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
   }
   void refresh();return()=>{cancelled=true;};
  },[portal,revision]);
- useEffect(()=>{if(!selectedChild&&data?.roster?.[0])setSelectedChild(data.roster[0].child_ref);},[data,selectedChild]);
  const roster=data?.roster??[];
- const familyClass=roster.find(r=>r.child_ref===selectedChild)?.class_code;
+ const effectiveChild=selectedChild||roster[0]?.child_ref||"";
+ const familyClass=roster.find(r=>r.child_ref===effectiveChild)?.class_code;
  const periods=useMemo(()=>{
   const sessions=data?.sessions??[];
   return sessions.filter(s=>s.status!=="cancelled")
@@ -157,7 +156,7 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
     <label className="flex items-center gap-2 text-xs font-bold text-[#33483a]">{t("التاريخ","Date")}<input aria-label={t("تاريخ الجدول","Timetable date")} type="date" value={date} onChange={e=>setSelectedDate(e.target.value)} className="rounded-lg border bg-white p-2"/></label>
     <span className="ms-auto flex items-center gap-1 text-xs font-bold text-[#08794F]"><Clock3 size={15}/>{now?timeR(now):"—"} · {t("توقيت الرياض","Riyadh time")}</span>
    </div>
-   {portal==="family"&&roster.length>1&&<label className="flex gap-2 text-sm font-bold">{t("الطفل المصرح به","Authorized child")}<select value={selectedChild} onChange={e=>setSelectedChild(e.target.value)} className="rounded-lg border px-2 py-1">{roster.map((c,i)=><option key={c.child_ref} value={c.child_ref}>{t("طفل","Child")} {i+1}</option>)}</select></label>}
+   {portal==="family"&&roster.length>1&&<label className="flex gap-2 text-sm font-bold">{t("الطفل المصرح به","Authorized child")}<select value={effectiveChild} onChange={e=>setSelectedChild(e.target.value)} className="rounded-lg border px-2 py-1">{roster.map((c,i)=><option key={c.child_ref} value={c.child_ref}>{t("طفل","Child")} {i+1}</option>)}</select></label>}
    <div className="grid gap-3 sm:grid-cols-3">
     {[
      {name:t("الفترات المعتمدة","Approved periods"),value:String(currentDay.filter(x=>x.status==="published").length),sub:t("اليوم المحدد","Selected date")},
