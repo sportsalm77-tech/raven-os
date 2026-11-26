@@ -37,7 +37,7 @@ function demoPayload(portal:Role):Payload{
  roster:portal==="family"?[{child_ref:"demo-child",class_code:"DEMO-1"}]:[]};
 }
 const link=(url:string)=>{try{const u=new URL(url);return u.protocol==="https:"&&["teams.microsoft.com","teams.live.com","meet.google.com"].includes(u.hostname)?url:null;}catch{return null;}};
-export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;compact?:boolean}){
+export function RavenSmartLifeWorkspace({portal,compact=false,illustrative=false}:{portal:Role;compact?:boolean;illustrative?:boolean}){
  const {isAr}=useLang();
  const t=useCallback((ar:string,en:string)=>isAr?ar:en,[isAr]);
  const [now,setNow]=useState<Date|null>(null);
@@ -65,6 +65,7 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
  const date=selectedDate||today;
  useEffect(()=>{const tick=()=>setNow(new Date());tick();const id=window.setInterval(tick,1000);return()=>window.clearInterval(id);},[]);
  useEffect(()=>{let cancelled=false;
+  if(illustrative){queueMicrotask(()=>{if(!cancelled){setData(demoPayload(portal));setState("ready");}});return()=>{cancelled=true;};}
   async function refresh(){
    setState("loading");
    try{
@@ -77,7 +78,7 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
    }
   }
   void refresh();return()=>{cancelled=true;};
- },[portal,revision]);
+ },[portal,revision,illustrative]);
  const roster=data?.roster??[];
  const effectiveChild=selectedChild||roster[0]?.child_ref||"";
  const familyClass=roster.find(r=>r.child_ref===effectiveChild)?.class_code;
