@@ -9,7 +9,7 @@ const sql=load("supabase/migrations/20261126190000_raven_smart_life.sql");
 test("Smart Life and timetable are in all Raven main portal navigations",()=>{
  for(const path of ["/platform/smart-life","/principal/smart-life","/teacher/smart-life","/family/smart-life"])assert.ok(nav.includes(path),path);
  for(const path of ["/principal/timetable","/teacher/timetable","/family/timetable"])assert.ok(nav.includes(path),path);
- assert.match(nav,/Smart Life — الأصل?/);
+ assert.match(nav,/Smart Life — أصل اليوم/);
  assert.match(nav,/الجدول الذكي/);
  const route=load("src/components/portal-section-page.tsx");
  assert.match(route,/RavenSmartLifeWorkspace/);
