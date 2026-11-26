@@ -84,7 +84,7 @@ export function RavenSmartLifeWorkspace({portal,compact=false}:{portal:Role;comp
  const familyClass=roster.find(r=>r.child_ref===selectedChild)?.class_code;
  const periods=useMemo(()=>{
   const sessions=data?.sessions??[];
-  return sessions.filter(s=>s.status!=="cancelled"&&portal!=="family" || false)
+  return sessions.filter(s=>s.status!=="cancelled")
    .filter(s=>portal!=="family"||(s.status==="published"&&s.class_code===familyClass&&s.kind!=="duty"));
  },[data,portal,familyClass]);
  const currentDay=periods.filter(s=>!!date&&eqDate(s,date)).sort((a,b)=>a.starts_at.localeCompare(b.starts_at));
