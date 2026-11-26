@@ -65,7 +65,7 @@ async function rest(ctx:Extract<Context,{demo:false}>,table:string,method:"GET"|
  const url=new URL("/rest/v1/"+table,base);
  for(const [k,v] of Object.entries(filters))url.searchParams.set(k,v);
  const headers:Record<string,string>={apikey:key,Authorization:"Bearer "+ctx.token,Accept:"application/json"};
- if(method!=="GET"){headers["Content-Type"]="application/json";headers["Prefer"]="return=representation";}
+ if(method!=="GET"){headers["Content-Type"]="application/json";headers["Prefer"]=table==="raven_smart_life_standards"&&filters.on_conflict?"resolution=merge-duplicates,return=representation":"return=representation";}
  const r=await fetch(url,{method,headers,body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(8000),cache:"no-store"});
  if(!r.ok)throw Error(r.status===403?"forbidden":"data_unavailable");
  const result:unknown=await r.json();
