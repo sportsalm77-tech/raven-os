@@ -2,7 +2,7 @@ import {
   LayoutDashboard, Building2, Users, ShieldCheck, HeartPulse, Settings,
   BarChart3, Info, ClipboardCheck, ListChecks, Target, Landmark, DoorOpen,
   UsersRound, GraduationCap, PenLine, ClipboardList, Mic, ShieldAlert, Sparkles,
-  Library, CalendarDays, Stethoscope, Trophy, Star, Accessibility, MonitorPlay,
+  Library, CalendarDays, CalendarClock, Stethoscope, Trophy, Star, Accessibility, MonitorPlay,
   Plug, Bot, KeyRound, SlidersHorizontal, FileBarChart2, BookOpenCheck, Cpu,
   BellRing, UserRound, Activity, Workflow, type LucideIcon,
 } from "lucide-react";
@@ -32,6 +32,7 @@ export const PLATFORM_NAV: NavGroup[] = [
  ]},
  { ar:"الذكاء والأدلة", en:"Intelligence & Evidence", items:[
   {to:"/platform/engines",ar:"مركز الذكاء والتحليل",en:"Intelligence & Analytics",icon:Cpu},
+  {to:"/platform/smart-life",ar:"Smart Life — أصل اليوم والجدول الذكي",en:"Smart Life — master timetable",icon:CalendarClock},
   {to:"/platform/evidence",ar:"مركز الأدلة والاعتماد",en:"Evidence & Accreditation",icon:ClipboardCheck},
  ]},
  { ar:"الحوكمة والسجلات", en:"Governance & Records", items:[
@@ -71,8 +72,9 @@ export const PRINCIPAL_NAV: NavGroup[] = [
  {ar:"7. مكتبة رافين",en:"7. Raven Library",items:[
   {to:"/principal/library",ar:"مكتبة رافين",en:"Raven Library",icon:Library},
  ]},
- {ar:"8. الجدول المدرسي",en:"8. School Timetable",items:[
-  {to:"/principal/timetable",ar:"الجدول المدرسي",en:"School Timetable",icon:CalendarDays},
+ {ar:"8. Smart Life والجدول المدرسي",en:"8. Smart Life & School Timetable",items:[
+  {to:"/principal/smart-life",ar:"Smart Life — قيادة اليوم المدرسي",en:"Smart Life — School Day",icon:CalendarClock},
+  {to:"/principal/timetable",ar:"الجدول الذكي للحصص والأنشطة",en:"Smart Timetable & Lessons",icon:CalendarDays},
  ]},
  {ar:"9. الصحة المدرسية",en:"9. School Health",items:[
   {to:"/principal/health",ar:"الصحة المدرسية",en:"School Health",icon:Stethoscope},
@@ -114,7 +116,8 @@ export const PRINCIPAL_NAV: NavGroup[] = [
 export const TEACHER_NAV: NavGroup[] = [
  {ar:"مساحتي اليومية",en:"My Day",items:[
   {to:"/teacher",ar:"الرئيسية ومساحة العمل",en:"Home & Workspace",icon:LayoutDashboard,end:true},
-  {to:"/teacher/timetable",ar:"جدول المعلم والحصص",en:"Timetable & Classes",icon:CalendarDays},
+  {to:"/teacher/smart-life",ar:"Smart Life — يومي الذكي",en:"Smart Life — My Day",icon:CalendarClock},
+  {to:"/teacher/timetable",ar:"الجدول الذكي للحصص",en:"Smart Lessons Timetable",icon:CalendarDays},
   {to:"/teacher/tasks",ar:"المهام والتكليفات",en:"Tasks & Assignments",icon:ClipboardCheck},
   {to:"/teacher/lesson-plans",ar:"التحضير والخطط الدراسية",en:"Lesson Plans",icon:BookOpenCheck},
  ]},
@@ -137,6 +140,7 @@ export const TEACHER_NAV: NavGroup[] = [
 export const FAMILY_NAV: NavGroup[] = [
  {ar:"متابعة أبنائي",en:"My Children",items:[
   {to:"/family",ar:"الرئيسية",en:"Home",icon:LayoutDashboard,end:true},
+  {to:"/family/smart-life",ar:"Smart Life — يوم أبنائي",en:"Smart Life — My Children",icon:CalendarClock},
   {to:"/family/children",ar:"أبنائي",en:"My Children",icon:UsersRound},
   {to:"/family/attendance",ar:"الحضور والغياب",en:"Attendance",icon:ClipboardList},
   {to:"/family/progress",ar:"المستوى والتقدم الدراسي",en:"Progress",icon:Target},
@@ -145,7 +149,7 @@ export const FAMILY_NAV: NavGroup[] = [
   {to:"/family/grades",ar:"الدرجات والتقييمات",en:"Grades & Assessments",icon:PenLine},
   {to:"/family/homework",ar:"الواجبات والمهام",en:"Homework & Tasks",icon:ListChecks},
   {to:"/family/behavior",ar:"السلوك والمواظبة",en:"Behavior & Conduct",icon:Sparkles},
-  {to:"/family/timetable",ar:"الجدول المدرسي",en:"School Timetable",icon:CalendarDays},
+  {to:"/family/timetable",ar:"الجدول الذكي لأبنائي",en:"My Children’s Smart Timetable",icon:CalendarDays},
  ]},
  {ar:"التواصل والملفات",en:"Contact & Files",items:[
   {to:"/family/notifications",ar:"الإشعارات والتنبيهات",en:"Notifications & Alerts",icon:BellRing},
