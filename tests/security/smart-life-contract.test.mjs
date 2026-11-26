@@ -60,3 +60,15 @@ test("Raven Smart Life is intentionally isolated from the Nibras project",()=>{
  assert.match(ui,/teacher_extra|طلب حصة إضافية/);
  assert.match(ui,/meet\.google\.com|teams\.microsoft\.com/);
 });
+
+test("Visual showcase is preview-only, mock-only, and cannot mutate school data",()=>{
+ const route=load("src/app/preview/smart-life/page.tsx");
+ assert.match(route,/process\.env\.VERCEL_ENV==="production"\)notFound\(\)/);
+ assert.match(route,/RavenSmartLifeWorkspace key=\{role\} portal=\{role\} illustrative/);
+ assert.match(route,/views\.map\(/);
+ const ui=load("src/components/raven-smart-life-workspace.tsx");
+ assert.match(ui,/if\(illustrative\)\{queueMicrotask/);
+ assert.match(ui,/if\(data\?\.demo\)throw Error/);
+ assert.match(ui,/معاينة مرئية ببيانات توضيحية فقط/);
+ assert.match(ui,/disabled=\{busy\|\|data\?\.demo\}/);
+});
