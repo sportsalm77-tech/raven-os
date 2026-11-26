@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
+import { RavenSmartLifeWorkspace } from "@/components/raven-smart-life-workspace";
 import { useEffect, useState } from "react";
 import { ArrowUpLeft, CalendarCheck2, ClipboardCheck, GraduationCap, ListChecks, ShieldCheck, UsersRound, type LucideIcon } from "lucide-react";
 
@@ -38,6 +39,7 @@ export function PrincipalExecutiveDashboard() {
     <p className="mt-3 max-w-2xl text-sm leading-7 text-white/75">{t("نظرة مركزة على أداء المدرسة وأولويات العمل، مع وصول سريع للمراكز التشغيلية من القائمة الجانبية.","A focused view of school performance and priorities, with direct access to operational centers from the sidebar.")}</p>
    </div>
   </section>
+  <div className="rf-panel p-4 md:p-5"><RavenSmartLifeWorkspace portal="principal" compact /></div>
   <section aria-label={t("المؤشرات الرئيسية","Key performance indicators")}>
    <div className="mb-3 flex items-center justify-between gap-3"><h2 className="rf-section-title text-base">{t("المؤشرات الرئيسية","Key indicators")}</h2><span className="text-xs text-[#64736d]">{preview?t("بيانات تدريبية قابلة للتعديل — ليست نتائج حقيقية","Editable training data — not real results"):t("آخر بيانات معتمدة","Latest verified data")}</span></div>
    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{metrics.map((metric,index)=>{const Icon=metric.icon;const value=preview?values[metricKeys[index]]:null;return <Link key={metric.path} href={metric.path} className="rf-card group p-5">
