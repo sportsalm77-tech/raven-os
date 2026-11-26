@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { PlatformLiveMetrics } from "@/components/platform-live-metrics";
+import { RavenSmartLifeWorkspace } from "@/components/raven-smart-life-workspace";
 import { Activity, BellRing, Building2, ChartNoAxesCombined, Cpu, FileCheck2, Headset, ScrollText, Settings2, ShieldCheck, Users, WalletCards, ArrowUpLeft } from "lucide-react";
 
 const centers=[
@@ -13,6 +14,7 @@ const centers=[
  {ar:"الدعم الفني",en:"Support",href:"/platform/support",icon:Headset,subAr:"التذاكر والردود",subEn:"Tickets and replies"},
  {ar:"الاشتراكات والباقات",en:"Subscriptions",href:"/platform/subscriptions",icon:WalletCards,subAr:"الباقات والصلاحية الزمنية",subEn:"Plans and expiry"},
  {ar:"الذكاء والتحليل",en:"Intelligence",href:"/platform/engines",icon:Cpu,subAr:"المحركات والتحليلات",subEn:"Engines and analytics"},
+ {ar:"Smart Life — الأصل والمرجع",en:"Smart Life — Master",href:"/platform/smart-life",icon:Cpu,subAr:"معايير اليوم والجدول المدرسي",subEn:"Smart day & timetable standards"},
  {ar:"الأدلة والاعتماد",en:"Evidence",href:"/platform/evidence",icon:FileCheck2,subAr:"الشواهد والتقويم",subEn:"Evidence and evaluation"},
  {ar:"الحوكمة والتدقيق",en:"Governance",href:"/platform/roles",icon:ScrollText,subAr:"سجل التغييرات والسياسات",subEn:"Audit trail and policies"},
  {ar:"الإعدادات العامة",en:"Settings",href:"/platform/settings",icon:Settings2,subAr:"إعدادات المؤسسة",subEn:"Platform configuration"}
@@ -29,6 +31,7 @@ export function PlatformCommandCenter(){
     <Link href="/platform/roles" className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3 py-2 text-xs font-bold text-white"><ShieldCheck size={16}/>{t("الحوكمة","Governance")}</Link>
    </div>
   </header>
+  <div className="rf-panel p-4 md:p-5"><RavenSmartLifeWorkspace portal="platform" compact /></div>
   <PlatformLiveMetrics />
   <section aria-label={t("مراكز المنصة","Platform centers")}>
    <div className="mb-3 flex items-center justify-between gap-2"><h2 className="text-lg font-black text-[#111A18]">{t("مراكز وخدمات المنصة","Platform centers & services")}</h2><span className="text-xs text-[#66736e]">{t("اختر المركز","Select a center")}</span></div>
