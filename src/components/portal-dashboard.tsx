@@ -11,6 +11,7 @@ import { PortalShell } from "@/components/portal-shell";
 import { PortalOverviewPanels } from "@/components/portal-overview-panels";
 import { PlatformCommandCenter } from "@/components/platform-command-center";
 import { TeacherPortalHome } from "@/components/teacher-portal-workspace";
+import { RavenSmartLifeWorkspace } from "@/components/raven-smart-life-workspace";
 
 const COPY: Record<PortalId,{ar:string;en:string;noteAr:string;noteEn:string}> = {
  platform:{ar:"مركز الحوكمة والإدارة المركزية لمنظومة رافين ومدارسها، مع فصل واضح بين إدارة المنصة وإدارة كل مدرسة.",en:"The central governance workspace for Raven OS and its schools, with a clear boundary between platform administration and each school.",noteAr:"هذه النسخة لا تتصل بعد بمصدر المدارس أو الهوية أو سجل التدقيق. لا توجد سجلات تشغيلية أو أرقام افتراضية.",noteEn:"This build is not yet connected to school, identity, or audit services. No operational records or fabricated metrics are shown."},
@@ -33,6 +34,7 @@ export function PortalDashboard({portal}:{portal:PortalId}) {
   {portal === "principal" ? <PrincipalExecutiveDashboard /> : <>
   {portal === "platform" ? <PlatformCommandCenter /> : portal === "teacher" ? <TeacherPortalHome /> : <>
   <PortalExecutiveHome portal="family" />
+  <div className="rf-panel mb-6 p-4 md:p-5"><RavenSmartLifeWorkspace portal="family" compact /></div>
   <PortalOverviewPanels portal={portal} />
   <div className="mb-6 flex items-center justify-between gap-3">
    <div><h2 className="text-lg font-black text-[#111A18]">{isAr?"مراكز وأقسام البوابة":"Portal centers & sections"}</h2><p className="mt-1 text-xs text-[#66736e]">{isAr?"خريطة تنقل منظمة — لا تعني أن العمليات الخلفية مفعّلة":"Organized navigation — backend operations are not implied"}</p></div>
